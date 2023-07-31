@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function LoginPage() {
   return (
-    <div className="h-full flex justify-center items-center bg-slate-50">
+    <div className="h-full flex justify-center items-center bg-[#F3F3F3]">
       <article className="flex gap-20 flex-col items-center w-96 h-176 bg-white shadow-lg">
         <Image
           width={242}
@@ -19,6 +19,7 @@ export default function LoginPage() {
             <input
               name="email"
               className="w-full h-8 pl-2 shadow-inner"
+              style={{ boxShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.25) inset" }}
               type="email"
             />
           </div>
@@ -29,6 +30,7 @@ export default function LoginPage() {
             <input
               name="password"
               className="w-full h-8 pl-2 shadow-inner"
+              style={{ boxShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.25) inset" }}
               type="password"
             />
           </div>
