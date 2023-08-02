@@ -20,6 +20,9 @@ module.exports = {
         192: "48rem",
         208: "52rem",
       },
+      colors: {
+        "primary-color": "#91E9F2",
+      },
     },
   },
   plugins: [],
