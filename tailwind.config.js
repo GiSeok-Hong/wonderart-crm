@@ -23,6 +23,9 @@ module.exports = {
       colors: {
         "primary-color": "#91E9F2",
       },
+      minWidth: {
+        label: "130px",
+      },
     },
   },
   plugins: [],
