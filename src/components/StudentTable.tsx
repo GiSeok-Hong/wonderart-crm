@@ -41,22 +41,6 @@ export default function StudentTable() {
             </tr>
           );
         })}
-        {/* <tr>
-          <td>김철수</td>
-          <td>5</td>
-          <td>남</td>
-          <td>010-1234-5678</td>
-          <td>주 1회</td>
-          <td>병점초등학교</td>
-        </tr>
-        <tr>
-          <td>김철수</td>
-          <td>5</td>
-          <td>남</td>
-          <td>010-1234-5678</td>
-          <td>주 1회</td>
-          <td>병점초등학교</td>
-        </tr> */}
       </tbody>
     </table>
   );
