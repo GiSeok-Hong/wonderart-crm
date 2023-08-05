@@ -1,3 +1,5 @@
+import StudentSearchInput from "@/components/StudentSearchInput";
+import StudentTable from "@/components/StudentTable";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,5 +8,10 @@ export const metadata: Metadata = {
 };
 
 export default function ListPage() {
-  return <h1>학원생 리스트 페이지</h1>;
+  return (
+    <div className="flex flex-col gap-5 p-5">
+      <StudentSearchInput />
+      <StudentTable />
+    </div>
+  );
 }
