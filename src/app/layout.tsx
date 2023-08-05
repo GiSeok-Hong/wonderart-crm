@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -5,8 +6,11 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "원더아트스튜디오",
-  description: "원더아트스튜디오 원생관리",
+  title: {
+    default: `원더아트 스튜디오`,
+    template: `원더아트 스튜디오 | %s`,
+  },
+  description: "원더아트 스튜디오 원생관리 웹사이트입니다.",
 };
 
 export default function RootLayout({
@@ -86,7 +90,10 @@ export default function RootLayout({
           content="https://yourdomain.com/icons/apple-touch-icon.png"
         /> */}
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header />
+        <main className="h-full p-5">{children}</main>
+      </body>
     </html>
   );
 }
