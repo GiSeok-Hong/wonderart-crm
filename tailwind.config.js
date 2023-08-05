@@ -22,6 +22,7 @@ module.exports = {
       },
       colors: {
         "primary-color": "#91E9F2",
+        "gray-EEE": "#EEE",
       },
       minWidth: {
         label: "130px",
