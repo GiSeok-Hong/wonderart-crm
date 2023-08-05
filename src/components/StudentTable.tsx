@@ -8,7 +8,7 @@ const TABLE_BORDER = "border border-black";
 export default function StudentTable() {
   const Th = ({ children }: { children: ReactNode }) => {
     return (
-      <th className={`${TABLE_BORDER} p-2 bg-[#91E9FE] text-white`}>
+      <th className={`${TABLE_BORDER} p-2 bg-primary-color text-white`}>
         {children}
       </th>
     );
@@ -29,9 +29,14 @@ export default function StudentTable() {
         </tr>
       </thead>
       <tbody>
-        {studentList.map((student) => {
+        {studentList.map((student, index) => {
           return (
-            <tr className="text-center" key={student.id}>
+            <tr
+              className={`text-center ${
+                index % 2 === 0 ? "transparent" : "bg-gray-EEE"
+              }`}
+              key={student.id}
+            >
               <Td>{student.name}</Td>
               <Td>{student.age}</Td>
               <Td>{student.gender}</Td>
