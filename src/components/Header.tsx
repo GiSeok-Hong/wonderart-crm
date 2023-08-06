@@ -31,12 +31,16 @@ export default function Header() {
   return (
     <header className="flex justify-between items-center px-5">
       <Link href="/" className="flex items-center gap-2">
-        <Image src={logoImg} alt="logo image" width={100} height={100} />
-        <Image src={logoText} alt="logo text image" width={327} height={80} />
+        <div>
+          <Image src={logoImg} alt="logo image" width={100} height={100} />
+        </div>
+        <div>
+          <Image src={logoText} alt="logo text image" width={327} height={80} />
+        </div>
       </Link>
 
       <nav>
-        <ul className="flex gap-4 items-center text-xl">
+        <ul className="flex gap-4 items-center text-xl min-w-max">
           {navList.map((item) => (
             <li
               key={item.href}
