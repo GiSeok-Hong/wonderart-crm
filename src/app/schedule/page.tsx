@@ -1,4 +1,5 @@
 import HeaderCalendar from "@/components/Calendar/HeaderCalendar";
+import WeeklyCalendar from "@/components/Calendar/WeeklyCalendar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function SchedulePage() {
   return (
     <div>
-      <div className="flex justify-between overflow-hidden gap-2">
+      <div className="flex justify-between overflow-hidden gap-2 mb-5">
         <HeaderCalendar height={200} />
         <textarea
           name=""
@@ -19,6 +20,9 @@ export default function SchedulePage() {
           className="bg-gray-EEE p-1 w-2/3 outline-primary-color resize-none"
           placeholder="노트"
         />
+      </div>
+      <div>
+        <WeeklyCalendar />
       </div>
     </div>
   );

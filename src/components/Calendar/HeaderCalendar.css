@@ -127,10 +127,11 @@ button.rbc-input::-moz-focus-inner {
   z-index: 4;
 }
 
+/* 수정 */
 .rbc-row-content .rbc-row > .rbc-date-cell:first-child:not(.rbc-off-range) {
   color: red;
 }
-
+/* 수정 */
 .rbc-row-content .rbc-row > .rbc-date-cell:last-child:not(.rbc-off-range) {
   color: blue;
 }
@@ -158,6 +159,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-today {
+  /* 수정 */
   background-color: #91e9f2;
 }
 
@@ -561,7 +563,9 @@ button.rbc-input::-moz-focus-inner {
 
 .rbc-timeslot-group {
   border-bottom: 1px solid #ddd;
-  min-height: 40px;
+  /* min-height: 40px; */
+  /* 수정 */
+  min-height: 200px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
