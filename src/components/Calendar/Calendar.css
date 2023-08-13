@@ -127,11 +127,11 @@ button.rbc-input::-moz-focus-inner {
   z-index: 4;
 }
 
-/* 수정 */
+/* 수정: 아래 내용 추가 */
 .rbc-row-content .rbc-row > .rbc-date-cell:first-child:not(.rbc-off-range) {
   color: red;
 }
-/* 수정 */
+/* 수정: 아래 내용 추가 */
 .rbc-row-content .rbc-row > .rbc-date-cell:last-child:not(.rbc-off-range) {
   color: blue;
 }
@@ -158,8 +158,8 @@ button.rbc-input::-moz-focus-inner {
   display: none;
 }
 
+/* 수정: 아래 내용 추가 */
 .rbc-today {
-  /* 수정 */
   background-color: #91e9f2;
 }
 
@@ -184,6 +184,8 @@ button.rbc-input::-moz-focus-inner {
   flex-grow: 1;
   padding: 0 10px;
   text-align: center;
+  /* 수정: font-weight 추가 */
+  font-weight: bold;
 }
 .rbc-toolbar button {
   color: #373a3c;
@@ -564,7 +566,7 @@ button.rbc-input::-moz-focus-inner {
 .rbc-timeslot-group {
   border-bottom: 1px solid #ddd;
   /* min-height: 40px; */
-  /* 수정 */
+  /* 수정: min-height 값 변경 */
   min-height: 200px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -723,7 +725,8 @@ button.rbc-input::-moz-focus-inner {
   flex: 1;
   width: 100%;
   border: 1px solid #ddd;
-  min-height: 0;
+  /* 수정: min-height 주석처리 */
+  /* min-height: 0;/ */
 }
 .rbc-time-view .rbc-time-gutter {
   white-space: nowrap;
@@ -760,6 +763,8 @@ button.rbc-input::-moz-focus-inner {
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
   flex-direction: row;
+  /* 수정: height 값 추가 */
+  height: 65px;
 }
 .rbc-time-header.rbc-overflowing {
   border-right: 1px solid #ddd;
@@ -815,7 +820,8 @@ button.rbc-input::-moz-focus-inner {
   align-items: flex-start;
   width: 100%;
   border-top: 2px solid #ddd;
-  overflow-y: auto;
+  /* 수정: overflow-y 주석처리 */
+  /* overflow-y: auto; */
   position: relative;
 }
 .rbc-time-content > .rbc-time-gutter {
