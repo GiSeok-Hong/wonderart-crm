@@ -11,7 +11,6 @@ import WeeklyCalendarToolbar from "./WeeklyCalendarToolbar";
 import { useCallback, useState } from "react";
 
 export default function WeeklyCalendar() {
-  moment.locale("ko");
   const localizer = momentLocalizer(moment);
   const year = new Date().getFullYear();
 

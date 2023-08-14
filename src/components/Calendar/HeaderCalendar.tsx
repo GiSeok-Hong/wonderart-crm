@@ -7,7 +7,6 @@ import "moment/locale/ko";
 import HeaderCalendarToolbar from "./HeaderCalendarToolbar";
 
 export default function HeaderCalendar() {
-  moment.locale("ko");
   const localizer = momentLocalizer(moment);
   return (
     <Calendar
