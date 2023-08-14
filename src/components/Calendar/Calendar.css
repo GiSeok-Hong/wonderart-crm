@@ -275,7 +275,9 @@ button.rbc-input::-moz-focus-inner {
   box-shadow: none;
   margin: 0;
   padding: 2px 5px;
+  /* 수정: background-color 수정 */
   background-color: #3174ad;
+  /* background-color: #91e9f2; */
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
@@ -567,7 +569,7 @@ button.rbc-input::-moz-focus-inner {
   border-bottom: 1px solid #ddd;
   /* min-height: 40px; */
   /* 수정: min-height 값 변경 */
-  min-height: 200px;
+  height: 200px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -598,6 +600,7 @@ button.rbc-input::-moz-focus-inner {
   right: 0;
   margin-right: 10px;
   top: 0;
+  width: 100%;
 }
 .rbc-day-slot .rbc-events-container.rbc-rtl {
   left: 10px;
