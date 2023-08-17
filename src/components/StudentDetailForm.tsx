@@ -24,6 +24,52 @@ export default function StudentDetailForm(studentData: Student) {
   const DEFAULT_SHOW_CLASS = editMode ? " hidden " : "";
   const DEFAULT_HIDDEN_CLASS = editMode ? " " : " hidden";
 
+  const DAY_OPTION = [
+    {
+      value: "월",
+      name: "월",
+    },
+    {
+      value: "화",
+      name: "화",
+    },
+    {
+      value: "수",
+      name: "수",
+    },
+    {
+      value: "목",
+      name: "목",
+    },
+    {
+      value: "금",
+      name: "금",
+    },
+  ];
+
+  const TIME_OPTION = [
+    {
+      value: 14,
+      name: "2시",
+    },
+    {
+      value: 15,
+      name: "3시",
+    },
+    {
+      value: 16,
+      name: "4시",
+    },
+    {
+      value: 17,
+      name: "5시",
+    },
+    {
+      value: 18,
+      name: "6시",
+    },
+  ];
+
   const onChangeStudentData = (e: {
     target: { value: string; name: string };
   }) => {
@@ -49,7 +95,7 @@ export default function StudentDetailForm(studentData: Student) {
       className="w-full  border-4 p-5 overflow-hidden"
     >
       <h1 className="text-4xl text-center mb-5">
-        {`${student.studentName} 만 ${age}세`}
+        {`${student.studentName} (만 ${age}세)`}
       </h1>
       <div className={DIV_CLASS}>
         <label htmlFor="entranceDate" className={LABEL_CLASS}>
@@ -76,7 +122,40 @@ export default function StudentDetailForm(studentData: Student) {
             {`${i.day} ${i.time}시`}
           </div>
         ))}
-        <div className={CHILDREN_DIV_CLASS + DEFAULT_HIDDEN_CLASS}></div>
+        <div className={CHILDREN_DIV_CLASS + DEFAULT_HIDDEN_CLASS}>
+          {/* TODO:  */}
+          <select name="" id="">
+            {DAY_OPTION.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+          <select name="" id="">
+            {TIME_OPTION.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className={CHILDREN_DIV_CLASS + DEFAULT_HIDDEN_CLASS}>
+          {/* TODO:  */}
+          <select name="" id="">
+            {DAY_OPTION.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+          <select name="" id="">
+            {TIME_OPTION.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className={DIV_CLASS}>
         <label htmlFor="studentName" className={LABEL_CLASS}>
