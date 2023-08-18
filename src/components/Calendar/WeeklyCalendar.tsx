@@ -9,7 +9,7 @@ import "moment/locale/ko";
 
 import WeeklyCalendarToolbar from "./WeeklyCalendarToolbar";
 import { useCallback, useState } from "react";
-import { ScheduleMockData } from "../../../public/data/scheduleMockData";
+import { ScheduleMockData } from "../../../data/scheduleMockData";
 
 export default function WeeklyCalendar() {
   const localizer = momentLocalizer(moment);

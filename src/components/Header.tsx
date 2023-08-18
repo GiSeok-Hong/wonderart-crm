@@ -46,7 +46,12 @@ export default function Header() {
               key={item.href}
               className={
                 "hover:text-primary-color" +
-                (pathname === item.href ? " text-primary-color font-bold" : "")
+                (pathname === item.href
+                  ? " text-primary-color font-bold"
+                  : "") +
+                (item.href === "/list" && pathname.includes(`/list/`)
+                  ? " text-primary-color font-bold"
+                  : "")
               }
             >
               <Link href={item.href}>{item.text}</Link>
