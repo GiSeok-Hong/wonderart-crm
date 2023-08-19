@@ -17,7 +17,7 @@ export default function StudentTable() {
     return <td className={`${TABLE_BORDER} p-2`}>{children}</td>;
   };
   return (
-    <table className={`${TABLE_BORDER} border-collapse w-full`}>
+    <table className={`${TABLE_BORDER} border-collapse w-full mb-5`}>
       <thead>
         <tr>
           <Th>이름</Th>

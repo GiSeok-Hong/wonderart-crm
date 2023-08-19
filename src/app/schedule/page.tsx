@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function SchedulePage() {
   return (
     <div>
-      <div className="flex justify-between overflow-hidden gap-2 mb-5">
+      <div className="flex justify-between gap-2 mb-5">
         <HeaderCalendar />
         <textarea
           name=""

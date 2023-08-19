@@ -27,7 +27,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="flex justify-between items-center px-5">
+    <header className="flex justify-between items-center px-10 py-5">
       <Link href="/" className="flex items-center gap-2">
         <div className="w-[100px] h-[100px] relative">
           <Image
