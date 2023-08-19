@@ -22,9 +22,9 @@ export default function SchedulePage() {
           placeholder="노트"
         />
       </div>
-      <div className="flex justify-between gap-2 overflow-auto">
+      <div className="flex justify-between gap-2">
         <WeeklyCalendar />
-        <div className="mt-[38px] pt-[67px]">
+        <div className="mt-[38px] pt-[67px] ">
           <ScheduleTextarea />
           <ScheduleTextarea />
           <ScheduleTextarea />
