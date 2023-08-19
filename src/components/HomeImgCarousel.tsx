@@ -8,10 +8,10 @@ export default async function HomeImgCarousel() {
   return (
     <MultiCarousel>
       {imgs.map((img) => (
-        <article key={img.id} className="h-[350px] relative">
+        <article key={img.id} className=" h-[350px] relative">
           <Image
-            layout="fill"
-            objectFit="contain"
+            fill
+            // style={{ objectFit: "contain" }}
             priority
             sizes="100vh"
             src={`/images/home/home-img-${img.id}.jpg`}
