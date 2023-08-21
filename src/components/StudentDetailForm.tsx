@@ -1,78 +1,74 @@
-"use client";
+'use client';
 
-import moment from "moment";
-import { useState } from "react";
-import { Student } from "@/types/student";
-import RadioBtn from "./RadioBtn";
+import moment from 'moment';
+import { useState } from 'react';
+import { Student } from '@/types/student';
+import RadioBtn from './RadioBtn';
 
 export default function StudentDetailForm(studentData: Student) {
   const [student, setStudentData] = useState(studentData);
   const [editMode, setEditMode] = useState(false);
 
   const now = moment();
-  const age = now.diff(moment(studentData.birthDate, "YYYY.MM.DD"), "years");
+  const age = now.diff(moment(studentData.birthDate, 'YYYY.MM.DD'), 'years');
 
-  const DIV_CLASS = "mb-5 ";
-  const CHILDREN_DIV_CLASS =
-    "bg-gray-200 text-center text-xl inline-block px-1";
-  const LABEL_CLASS = "text-xl font-bold inline-block min-w-label ";
-  const INPUT_CLASS = "bg-gray-200 text-center text-xl mr-6 px-2";
-  const TEXTAREA_CLASS = "bg-gray-200 text-xl w-full p-1 resize-none";
-  const UNDERLINE_CLASS = " block w-full mb-1";
-  const BUTTON_CLASS =
-    "px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ";
-  const DEFAULT_SHOW_CLASS = editMode ? " hidden " : "";
-  const DEFAULT_HIDDEN_CLASS = editMode ? " " : " hidden";
+  const DIV_CLASS = 'mb-5 ';
+  const CHILDREN_DIV_CLASS = 'bg-gray-200 text-center text-xl inline-block px-1';
+  const LABEL_CLASS = 'text-xl font-bold inline-block min-w-label ';
+  const INPUT_CLASS = 'bg-gray-200 text-center text-xl mr-6 px-2';
+  const TEXTAREA_CLASS = 'bg-gray-200 text-xl w-full p-1 resize-none';
+  const UNDERLINE_CLASS = ' block w-full mb-1';
+  const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
+  const DEFAULT_SHOW_CLASS = editMode ? ' hidden ' : '';
+  const DEFAULT_HIDDEN_CLASS = editMode ? ' ' : ' hidden';
 
   const DAY_OPTION = [
     {
-      value: "월",
-      name: "월",
+      value: '월',
+      name: '월',
     },
     {
-      value: "화",
-      name: "화",
+      value: '화',
+      name: '화',
     },
     {
-      value: "수",
-      name: "수",
+      value: '수',
+      name: '수',
     },
     {
-      value: "목",
-      name: "목",
+      value: '목',
+      name: '목',
     },
     {
-      value: "금",
-      name: "금",
+      value: '금',
+      name: '금',
     },
   ];
 
   const TIME_OPTION = [
     {
       value: 14,
-      name: "2시",
+      name: '2시',
     },
     {
       value: 15,
-      name: "3시",
+      name: '3시',
     },
     {
       value: 16,
-      name: "4시",
+      name: '4시',
     },
     {
       value: 17,
-      name: "5시",
+      name: '5시',
     },
     {
       value: 18,
-      name: "6시",
+      name: '6시',
     },
   ];
 
-  const onChangeStudentData = (e: {
-    target: { value: string; name: string };
-  }) => {
+  const onChangeStudentData = (e: { target: { value: string; name: string } }) => {
     const { value, name } = e.target;
     setStudentData({
       ...student,
@@ -86,16 +82,20 @@ export default function StudentDetailForm(studentData: Student) {
     setEditMode(!editMode);
 
     e.preventDefault();
-    console.log("현재 모드는 ??? " + editMode);
+    console.log('현재 모드는 ??? ' + editMode);
   };
 
   return (
-    <form action={`/list/${student.id}`} className="w-full  border-4 p-5">
-      <h1 className="text-4xl text-center mb-5">
-        {`${student.studentName} (만 ${age}세)`}
-      </h1>
+    <form
+      action={`/list/${student.id}`}
+      className="w-full  border-4 p-5"
+    >
+      <h1 className="text-4xl text-center mb-5">{`${student.studentName} (만 ${age}세)`}</h1>
       <div className={DIV_CLASS}>
-        <label htmlFor="entranceDate" className={LABEL_CLASS}>
+        <label
+          htmlFor="entranceDate"
+          className={LABEL_CLASS}
+        >
           입학일자
         </label>
         <input
@@ -111,26 +111,44 @@ export default function StudentDetailForm(studentData: Student) {
           onChange={onChangeStudentData}
           disabled
         ></input>
-        <label htmlFor="ClassTime" className={LABEL_CLASS}>
+        <label
+          htmlFor="ClassTime"
+          className={LABEL_CLASS}
+        >
           수업 시간
         </label>
         {student.classTime.map((i) => (
-          <div key={i.day} className={CHILDREN_DIV_CLASS + DEFAULT_SHOW_CLASS}>
+          <div
+            key={i.day}
+            className={CHILDREN_DIV_CLASS + DEFAULT_SHOW_CLASS}
+          >
             {`${i.day} ${i.time}시`}
           </div>
         ))}
         <div className={CHILDREN_DIV_CLASS + DEFAULT_HIDDEN_CLASS}>
           {/* TODO:  */}
-          <select name="" id="">
+          <select
+            name=""
+            id=""
+          >
             {DAY_OPTION.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option
+                key={option.value}
+                value={option.value}
+              >
                 {option.name}
               </option>
             ))}
           </select>
-          <select name="" id="">
+          <select
+            name=""
+            id=""
+          >
             {TIME_OPTION.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option
+                key={option.value}
+                value={option.value}
+              >
                 {option.name}
               </option>
             ))}
@@ -138,16 +156,28 @@ export default function StudentDetailForm(studentData: Student) {
         </div>
         <div className={CHILDREN_DIV_CLASS + DEFAULT_HIDDEN_CLASS}>
           {/* TODO:  */}
-          <select name="" id="">
+          <select
+            name=""
+            id=""
+          >
             {DAY_OPTION.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option
+                key={option.value}
+                value={option.value}
+              >
                 {option.name}
               </option>
             ))}
           </select>
-          <select name="" id="">
+          <select
+            name=""
+            id=""
+          >
             {TIME_OPTION.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option
+                key={option.value}
+                value={option.value}
+              >
                 {option.name}
               </option>
             ))}
@@ -155,7 +185,10 @@ export default function StudentDetailForm(studentData: Student) {
         </div>
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="studentName" className={LABEL_CLASS}>
+        <label
+          htmlFor="studentName"
+          className={LABEL_CLASS}
+        >
           학생명
         </label>
         <input
@@ -169,7 +202,10 @@ export default function StudentDetailForm(studentData: Student) {
           size={10}
           disabled={!editMode}
         />
-        <label htmlFor="studentPhone" className={LABEL_CLASS}>
+        <label
+          htmlFor="studentPhone"
+          className={LABEL_CLASS}
+        >
           학생 연락처
         </label>
         <input
@@ -184,7 +220,10 @@ export default function StudentDetailForm(studentData: Student) {
         />
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="birthDate" className={LABEL_CLASS}>
+        <label
+          htmlFor="birthDate"
+          className={LABEL_CLASS}
+        >
           생년월일
         </label>
         <input
@@ -198,23 +237,35 @@ export default function StudentDetailForm(studentData: Student) {
           size={10}
           disabled={!editMode}
         />
-        <label htmlFor="sex" className={LABEL_CLASS}>
+        <label
+          htmlFor="sex"
+          className={LABEL_CLASS}
+        >
           성별
         </label>
-        <div className={CHILDREN_DIV_CLASS + DEFAULT_SHOW_CLASS}>
-          {student.sex}
-        </div>
-        <div className={"inline-block" + DEFAULT_HIDDEN_CLASS}>
-          <RadioBtn name="sex" value="남" onChange={onChangeStudentData}>
+        <div className={CHILDREN_DIV_CLASS + DEFAULT_SHOW_CLASS}>{student.sex}</div>
+        <div className={'inline-block' + DEFAULT_HIDDEN_CLASS}>
+          <RadioBtn
+            name="sex"
+            value="남"
+            onChange={onChangeStudentData}
+          >
             남
           </RadioBtn>
-          <RadioBtn name="sex" value="여" onChange={onChangeStudentData}>
+          <RadioBtn
+            name="sex"
+            value="여"
+            onChange={onChangeStudentData}
+          >
             여
           </RadioBtn>
         </div>
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="guardianName" className={LABEL_CLASS}>
+        <label
+          htmlFor="guardianName"
+          className={LABEL_CLASS}
+        >
           보호자명
         </label>
         <input
@@ -229,7 +280,10 @@ export default function StudentDetailForm(studentData: Student) {
           size={10}
           disabled={!editMode}
         />
-        <label htmlFor="guardianPhone" className={LABEL_CLASS}>
+        <label
+          htmlFor="guardianPhone"
+          className={LABEL_CLASS}
+        >
           보호자 연락처
         </label>
         <input
@@ -246,7 +300,10 @@ export default function StudentDetailForm(studentData: Student) {
         />
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="address" className={LABEL_CLASS}>
+        <label
+          htmlFor="address"
+          className={LABEL_CLASS}
+        >
           주소
         </label>
         <input
@@ -254,7 +311,7 @@ export default function StudentDetailForm(studentData: Student) {
           id="address"
           name="address"
           required
-          className={INPUT_CLASS + " w-3/4"}
+          className={INPUT_CLASS + ' w-3/4'}
           placeholder="경기도 가나시 나나1로 12 동글아파트 111동 1234호"
           value={student.address}
           onChange={onChangeStudentData}
@@ -262,7 +319,10 @@ export default function StudentDetailForm(studentData: Student) {
         />
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="school" className={LABEL_CLASS}>
+        <label
+          htmlFor="school"
+          className={LABEL_CLASS}
+        >
           학교 / 유치원
         </label>
         <input
@@ -277,7 +337,10 @@ export default function StudentDetailForm(studentData: Student) {
         />
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="experience" className={LABEL_CLASS + UNDERLINE_CLASS}>
+        <label
+          htmlFor="experience"
+          className={LABEL_CLASS + UNDERLINE_CLASS}
+        >
           원더아트 스튜디오에 등록하기 전 미술 활동 경험
         </label>
         <textarea
@@ -290,7 +353,10 @@ export default function StudentDetailForm(studentData: Student) {
         ></textarea>
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="reason" className={LABEL_CLASS + UNDERLINE_CLASS}>
+        <label
+          htmlFor="reason"
+          className={LABEL_CLASS + UNDERLINE_CLASS}
+        >
           원더아트 스튜디오를 선택하신 이유
         </label>
         <textarea
@@ -309,7 +375,11 @@ export default function StudentDetailForm(studentData: Student) {
           >
             지인추천
           </RadioBtn>
-          <RadioBtn name="reason" value="위치" onChange={onChangeStudentData}>
+          <RadioBtn
+            name="reason"
+            value="위치"
+            onChange={onChangeStudentData}
+          >
             위치
           </RadioBtn>
           <RadioBtn
@@ -319,10 +389,18 @@ export default function StudentDetailForm(studentData: Student) {
           >
             주변소문
           </RadioBtn>
-          <RadioBtn name="reason" value="검색" onChange={onChangeStudentData}>
+          <RadioBtn
+            name="reason"
+            value="검색"
+            onChange={onChangeStudentData}
+          >
             검색
           </RadioBtn>
-          <RadioBtn name="reason" value="기타" onChange={onChangeStudentData}>
+          <RadioBtn
+            name="reason"
+            value="기타"
+            onChange={onChangeStudentData}
+          >
             기타
           </RadioBtn>
         </div>
@@ -337,7 +415,7 @@ export default function StudentDetailForm(studentData: Student) {
         <textarea
           id="importantActivity"
           name="importantActivity"
-          className={TEXTAREA_CLASS + (editMode ? " hidden" : "")}
+          className={TEXTAREA_CLASS + (editMode ? ' hidden' : '')}
           value={student.importantActivity}
           onChange={onChangeStudentData}
           disabled
@@ -390,7 +468,7 @@ export default function StudentDetailForm(studentData: Student) {
         <textarea
           id="interestingActivity"
           name="interestingActivity"
-          className={TEXTAREA_CLASS + (editMode ? " hidden" : "")}
+          className={TEXTAREA_CLASS + (editMode ? ' hidden' : '')}
           value={student.interestingActivity}
           onChange={onChangeStudentData}
           disabled
@@ -434,7 +512,10 @@ export default function StudentDetailForm(studentData: Student) {
         </div>
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="caution" className={LABEL_CLASS + UNDERLINE_CLASS}>
+        <label
+          htmlFor="caution"
+          className={LABEL_CLASS + UNDERLINE_CLASS}
+        >
           학생에 대해 특별히 알아야 하거나, 주의해야 할 점
         </label>
         <textarea
@@ -447,7 +528,10 @@ export default function StudentDetailForm(studentData: Student) {
         ></textarea>
       </div>
       <div className={DIV_CLASS}>
-        <label htmlFor="teacherMemo" className={LABEL_CLASS + UNDERLINE_CLASS}>
+        <label
+          htmlFor="teacherMemo"
+          className={LABEL_CLASS + UNDERLINE_CLASS}
+        >
           선생님 메모
         </label>
         <textarea
@@ -461,14 +545,12 @@ export default function StudentDetailForm(studentData: Student) {
       </div>
       <div className="flex gap-20 justify-center">
         <button
-          className={BUTTON_CLASS + " border-primary-color bg-primary-color"}
+          className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}
           onClick={onClickEditMode}
         >
-          {`${!editMode ? "수정하기" : "수정완료"}`}
+          {`${!editMode ? '수정하기' : '수정완료'}`}
         </button>
-        <button className={BUTTON_CLASS + "border-red-400 bg-red-400"}>
-          {`${!editMode ? "뒤로" : "취소"}`}
-        </button>
+        <button className={BUTTON_CLASS + 'border-red-400 bg-red-400'}>{`${!editMode ? '뒤로' : '취소'}`}</button>
       </div>
     </form>
   );

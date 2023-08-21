@@ -1,6 +1,6 @@
-import Image from "next/image";
-import MultiCarousel from "./MultiCarousel";
-import { getHomeImgs } from "@/service/homeImg";
+import Image from 'next/image';
+import MultiCarousel from './MultiCarousel';
+import { getHomeImgs } from '@/service/homeImg';
 
 export default async function HomeImgCarousel() {
   const imgs = await getHomeImgs();
@@ -9,7 +9,10 @@ export default async function HomeImgCarousel() {
     <div className="mt-5">
       <MultiCarousel>
         {imgs.map((img) => (
-          <article key={img.id} className=" h-[350px] relative">
+          <article
+            key={img.id}
+            className=" h-[350px] relative"
+          >
             <Image
               fill
               // style={{ objectFit: "contain" }}

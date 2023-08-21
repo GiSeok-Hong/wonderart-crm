@@ -21,9 +21,7 @@
   opacity: 0;
 }
 .rbc-addons-dnd.rbc-addons-dnd-is-dragging
-  .rbc-event:not(.rbc-addons-dnd-dragged-event):not(
-    .rbc-addons-dnd-drag-preview
-  ) {
+  .rbc-event:not(.rbc-addons-dnd-dragged-event):not(.rbc-addons-dnd-drag-preview) {
   opacity: 0.5;
 }
 .rbc-addons-dnd .rbc-addons-dnd-resizable {
@@ -42,9 +40,7 @@
 .rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor:last-child {
   bottom: 0;
 }
-.rbc-addons-dnd
-  .rbc-addons-dnd-resize-ns-anchor
-  .rbc-addons-dnd-resize-ns-icon {
+.rbc-addons-dnd .rbc-addons-dnd-resize-ns-anchor .rbc-addons-dnd-resize-ns-icon {
   display: none;
   border-top: 3px double;
   margin: 0 auto;
@@ -62,9 +58,7 @@
 .rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor:last-child {
   right: 0;
 }
-.rbc-addons-dnd
-  .rbc-addons-dnd-resize-ew-anchor
-  .rbc-addons-dnd-resize-ew-icon {
+.rbc-addons-dnd .rbc-addons-dnd-resize-ew-anchor .rbc-addons-dnd-resize-ew-icon {
   display: none;
   border-left: 3px double;
   margin-top: auto;

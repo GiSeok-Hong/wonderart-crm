@@ -1,9 +1,6 @@
-import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
+import { BsFillCaretLeftFill, BsFillCaretRightFill } from 'react-icons/bs';
 
-export default function HeaderCalendarToolbar(props: {
-  onNavigate: Function;
-  date: Date;
-}) {
+export default function HeaderCalendarToolbar(props: { onNavigate: Function; date: Date }) {
   const { date, onNavigate } = props;
 
   const navigate = (action: string) => {
@@ -13,13 +10,17 @@ export default function HeaderCalendarToolbar(props: {
   return (
     <div className="rbc-toolbar">
       <span className="rbc-btn-group">
-        <button type="button" onClick={navigate.bind(null, "PREV")}>
+        <button
+          type="button"
+          onClick={navigate.bind(null, 'PREV')}
+        >
           <BsFillCaretLeftFill />
         </button>
-        <span className="rbc-toolbar-label">{`${date.getFullYear()}년 ${
-          date.getMonth() + 1
-        }월`}</span>
-        <button type="button" onClick={navigate.bind(null, "NEXT")}>
+        <span className="rbc-toolbar-label">{`${date.getFullYear()}년 ${date.getMonth() + 1}월`}</span>
+        <button
+          type="button"
+          onClick={navigate.bind(null, 'NEXT')}
+        >
           <BsFillCaretRightFill />
         </button>
       </span>
