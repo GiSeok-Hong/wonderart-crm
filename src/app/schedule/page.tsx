@@ -24,7 +24,7 @@ export default function SchedulePage() {
       </div>
       <div className="flex justify-between gap-2">
         <WeeklyCalendar />
-        <div className="mt-[38px] pt-[67px] ">
+        <div className="mt-[38px] pt-[67px]">
           <ScheduleTextarea />
           <ScheduleTextarea />
           <ScheduleTextarea />

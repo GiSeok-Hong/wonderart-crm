@@ -14,9 +14,9 @@ export default function StudentDetailForm(studentData: Student) {
 
   const DIV_CLASS = "mb-5 ";
   const CHILDREN_DIV_CLASS =
-    "bg-gray-200 text-center text-xl  inline-block px-1";
+    "bg-gray-200 text-center text-xl inline-block px-1";
   const LABEL_CLASS = "text-xl font-bold inline-block min-w-label ";
-  const INPUT_CLASS = "bg-gray-200 text-center text-xl  mr-6 px-2";
+  const INPUT_CLASS = "bg-gray-200 text-center text-xl mr-6 px-2";
   const TEXTAREA_CLASS = "bg-gray-200 text-xl w-full p-1 resize-none";
   const UNDERLINE_CLASS = " block w-full mb-1";
   const BUTTON_CLASS =
