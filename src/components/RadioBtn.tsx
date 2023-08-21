@@ -1,12 +1,6 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 
-export default function RadioBtn({
-  children,
-  value,
-  name,
-  disabled,
-  onChange,
-}: any) {
+export default function RadioBtn({ children, value, name, disabled, onChange }: any) {
   return (
     <label className="text-xl ml-1 mr-5">
       <input

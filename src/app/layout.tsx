@@ -1,33 +1,47 @@
-import Header from "@/components/Header";
-import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import Header from '@/components/Header';
+import './globals.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
     default: `원더아트 스튜디오`,
     template: `원더아트 스튜디오 | %s`,
   },
-  description: "원더아트 스튜디오 원생관리 웹사이트입니다.",
+  description: '원더아트 스튜디오 원생관리 웹사이트입니다.',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <meta name="application-name" content="원더아트" />
-        <meta name="description" content="원더아트 스튜디오 웹사이트 입니다." />
+        <meta
+          name="application-name"
+          content="원더아트"
+        />
+        <meta
+          name="description"
+          content="원더아트 스튜디오 웹사이트 입니다."
+        />
         {/* apple 설정 메타 태그 */}
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="원더아트" />
-        <link rel="apple-touch-icon" href="/icons/touch-icon-iphone.png" />
+        <meta
+          name="apple-mobile-web-app-capable"
+          content="yes"
+        />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="default"
+        />
+        <meta
+          name="apple-mobile-web-app-title"
+          content="원더아트"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/icons/touch-icon-iphone.png"
+        />
         <link
           rel="apple-touch-icon"
           sizes="152x152"
@@ -44,12 +58,30 @@ export default function RootLayout({
           href="/icons/touch-icon-ipad-retina.png"
         />
 
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-        <meta name="msapplication-TileColor" content="#2B5797" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="theme-color" content="#000000" />
+        <meta
+          name="format-detection"
+          content="telephone=no"
+        />
+        <meta
+          name="mobile-web-app-capable"
+          content="yes"
+        />
+        <meta
+          name="msapplication-config"
+          content="/icons/browserconfig.xml"
+        />
+        <meta
+          name="msapplication-TileColor"
+          content="#2B5797"
+        />
+        <meta
+          name="msapplication-tap-highlight"
+          content="no"
+        />
+        <meta
+          name="theme-color"
+          content="#000000"
+        />
 
         <link
           rel="icon"
@@ -63,13 +95,19 @@ export default function RootLayout({
           sizes="16x16"
           href="/icons/favicon-16x16.png"
         />
-        <link rel="manifest" href="/manifest.json" />
+        <link
+          rel="manifest"
+          href="/manifest.json"
+        />
         <link
           rel="mask-icon"
           href="/icons/safari-pinned-tab.svg"
           color="#5bbad5"
         />
-        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="shortcut icon"
+          href="/favicon.ico"
+        />
 
         {/* <meta name="twitter:card" content="summary" />
         <meta name="twitter:url" content="https://yourdomain.com" />
@@ -92,7 +130,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Header />
-        <main className="h-full p-5">{children}</main>
+        <main className="h-full px-10 py-5">{children}</main>
       </body>
     </html>
   );
