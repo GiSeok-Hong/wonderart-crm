@@ -6,7 +6,7 @@ import { useState } from "react";
 const DIV_CLASS = "mb-5 ";
 const LABEL_CLASS = "text-xl font-bold inline-block min-w-label ";
 const INPUT_CLASS = "bg-gray-200 text-center text-xl ml-1 mr-6";
-const TEXTAREA_CLASS = "bg-gray-200 text-xl w-full";
+const TEXTAREA_CLASS = "bg-gray-200 text-xl w-full resize-none";
 const UNDERLINE_CLASS = " block w-full mb-1";
 const BUTTON_CLASS =
   "px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ";

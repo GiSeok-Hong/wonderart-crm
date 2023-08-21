@@ -14,9 +14,9 @@ export default function StudentDetailForm(studentData: Student) {
 
   const DIV_CLASS = "mb-5 ";
   const CHILDREN_DIV_CLASS =
-    "bg-gray-200 text-center text-xl ml-1 mr-1 inline-block px-5";
+    "bg-gray-200 text-center text-xl inline-block px-1";
   const LABEL_CLASS = "text-xl font-bold inline-block min-w-label ";
-  const INPUT_CLASS = "bg-gray-200 text-center text-xl ml-1 mr-6 px-2";
+  const INPUT_CLASS = "bg-gray-200 text-center text-xl mr-6 px-2";
   const TEXTAREA_CLASS = "bg-gray-200 text-xl w-full p-1 resize-none";
   const UNDERLINE_CLASS = " block w-full mb-1";
   const BUTTON_CLASS =
@@ -90,10 +90,7 @@ export default function StudentDetailForm(studentData: Student) {
   };
 
   return (
-    <form
-      action={`/list/${student.id}`}
-      className="w-full  border-4 p-5 overflow-hidden"
-    >
+    <form action={`/list/${student.id}`} className="w-full  border-4 p-5">
       <h1 className="text-4xl text-center mb-5">
         {`${student.studentName} (만 ${age}세)`}
       </h1>
@@ -180,7 +177,7 @@ export default function StudentDetailForm(studentData: Student) {
           id="studentPhone"
           name="studentPhone"
           className={INPUT_CLASS}
-          size={15}
+          size={12}
           value={student.studentPhone}
           onChange={onChangeStudentData}
           disabled={!editMode}
@@ -242,7 +239,7 @@ export default function StudentDetailForm(studentData: Student) {
           required
           className={INPUT_CLASS}
           placeholder="010-1234-1234"
-          size={15}
+          size={12}
           value={student.guardianPhone}
           onChange={onChangeStudentData}
           disabled={!editMode}

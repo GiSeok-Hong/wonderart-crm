@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function ListPage() {
   return (
-    <div className="flex flex-col gap-5 p-5">
+    <div className="flex flex-col gap-5">
       <StudentSearchInput />
       <StudentTable />
     </div>

@@ -92,7 +92,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Header />
-        <main className="h-full p-5">{children}</main>
+        <main className="h-full px-10 py-5">{children}</main>
       </body>
     </html>
   );
