@@ -1,5 +1,5 @@
 const TEXTAREA_CLASS =
-  "bg-gray-EEE p-2 outline-primary-color resize-none w-full h-[200px] block border-[1px] border-white";
+  'bg-gray-EEE p-2 outline-primary-color resize-none w-full h-[200px] block border-[1px] border-white';
 
 export default function ScheduleTextarea() {
   return (
@@ -8,7 +8,7 @@ export default function ScheduleTextarea() {
       id=""
       cols={30}
       rows={7}
-      className={TEXTAREA_CLASS + " "}
+      className={TEXTAREA_CLASS + ' '}
       placeholder="노트"
     ></textarea>
   );

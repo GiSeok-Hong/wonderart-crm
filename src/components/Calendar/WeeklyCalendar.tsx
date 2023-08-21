@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { Calendar, momentLocalizer, Views } from "react-big-calendar";
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 // import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-import "./DnDCalendar.css";
-import moment from "moment";
-import "moment/locale/ko";
+import './DnDCalendar.css';
+import moment from 'moment';
+import 'moment/locale/ko';
 
-import WeeklyCalendarToolbar from "./WeeklyCalendarToolbar";
-import { useCallback, useState } from "react";
-import { ScheduleMockData } from "../../../data/scheduleMockData";
+import WeeklyCalendarToolbar from './WeeklyCalendarToolbar';
+import { useCallback, useState } from 'react';
+import { ScheduleMockData } from '../../../data/scheduleMockData';
 
 export default function WeeklyCalendar() {
   const localizer = momentLocalizer(moment);
@@ -25,22 +25,17 @@ export default function WeeklyCalendar() {
   const formatName = (name: string, count: number) => `${name} ID ${count}`;
 
   const [myEvents, setMyEvents] = useState(adjEvents);
-  const [draggedEvent, setDraggedEvent] = useState({ title: "", name: "" });
+  const [draggedEvent, setDraggedEvent] = useState({ title: '', name: '' });
   const [counters, setCounters] = useState({ item1: 0, item2: 0 });
 
   const eventPropGetter = useCallback(
     (event: any) => ({
-      ...(event.isDraggable
-        ? { className: "isDraggable" }
-        : { className: "nonDraggable" }),
+      ...(event.isDraggable ? { className: 'isDraggable' } : { className: 'nonDraggable' }),
     }),
-    []
+    [],
   );
 
-  const handleDragStart = useCallback(
-    (event: any) => setDraggedEvent(event),
-    []
-  );
+  const handleDragStart = useCallback((event: any) => setDraggedEvent(event), []);
 
   const customOnDragOver = useCallback(
     (dragEvent: any) => {
@@ -51,11 +46,11 @@ export default function WeeklyCalendar() {
       // whether event.preventDefault is called
 
       if (draggedEvent !== null) {
-        console.log("preventDefault");
+        console.log('preventDefault');
         dragEvent.preventDefault();
       }
     },
-    [draggedEvent]
+    [draggedEvent],
   );
 
   const moveEvent = useCallback(
@@ -76,13 +71,12 @@ export default function WeeklyCalendar() {
       }
 
       setMyEvents((prev: any) => {
-        const existing =
-          prev.find((ev: { id: any }) => ev.id === event.id) ?? {};
+        const existing = prev.find((ev: { id: any }) => ev.id === event.id) ?? {};
         const filtered = prev.filter((ev: { id: any }) => ev.id !== event.id);
         return [...filtered, { ...existing, start, end, allDay }];
       });
     },
-    [setMyEvents]
+    [setMyEvents],
   );
 
   const newEvent = useCallback(
@@ -93,19 +87,11 @@ export default function WeeklyCalendar() {
         return [...prev, { ...event, id: newId }];
       });
     },
-    [setMyEvents]
+    [setMyEvents],
   );
 
   const onDropFromOutside = useCallback(
-    ({
-      start,
-      end,
-      allDay: isAllDay,
-    }: {
-      start: any;
-      end: any;
-      allDay: any;
-    }) => {
+    ({ start, end, allDay: isAllDay }: { start: any; end: any; allDay: any }) => {
       // if (draggedEvent === "undroppable") {
       //   setDraggedEvent(null);
       //   return;
@@ -118,7 +104,7 @@ export default function WeeklyCalendar() {
         end,
         isAllDay,
       };
-      setDraggedEvent({ title: "", name: "" });
+      setDraggedEvent({ title: '', name: '' });
       setCounters((prev: any) => {
         const { [name]: count } = prev;
         return {
@@ -128,19 +114,18 @@ export default function WeeklyCalendar() {
       });
       newEvent(event);
     },
-    [draggedEvent, counters, setDraggedEvent, setCounters, newEvent]
+    [draggedEvent, counters, setDraggedEvent, setCounters, newEvent],
   );
 
   const resizeEvent = useCallback(
     ({ event, start, end }: { event: any; start: any; end: any }) => {
       setMyEvents((prev: any) => {
-        const existing =
-          prev.find((ev: { id: any }) => ev.id === event.id) ?? {};
+        const existing = prev.find((ev: { id: any }) => ev.id === event.id) ?? {};
         const filtered = prev.filter((ev: { id: any }) => ev.id !== event.id);
         return [...filtered, { ...existing, start, end }];
       });
     },
-    [setMyEvents]
+    [setMyEvents],
   );
 
   const DnDCalendar = withDragAndDrop(Calendar);
@@ -151,7 +136,7 @@ export default function WeeklyCalendar() {
         localizer={localizer}
         style={{ minWidth: 600 }}
         components={{ toolbar: WeeklyCalendarToolbar }}
-        views={["work_week"]}
+        views={['work_week']}
         defaultView={Views.WORK_WEEK}
         min={new Date(year, 0, 1, 14, 0, 0)}
         max={new Date(year, 0, 1, 19, 59, 59)}
@@ -174,9 +159,7 @@ export default function WeeklyCalendar() {
           <div
             draggable="true"
             key={name}
-            onDragStart={() =>
-              handleDragStart({ title: formatName(name, count), name })
-            }
+            onDragStart={() => handleDragStart({ title: formatName(name, count), name })}
           >
             {formatName(name, count)}
           </div>

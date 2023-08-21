@@ -1,11 +1,11 @@
-import HeaderCalendar from "@/components/Calendar/HeaderCalendar";
-import WeeklyCalendar from "@/components/Calendar/WeeklyCalendar";
-import ScheduleTextarea from "@/components/ScheduleTextarea";
-import { Metadata } from "next";
+import HeaderCalendar from '@/components/Calendar/HeaderCalendar';
+import WeeklyCalendar from '@/components/Calendar/WeeklyCalendar';
+import ScheduleTextarea from '@/components/ScheduleTextarea';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "시간표",
-  description: "원더아트 스튜디오 시간표 페이지입니다.",
+  title: '시간표',
+  description: '원더아트 스튜디오 시간표 페이지입니다.',
 };
 
 export default function SchedulePage() {

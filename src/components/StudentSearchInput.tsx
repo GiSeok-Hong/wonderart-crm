@@ -1,4 +1,4 @@
-import { BiSearch } from "react-icons/bi";
+import { BiSearch } from 'react-icons/bi';
 export default function StudentSearchInput() {
   return (
     <div className="flex justify-end items-center gap-2">

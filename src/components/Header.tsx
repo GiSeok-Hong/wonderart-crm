@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const navList = [
   {
-    href: "/",
-    text: "홈",
+    href: '/',
+    text: '홈',
   },
   {
-    href: "/schedule",
-    text: "시간표",
+    href: '/schedule',
+    text: '시간표',
   },
   {
-    href: "/registration",
-    text: "입학원서",
+    href: '/registration',
+    text: '입학원서',
   },
   {
-    href: "/list",
-    text: "학원생",
+    href: '/list',
+    text: '학원생',
   },
 ];
 
@@ -28,7 +28,10 @@ export default function Header() {
 
   return (
     <header className="flex justify-between items-center px-10 py-5">
-      <Link href="/" className="flex items-center gap-2">
+      <Link
+        href="/"
+        className="flex items-center gap-2"
+      >
         <div className="w-[100px] h-[100px] relative">
           <Image
             src={`/images/logo-img.png`}
@@ -55,13 +58,9 @@ export default function Header() {
             <li
               key={item.href}
               className={
-                "hover:text-primary-color" +
-                (pathname === item.href
-                  ? " text-primary-color font-bold"
-                  : "") +
-                (item.href === "/list" && pathname.includes(`/list/`)
-                  ? " text-primary-color font-bold"
-                  : "")
+                'hover:text-primary-color' +
+                (pathname === item.href ? ' text-primary-color font-bold' : '') +
+                (item.href === '/list' && pathname.includes(`/list/`) ? ' text-primary-color font-bold' : '')
               }
             >
               <Link href={item.href}>{item.text}</Link>

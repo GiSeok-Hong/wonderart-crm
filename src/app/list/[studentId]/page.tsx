@@ -1,5 +1,5 @@
-import StudentDetailForm from "@/components/StudentDetailForm";
-import { getStudentMockData } from "@/service/student";
+import StudentDetailForm from '@/components/StudentDetailForm';
+import { getStudentMockData } from '@/service/student';
 
 type Props = {
   params: {
@@ -7,9 +7,7 @@ type Props = {
   };
 };
 
-export default async function StudentDetailPage({
-  params: { studentId },
-}: Props) {
+export default async function StudentDetailPage({ params: { studentId } }: Props) {
   const studentData = await getStudentMockData(studentId);
 
   return <StudentDetailForm {...studentData} />;

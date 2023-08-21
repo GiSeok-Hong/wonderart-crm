@@ -1,6 +1,6 @@
-import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
+import { BsFillCaretLeftFill, BsFillCaretRightFill } from 'react-icons/bs';
 
-type NavigateAction = "PREV" | "NEXT" | "TODAY" | "DATE";
+type NavigateAction = 'PREV' | 'NEXT' | 'TODAY' | 'DATE';
 
 export default function WeeklyCalendarToolbar(props: {
   onNavigate: (navigate: NavigateAction, date?: Date) => void;
@@ -15,13 +15,19 @@ export default function WeeklyCalendarToolbar(props: {
   return (
     <div className="rbc-toolbar">
       <span className="rbc-btn-group">
-        <button type="button" onClick={navigate.bind(null, "PREV")}>
+        <button
+          type="button"
+          onClick={navigate.bind(null, 'PREV')}
+        >
           <BsFillCaretLeftFill />
         </button>
       </span>
       <span className="rbc-toolbar-label">{`${date.getMonth() + 1}월`}</span>
       <span className="rbc-btn-group">
-        <button type="button" onClick={navigate.bind(null, "NEXT")}>
+        <button
+          type="button"
+          onClick={navigate.bind(null, 'NEXT')}
+        >
           <BsFillCaretRightFill />
         </button>
       </span>
