@@ -20,8 +20,8 @@ model Student {
   phone String
   birthDate String
   sex String
-  guardiance Guardiance @relation(fields: [guardianceId], references: [id])
-  guardianceId Int
+  guardian Guardian @relation(fields: [guardianId], references: [id])
+  guardianId Int
   address String
   school String
   experience String
@@ -33,7 +33,7 @@ model Student {
   teacherMemo String
 }
 
-model Guardiance {
+model Guardian {
   id Int @id @default(autoincrement())
   name String
   phone String
