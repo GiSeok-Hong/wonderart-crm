@@ -14,53 +14,53 @@ datasource db {
 
 model Student {
   id Int @id @default(autoincrement())
-  entranceDate String
+  entranceDate String @db.VarChar(10)
   class StudentOnClass[]
-  name String
-  phone String
-  birthDate String
-  sex String
+  name String @db.VarChar(5)
+  phone String @db.VarChar(13)
+  birthDate String @db.VarChar(10)
+  sex String @db.VarChar(1)
   guardian Guardian @relation(fields: [guardianId], references: [id])
   guardianId Int
-  address String
-  school String
-  experience String
-  reason String
-  importantActivity String
-  interestingActivity String
-  caution String
+  address String @db.VarChar(100)
+  school String @db.VarChar(20)
+  experience String @db.VarChar(100)
+  reason String @db.VarChar(5)
+  importantActivity String @db.VarChar(10)
+  interestingActivity String @db.VarChar(10)
+  caution String @db.VarChar(200)
   agree Boolean
-  teacherMemo String
+  teacherMemo String @db.VarChar(200)
 }
 
 model Guardian {
   id Int @id @default(autoincrement())
-  name String
-  phone String
+  name String @db.VarChar(5)
+  phone String @db.VarChar(13)
   student Student[]
 }
 
 model Teacher {
   id Int @id @default(autoincrement())
-  name String
-  phone String
-  loginId String @unique
-  password String
+  name String @db.VarChar(5)
+  phone String @db.VarChar(13)
+  loginId String @unique @db.VarChar(20)
+  password String @db.VarChar(20)
 }
 
 model ScheduleMemo {
   id Int @id @default(autoincrement())
-  topMemo String
-  memo1 String
-  memo2 String
-  memo3 String
-  memo4 String
-  memo5 String
+  topMemo String @db.VarChar(1000)
+  memo1 String @db.VarChar(1000)
+  memo2 String @db.VarChar(1000)
+  memo3 String @db.VarChar(1000)
+  memo4 String @db.VarChar(1000)
+  memo5 String @db.VarChar(1000)
 }
 
 model Class {
   id Int @id @default(autoincrement())
-  day String
+  day String @db.VarChar(1)
   time Int
   student StudentOnClass[]
 }
