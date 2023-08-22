@@ -139,7 +139,7 @@ export default function WeeklyCalendar() {
         views={['work_week']}
         defaultView={Views.WORK_WEEK}
         min={new Date(year, 0, 1, 14, 0, 0)}
-        max={new Date(year, 0, 1, 19, 59, 59)}
+        max={new Date(year, 0, 1, 18, 59, 59)}
         timeslots={6}
         step={10}
         eventPropGetter={eventPropGetter} // 선택적으로 이벤트 노드에 적용할 className의 객체를 반환하는 함수

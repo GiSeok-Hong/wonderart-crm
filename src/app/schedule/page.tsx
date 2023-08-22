@@ -30,7 +30,6 @@ export default function SchedulePage() {
           <ScheduleTextarea />
           <ScheduleTextarea />
           <ScheduleTextarea />
-          <ScheduleTextarea />
         </div>
       </div>
     </div>
