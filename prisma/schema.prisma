@@ -12,10 +12,64 @@ datasource db {
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
-// 임시 모델
+model Student {
+  id Int @id @default(autoincrement())
+  entranceDate String
+  class StudentOnClass[]
+  name String
+  phone String
+  birthDate String
+  sex String
+  guardiance Guardiance @relation(fields: [guardianceId], references: [id])
+  guardianceId Int
+  address String
+  school String
+  experience String
+  reason String
+  importantActivity String
+  interestingActivity String
+  caution String
+  agree Boolean
+  teacherMemo String
+}
+
+model Guardiance {
+  id Int @id @default(autoincrement())
+  name String
+  phone String
+  student Student[]
+}
+
 model Teacher {
   id Int @id @default(autoincrement())
   name String
   phone String
-  email String @unique
+  loginId String @unique
+  password String
+}
+
+model ScheduleMemo {
+  id Int @id @default(autoincrement())
+  topMemo String
+  memo1 String
+  memo2 String
+  memo3 String
+  memo4 String
+  memo5 String
+}
+
+model Class {
+  id Int @id @default(autoincrement())
+  day String
+  time Int
+  student StudentOnClass[]
+}
+
+model StudentOnClass {
+  student Student @relation(fields: [studentId], references: [id])
+  studentId Int
+  class Class @relation(fields: [classId], references: [id])
+  classId Int
+
+  @@id([studentId, classId])
 }
