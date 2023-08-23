@@ -1,11 +1,12 @@
 'use client';
 
+import { Student } from '@prisma/client';
 import { ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const TABLE_BORDER = 'border border-black';
 
-export default function StudentTable() {
+export default function StudentTable({studentList}: {studentList: Student[]}) {
   const Th = ({ children }: { children: ReactNode }) => {
     return <th className={`${TABLE_BORDER} p-2 bg-primary-color text-white`}>{children}</th>;
   };
@@ -32,10 +33,10 @@ export default function StudentTable() {
               key={student.id}
             >
               <Td>{student.name}</Td>
-              <Td>{student.age}</Td>
-              <Td>{student.gender}</Td>
+              <Td>{student.birthDate}</Td>
+              <Td>{student.sex}</Td>
               <Td>{student.phone}</Td>
-              <Td>{student.classCount}</Td>
+              <Td>{student.address}</Td>
               <Td>{student.school}</Td>
             </tr>
           );
