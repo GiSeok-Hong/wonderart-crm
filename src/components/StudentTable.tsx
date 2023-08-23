@@ -6,7 +6,17 @@ import { v4 as uuidv4 } from 'uuid';
 
 const TABLE_BORDER = 'border border-black';
 
-export default function StudentTable({studentList}: {studentList: Student[]}) {
+const LABEL = ['이름', '나이', '성별', '보호자 연락처', '학교 / 유치원'];
+
+export default function StudentTable({
+  studentList,
+}: {
+  studentList: ({
+    guardian: {
+      phone: string;
+    };
+  } & Student)[];
+}) {
   const Th = ({ children }: { children: ReactNode }) => {
     return <th className={`${TABLE_BORDER} p-2 bg-primary-color text-white`}>{children}</th>;
   };
@@ -17,12 +27,9 @@ export default function StudentTable({studentList}: {studentList: Student[]}) {
     <table className={`${TABLE_BORDER} border-collapse w-full mb-5`}>
       <thead>
         <tr>
-          <Th>이름</Th>
-          <Th>나이</Th>
-          <Th>성별</Th>
-          <Th>보호자 연락처</Th>
-          <Th>수업 횟수</Th>
-          <Th>학교 / 유치원</Th>
+          {LABEL.map((label) => {
+            return <Th key={label}>{label}</Th>;
+          })}
         </tr>
       </thead>
       <tbody>
@@ -35,8 +42,7 @@ export default function StudentTable({studentList}: {studentList: Student[]}) {
               <Td>{student.name}</Td>
               <Td>{student.birthDate}</Td>
               <Td>{student.sex}</Td>
-              <Td>{student.phone}</Td>
-              <Td>{student.address}</Td>
+              <Td>{student.guardian.phone}</Td>
               <Td>{student.school}</Td>
             </tr>
           );

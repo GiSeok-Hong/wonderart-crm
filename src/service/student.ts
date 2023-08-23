@@ -11,7 +11,15 @@ export async function getStudentMockData(studentId: string): Promise<Student> {
 }
 
 export async function getStudentList() {
-  const studentList = await prisma.student.findMany();
+  const studentList = await prisma.student.findMany({
+    include: {
+      guardian: {
+        select: {
+          phone: true,
+        }
+      }
+    }
+  });
 
   return studentList;
 }
