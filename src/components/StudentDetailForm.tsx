@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Student } from '@/types/student';
 import RadioBtn from './RadioBtn';
 
-export default function StudentDetailForm(studentData: Student) {
+export default function StudentDetailForm({ studentData }: { studentData: Student }) {
   const [student, setStudentData] = useState(studentData);
   const [editMode, setEditMode] = useState(false);
 
