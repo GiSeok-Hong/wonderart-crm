@@ -1,5 +1,6 @@
 import StudentDetailForm from '@/components/StudentDetailForm';
-import { getStudentMockData } from '@/service/student';
+import { getStudent } from '@/service/student';
+import { Student } from '@/types/student';
 
 type Props = {
   params: {
@@ -8,7 +9,9 @@ type Props = {
 };
 
 export default async function StudentDetailPage({ params: { studentId } }: Props) {
-  const studentData = await getStudentMockData(studentId);
+  // TODO: 추후 API 변경 되면 수정 필요
+  // 임시로 build를 위해 수정
+  // const studentData = await getStudent(Number(studentId));
 
-  return <StudentDetailForm {...studentData} />;
+  return <StudentDetailForm studentData={{} as Student} />;
 }

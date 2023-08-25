@@ -1,11 +1,23 @@
 'use client';
 
+import { getAge } from '@/helper/age';
+import { Student } from '@prisma/client';
 import { ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const TABLE_BORDER = 'border border-black';
 
-export default function StudentTable() {
+const LABEL = ['이름', '나이', '성별', '보호자 연락처', '학교 / 유치원'];
+
+export default function StudentTable({
+  studentList,
+}: {
+  studentList: ({
+    guardian: {
+      phone: string;
+    };
+  } & Student)[];
+}) {
   const Th = ({ children }: { children: ReactNode }) => {
     return <th className={`${TABLE_BORDER} p-2 bg-primary-color text-white`}>{children}</th>;
   };
@@ -16,12 +28,9 @@ export default function StudentTable() {
     <table className={`${TABLE_BORDER} border-collapse w-full mb-5`}>
       <thead>
         <tr>
-          <Th>이름</Th>
-          <Th>나이</Th>
-          <Th>성별</Th>
-          <Th>보호자 연락처</Th>
-          <Th>수업 횟수</Th>
-          <Th>학교 / 유치원</Th>
+          {LABEL.map((label) => {
+            return <Th key={label}>{label}</Th>;
+          })}
         </tr>
       </thead>
       <tbody>
@@ -32,10 +41,9 @@ export default function StudentTable() {
               key={student.id}
             >
               <Td>{student.name}</Td>
-              <Td>{student.age}</Td>
-              <Td>{student.gender}</Td>
-              <Td>{student.phone}</Td>
-              <Td>{student.classCount}</Td>
+              <Td>만 {getAge(student.birthDate)}세</Td>
+              <Td>{student.sex}</Td>
+              <Td>{student.guardian.phone}</Td>
               <Td>{student.school}</Td>
             </tr>
           );
@@ -44,258 +52,3 @@ export default function StudentTable() {
     </table>
   );
 }
-
-const studentList = [
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-  {
-    id: uuidv4(),
-    name: '김철수',
-    age: 5,
-    gender: '남',
-    phone: '010-1234-5678',
-    classCount: '주 1회',
-    school: '병점초등학교',
-  },
-];
