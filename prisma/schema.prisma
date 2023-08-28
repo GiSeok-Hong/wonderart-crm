@@ -17,6 +17,8 @@ model Student {
   id Int @id @default(autoincrement())
   entranceDate DateTime @default(now()) @db.Date
   class StudentOnClass[]
+  day Int[]
+  time Int[]
   name String @db.VarChar(5)
   phone String? @db.Char(13)
   birthDate DateTime @default(now()) @db.Date
@@ -30,7 +32,7 @@ model Student {
   importantActivity ArtActivity @default(DRAWING)
   interestingActivity ArtActivity @default(DRAWING)
   caution String? @db.VarChar(200)
-  agree Boolean
+  agree Agree @default(NO)
   teacherMemo String? @db.VarChar(200)
 }
 
@@ -93,4 +95,9 @@ enum ArtActivity {
   MASTERPIECECLASS
   TECHNIQUECLASS
   ETC
+}
+
+enum Agree {
+  YES
+  NO
 }

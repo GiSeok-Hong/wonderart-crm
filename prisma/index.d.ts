@@ -21,6 +21,8 @@ export type StudentPayload<ExtArgs extends $Extensions.Args = $Extensions.Defaul
   scalars: $Extensions.GetResult<{
     id: number
     entranceDate: Date
+    day: number[]
+    time: number[]
     name: string
     phone: string | null
     birthDate: Date
@@ -33,7 +35,7 @@ export type StudentPayload<ExtArgs extends $Extensions.Args = $Extensions.Defaul
     importantActivity: ArtActivity
     interestingActivity: ArtActivity
     caution: string | null
-    agree: boolean
+    agree: Agree
     teacherMemo: string | null
   }, ExtArgs["result"]["student"]>
   composites: {}
@@ -168,6 +170,14 @@ export const ArtActivity: {
 };
 
 export type ArtActivity = (typeof ArtActivity)[keyof typeof ArtActivity]
+
+
+export const Agree: {
+  YES: 'YES',
+  NO: 'NO'
+};
+
+export type Agree = (typeof Agree)[keyof typeof Agree]
 
 
 /**
@@ -1520,11 +1530,15 @@ export namespace Prisma {
 
   export type StudentAvgAggregateOutputType = {
     id: number | null
+    day: number | null
+    time: number | null
     guardianId: number | null
   }
 
   export type StudentSumAggregateOutputType = {
     id: number | null
+    day: number[] | null
+    time: number[] | null
     guardianId: number | null
   }
 
@@ -1543,7 +1557,7 @@ export namespace Prisma {
     importantActivity: ArtActivity | null
     interestingActivity: ArtActivity | null
     caution: string | null
-    agree: boolean | null
+    agree: Agree | null
     teacherMemo: string | null
   }
 
@@ -1562,13 +1576,15 @@ export namespace Prisma {
     importantActivity: ArtActivity | null
     interestingActivity: ArtActivity | null
     caution: string | null
-    agree: boolean | null
+    agree: Agree | null
     teacherMemo: string | null
   }
 
   export type StudentCountAggregateOutputType = {
     id: number
     entranceDate: number
+    day: number
+    time: number
     name: number
     phone: number
     birthDate: number
@@ -1589,11 +1605,15 @@ export namespace Prisma {
 
   export type StudentAvgAggregateInputType = {
     id?: true
+    day?: true
+    time?: true
     guardianId?: true
   }
 
   export type StudentSumAggregateInputType = {
     id?: true
+    day?: true
+    time?: true
     guardianId?: true
   }
 
@@ -1638,6 +1658,8 @@ export namespace Prisma {
   export type StudentCountAggregateInputType = {
     id?: true
     entranceDate?: true
+    day?: true
+    time?: true
     name?: true
     phone?: true
     birthDate?: true
@@ -1745,6 +1767,8 @@ export namespace Prisma {
   export type StudentGroupByOutputType = {
     id: number
     entranceDate: Date
+    day: number[]
+    time: number[]
     name: string
     phone: string | null
     birthDate: Date
@@ -1757,7 +1781,7 @@ export namespace Prisma {
     importantActivity: ArtActivity
     interestingActivity: ArtActivity
     caution: string | null
-    agree: boolean
+    agree: Agree
     teacherMemo: string | null
     _count: StudentCountAggregateOutputType | null
     _avg: StudentAvgAggregateOutputType | null
@@ -1783,6 +1807,8 @@ export namespace Prisma {
   export type StudentSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     entranceDate?: boolean
+    day?: boolean
+    time?: boolean
     name?: boolean
     phone?: boolean
     birthDate?: boolean
@@ -1805,6 +1831,8 @@ export namespace Prisma {
   export type StudentSelectScalar = {
     id?: boolean
     entranceDate?: boolean
+    day?: boolean
+    time?: boolean
     name?: boolean
     phone?: boolean
     birthDate?: boolean
@@ -2235,6 +2263,8 @@ export namespace Prisma {
   interface StudentFieldRefs {
     readonly id: FieldRef<"Student", 'Int'>
     readonly entranceDate: FieldRef<"Student", 'DateTime'>
+    readonly day: FieldRef<"Student", 'Int[]'>
+    readonly time: FieldRef<"Student", 'Int[]'>
     readonly name: FieldRef<"Student", 'String'>
     readonly phone: FieldRef<"Student", 'String'>
     readonly birthDate: FieldRef<"Student", 'DateTime'>
@@ -2247,7 +2277,7 @@ export namespace Prisma {
     readonly importantActivity: FieldRef<"Student", 'ArtActivity'>
     readonly interestingActivity: FieldRef<"Student", 'ArtActivity'>
     readonly caution: FieldRef<"Student", 'String'>
-    readonly agree: FieldRef<"Student", 'Boolean'>
+    readonly agree: FieldRef<"Student", 'Agree'>
     readonly teacherMemo: FieldRef<"Student", 'String'>
   }
     
@@ -7271,6 +7301,8 @@ export namespace Prisma {
   export const StudentScalarFieldEnum: {
     id: 'id',
     entranceDate: 'entranceDate',
+    day: 'day',
+    time: 'time',
     name: 'name',
     phone: 'phone',
     birthDate: 'birthDate',
@@ -7453,9 +7485,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'Agree'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type EnumAgreeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Agree'>
+    
+
+
+  /**
+   * Reference to a field of type 'Agree[]'
+   */
+  export type ListEnumAgreeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Agree[]'>
     
 
 
@@ -7482,6 +7521,8 @@ export namespace Prisma {
     NOT?: StudentWhereInput | StudentWhereInput[]
     id?: IntFilter<"Student"> | number
     entranceDate?: DateTimeFilter<"Student"> | Date | string
+    day?: IntNullableListFilter<"Student">
+    time?: IntNullableListFilter<"Student">
     name?: StringFilter<"Student"> | string
     phone?: StringNullableFilter<"Student"> | string | null
     birthDate?: DateTimeFilter<"Student"> | Date | string
@@ -7494,7 +7535,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     interestingActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     caution?: StringNullableFilter<"Student"> | string | null
-    agree?: BoolFilter<"Student"> | boolean
+    agree?: EnumAgreeFilter<"Student"> | Agree
     teacherMemo?: StringNullableFilter<"Student"> | string | null
     class?: StudentOnClassListRelationFilter
     guardian?: XOR<GuardianRelationFilter, GuardianWhereInput>
@@ -7503,6 +7544,8 @@ export namespace Prisma {
   export type StudentOrderByWithRelationInput = {
     id?: SortOrder
     entranceDate?: SortOrder
+    day?: SortOrder
+    time?: SortOrder
     name?: SortOrder
     phone?: SortOrderInput | SortOrder
     birthDate?: SortOrder
@@ -7527,6 +7570,8 @@ export namespace Prisma {
     OR?: StudentWhereInput[]
     NOT?: StudentWhereInput | StudentWhereInput[]
     entranceDate?: DateTimeFilter<"Student"> | Date | string
+    day?: IntNullableListFilter<"Student">
+    time?: IntNullableListFilter<"Student">
     name?: StringFilter<"Student"> | string
     phone?: StringNullableFilter<"Student"> | string | null
     birthDate?: DateTimeFilter<"Student"> | Date | string
@@ -7539,7 +7584,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     interestingActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     caution?: StringNullableFilter<"Student"> | string | null
-    agree?: BoolFilter<"Student"> | boolean
+    agree?: EnumAgreeFilter<"Student"> | Agree
     teacherMemo?: StringNullableFilter<"Student"> | string | null
     class?: StudentOnClassListRelationFilter
     guardian?: XOR<GuardianRelationFilter, GuardianWhereInput>
@@ -7548,6 +7593,8 @@ export namespace Prisma {
   export type StudentOrderByWithAggregationInput = {
     id?: SortOrder
     entranceDate?: SortOrder
+    day?: SortOrder
+    time?: SortOrder
     name?: SortOrder
     phone?: SortOrderInput | SortOrder
     birthDate?: SortOrder
@@ -7575,6 +7622,8 @@ export namespace Prisma {
     NOT?: StudentScalarWhereWithAggregatesInput | StudentScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Student"> | number
     entranceDate?: DateTimeWithAggregatesFilter<"Student"> | Date | string
+    day?: IntNullableListFilter<"Student">
+    time?: IntNullableListFilter<"Student">
     name?: StringWithAggregatesFilter<"Student"> | string
     phone?: StringNullableWithAggregatesFilter<"Student"> | string | null
     birthDate?: DateTimeWithAggregatesFilter<"Student"> | Date | string
@@ -7587,7 +7636,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityWithAggregatesFilter<"Student"> | ArtActivity
     interestingActivity?: EnumArtActivityWithAggregatesFilter<"Student"> | ArtActivity
     caution?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    agree?: BoolWithAggregatesFilter<"Student"> | boolean
+    agree?: EnumAgreeWithAggregatesFilter<"Student"> | Agree
     teacherMemo?: StringNullableWithAggregatesFilter<"Student"> | string | null
   }
 
@@ -7846,6 +7895,8 @@ export namespace Prisma {
 
   export type StudentCreateInput = {
     entranceDate?: Date | string
+    day?: StudentCreatedayInput | number[]
+    time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
     birthDate?: Date | string
@@ -7857,7 +7908,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree: boolean
+    agree?: Agree
     teacherMemo?: string | null
     class?: StudentOnClassCreateNestedManyWithoutStudentInput
     guardian: GuardianCreateNestedOneWithoutStudentInput
@@ -7866,6 +7917,8 @@ export namespace Prisma {
   export type StudentUncheckedCreateInput = {
     id?: number
     entranceDate?: Date | string
+    day?: StudentCreatedayInput | number[]
+    time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
     birthDate?: Date | string
@@ -7878,13 +7931,15 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree: boolean
+    agree?: Agree
     teacherMemo?: string | null
     class?: StudentOnClassUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUpdateInput = {
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7896,7 +7951,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     class?: StudentOnClassUpdateManyWithoutStudentNestedInput
     guardian?: GuardianUpdateOneRequiredWithoutStudentNestedInput
@@ -7905,6 +7960,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7917,7 +7974,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     class?: StudentOnClassUncheckedUpdateManyWithoutStudentNestedInput
   }
@@ -7925,6 +7982,8 @@ export namespace Prisma {
   export type StudentCreateManyInput = {
     id?: number
     entranceDate?: Date | string
+    day?: StudentCreatedayInput | number[]
+    time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
     birthDate?: Date | string
@@ -7937,12 +7996,14 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree: boolean
+    agree?: Agree
     teacherMemo?: string | null
   }
 
   export type StudentUpdateManyMutationInput = {
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7954,13 +8015,15 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StudentUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7973,7 +8036,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -8232,6 +8295,14 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type IntNullableListFilter<$PrismaModel = never> = {
+    equals?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    has?: number | IntFieldRefInput<$PrismaModel> | null
+    hasEvery?: number[] | ListIntFieldRefInput<$PrismaModel>
+    hasSome?: number[] | ListIntFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -8283,9 +8354,11 @@ export namespace Prisma {
     not?: NestedEnumArtActivityFilter<$PrismaModel> | ArtActivity
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type EnumAgreeFilter<$PrismaModel = never> = {
+    equals?: Agree | EnumAgreeFieldRefInput<$PrismaModel>
+    in?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
+    notIn?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreeFilter<$PrismaModel> | Agree
   }
 
   export type StudentOnClassListRelationFilter = {
@@ -8311,6 +8384,8 @@ export namespace Prisma {
   export type StudentCountOrderByAggregateInput = {
     id?: SortOrder
     entranceDate?: SortOrder
+    day?: SortOrder
+    time?: SortOrder
     name?: SortOrder
     phone?: SortOrder
     birthDate?: SortOrder
@@ -8329,6 +8404,8 @@ export namespace Prisma {
 
   export type StudentAvgOrderByAggregateInput = {
     id?: SortOrder
+    day?: SortOrder
+    time?: SortOrder
     guardianId?: SortOrder
   }
 
@@ -8372,6 +8449,8 @@ export namespace Prisma {
 
   export type StudentSumOrderByAggregateInput = {
     id?: SortOrder
+    day?: SortOrder
+    time?: SortOrder
     guardianId?: SortOrder
   }
 
@@ -8471,12 +8550,14 @@ export namespace Prisma {
     _max?: NestedEnumArtActivityFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type EnumAgreeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Agree | EnumAgreeFieldRefInput<$PrismaModel>
+    in?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
+    notIn?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreeWithAggregatesFilter<$PrismaModel> | Agree
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _min?: NestedEnumAgreeFilter<$PrismaModel>
+    _max?: NestedEnumAgreeFilter<$PrismaModel>
   }
 
   export type StudentListRelationFilter = {
@@ -8648,6 +8729,14 @@ export namespace Prisma {
     classId?: SortOrder
   }
 
+  export type StudentCreatedayInput = {
+    set: number[]
+  }
+
+  export type StudentCreatetimeInput = {
+    set: number[]
+  }
+
   export type StudentOnClassCreateNestedManyWithoutStudentInput = {
     create?: XOR<StudentOnClassCreateWithoutStudentInput, StudentOnClassUncheckedCreateWithoutStudentInput> | StudentOnClassCreateWithoutStudentInput[] | StudentOnClassUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: StudentOnClassCreateOrConnectWithoutStudentInput | StudentOnClassCreateOrConnectWithoutStudentInput[]
@@ -8672,6 +8761,16 @@ export namespace Prisma {
     set?: Date | string
   }
 
+  export type StudentUpdatedayInput = {
+    set?: number[]
+    push?: number | number[]
+  }
+
+  export type StudentUpdatetimeInput = {
+    set?: number[]
+    push?: number | number[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -8692,8 +8791,8 @@ export namespace Prisma {
     set?: ArtActivity
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type EnumAgreeFieldUpdateOperationsInput = {
+    set?: Agree
   }
 
   export type StudentOnClassUpdateManyWithoutStudentNestedInput = {
@@ -8923,9 +9022,11 @@ export namespace Prisma {
     not?: NestedEnumArtActivityFilter<$PrismaModel> | ArtActivity
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type NestedEnumAgreeFilter<$PrismaModel = never> = {
+    equals?: Agree | EnumAgreeFieldRefInput<$PrismaModel>
+    in?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
+    notIn?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreeFilter<$PrismaModel> | Agree
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9044,12 +9145,14 @@ export namespace Prisma {
     _max?: NestedEnumArtActivityFilter<$PrismaModel>
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type NestedEnumAgreeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Agree | EnumAgreeFieldRefInput<$PrismaModel>
+    in?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
+    notIn?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreeWithAggregatesFilter<$PrismaModel> | Agree
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _min?: NestedEnumAgreeFilter<$PrismaModel>
+    _max?: NestedEnumAgreeFilter<$PrismaModel>
   }
 
   export type StudentOnClassCreateWithoutStudentInput = {
@@ -9134,6 +9237,8 @@ export namespace Prisma {
 
   export type StudentCreateWithoutGuardianInput = {
     entranceDate?: Date | string
+    day?: StudentCreatedayInput | number[]
+    time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
     birthDate?: Date | string
@@ -9145,7 +9250,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree: boolean
+    agree?: Agree
     teacherMemo?: string | null
     class?: StudentOnClassCreateNestedManyWithoutStudentInput
   }
@@ -9153,6 +9258,8 @@ export namespace Prisma {
   export type StudentUncheckedCreateWithoutGuardianInput = {
     id?: number
     entranceDate?: Date | string
+    day?: StudentCreatedayInput | number[]
+    time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
     birthDate?: Date | string
@@ -9164,7 +9271,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree: boolean
+    agree?: Agree
     teacherMemo?: string | null
     class?: StudentOnClassUncheckedCreateNestedManyWithoutStudentInput
   }
@@ -9201,6 +9308,8 @@ export namespace Prisma {
     NOT?: StudentScalarWhereInput | StudentScalarWhereInput[]
     id?: IntFilter<"Student"> | number
     entranceDate?: DateTimeFilter<"Student"> | Date | string
+    day?: IntNullableListFilter<"Student">
+    time?: IntNullableListFilter<"Student">
     name?: StringFilter<"Student"> | string
     phone?: StringNullableFilter<"Student"> | string | null
     birthDate?: DateTimeFilter<"Student"> | Date | string
@@ -9213,7 +9322,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     interestingActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     caution?: StringNullableFilter<"Student"> | string | null
-    agree?: BoolFilter<"Student"> | boolean
+    agree?: EnumAgreeFilter<"Student"> | Agree
     teacherMemo?: StringNullableFilter<"Student"> | string | null
   }
 
@@ -9253,6 +9362,8 @@ export namespace Prisma {
 
   export type StudentCreateWithoutClassInput = {
     entranceDate?: Date | string
+    day?: StudentCreatedayInput | number[]
+    time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
     birthDate?: Date | string
@@ -9264,7 +9375,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree: boolean
+    agree?: Agree
     teacherMemo?: string | null
     guardian: GuardianCreateNestedOneWithoutStudentInput
   }
@@ -9272,6 +9383,8 @@ export namespace Prisma {
   export type StudentUncheckedCreateWithoutClassInput = {
     id?: number
     entranceDate?: Date | string
+    day?: StudentCreatedayInput | number[]
+    time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
     birthDate?: Date | string
@@ -9284,7 +9397,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree: boolean
+    agree?: Agree
     teacherMemo?: string | null
   }
 
@@ -9320,6 +9433,8 @@ export namespace Prisma {
 
   export type StudentUpdateWithoutClassInput = {
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9331,7 +9446,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     guardian?: GuardianUpdateOneRequiredWithoutStudentNestedInput
   }
@@ -9339,6 +9454,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateWithoutClassInput = {
     id?: IntFieldUpdateOperationsInput | number
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9351,7 +9468,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -9394,6 +9511,8 @@ export namespace Prisma {
   export type StudentCreateManyGuardianInput = {
     id?: number
     entranceDate?: Date | string
+    day?: StudentCreatedayInput | number[]
+    time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
     birthDate?: Date | string
@@ -9405,12 +9524,14 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree: boolean
+    agree?: Agree
     teacherMemo?: string | null
   }
 
   export type StudentUpdateWithoutGuardianInput = {
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9422,7 +9543,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     class?: StudentOnClassUpdateManyWithoutStudentNestedInput
   }
@@ -9430,6 +9551,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateWithoutGuardianInput = {
     id?: IntFieldUpdateOperationsInput | number
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9441,7 +9564,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     class?: StudentOnClassUncheckedUpdateManyWithoutStudentNestedInput
   }
@@ -9449,6 +9572,8 @@ export namespace Prisma {
   export type StudentUncheckedUpdateManyWithoutGuardianInput = {
     id?: IntFieldUpdateOperationsInput | number
     entranceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: StudentUpdatedayInput | number[]
+    time?: StudentUpdatetimeInput | number[]
     name?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9460,7 +9585,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: BoolFieldUpdateOperationsInput | boolean
+    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

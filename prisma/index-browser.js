@@ -108,6 +108,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.StudentScalarFieldEnum = {
   id: 'id',
   entranceDate: 'entranceDate',
+  day: 'day',
+  time: 'time',
   name: 'name',
   phone: 'phone',
   birthDate: 'birthDate',
@@ -191,6 +193,11 @@ exports.ArtActivity = {
   MASTERPIECECLASS: 'MASTERPIECECLASS',
   TECHNIQUECLASS: 'TECHNIQUECLASS',
   ETC: 'ETC'
+};
+
+exports.Agree = {
+  YES: 'YES',
+  NO: 'NO'
 };
 
 exports.Prisma.ModelName = {
