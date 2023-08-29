@@ -46,7 +46,6 @@ export default function WeeklyCalendar() {
       // whether event.preventDefault is called
 
       if (draggedEvent !== null) {
-        console.log('preventDefault');
         dragEvent.preventDefault();
       }
     },

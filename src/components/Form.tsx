@@ -120,7 +120,6 @@ export default function Form() {
   });
 
   const onSubmit = async (data: InputStudent) => {
-    console.log('onSubmit data ::: ' + JSON.stringify(data));
     const dayArr = [Number(data.day1)];
     if (data.day2 !== 0) dayArr.push(Number(data.day2));
     const timeArr = [Number(data.time1)];
@@ -153,8 +152,6 @@ export default function Form() {
       },
       body: JSON.stringify(body),
     }).then((res) => res.json());
-
-    console.log('res 는 ??? ' + JSON.stringify(res));
   };
 
   return (

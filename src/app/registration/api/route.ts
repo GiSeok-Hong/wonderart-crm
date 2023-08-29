@@ -3,7 +3,6 @@ import { prisma } from '../../../../lib/prisma';
 
 export async function POST(req: Request) {
   const studentData = await req.json();
-  console.log('studentData? ::: ' + JSON.stringify(studentData));
 
   try {
     await prisma.student.create({

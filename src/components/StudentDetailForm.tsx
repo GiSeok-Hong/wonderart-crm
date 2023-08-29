@@ -74,15 +74,12 @@ export default function StudentDetailForm(studentData: Student) {
       ...student,
       [name]: value,
     });
-
-    console.log(student);
   };
 
   const onClickEditMode = (e: any) => {
     setEditMode(!editMode);
 
     e.preventDefault();
-    console.log('현재 모드는 ??? ' + editMode);
   };
 
   return (
