@@ -1,7 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { Agree, ArtActivity, ReasonForChoosing, Sex } from '../../prisma';
+import { ArtActivity, ReasonForChoosing, Sex } from '../../prisma';
 
 const DIV_CLASS = 'mb-5 ';
 const LABEL_CLASS = 'text-xl font-bold inline-block min-w-label ';
@@ -84,11 +84,11 @@ type InputStudent = {
   importantActivity: ArtActivity;
   interestingActivity: ArtActivity;
   caution?: string;
-  agree: Agree;
+  agree: string;
 };
 
 export default function Form() {
-  const phoneReg = /^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
+  const phoneReg = /^01([0|1|6|7|8|9])([0-9]{7,8})$/;
 
   const {
     register,
@@ -120,15 +120,17 @@ export default function Form() {
   });
 
   const onSubmit = async (data: InputStudent) => {
-    const dayArr = [Number(data.day1)];
-    if (data.day2 !== 0) dayArr.push(Number(data.day2));
-    const timeArr = [Number(data.time1)];
-    if (data.time2 !== 0) timeArr.push(Number(data.time2));
+    const day = [Number(data.day1)];
+    if (data.day2 !== 0) day.push(Number(data.day2));
+    const time = [Number(data.time1)];
+    if (data.time2 !== 0) time.push(Number(data.time2));
+
+    const agree = data.agree === 'YES' ? true : false;
 
     const body = {
       entranceDate: data.entranceDate,
-      day: dayArr,
-      time: timeArr,
+      day,
+      time,
       name: data.name,
       phone: data.phone,
       birthDate: data.birthDate,
@@ -140,7 +142,7 @@ export default function Form() {
       importantActivity: data.importantActivity,
       interestingActivity: data.interestingActivity,
       caution: data.caution,
-      agree: data.agree,
+      agree,
       guardianName: data.guardianName,
       guardianPhone: data.guardianPhone,
     };
@@ -174,7 +176,6 @@ export default function Form() {
             required: true,
           })}
           className={INPUT_CLASS}
-          placeholder="2023.01.01"
         />
         <label
           htmlFor="numberOfClass"
@@ -269,14 +270,15 @@ export default function Form() {
           type="text"
           id="phone"
           {...register('phone', {
-            maxLength: 13,
+            maxLength: 11,
             pattern: {
               value: phoneReg,
               message: '학생 핸드폰 형식에 맞지 않습니다.',
             },
           })}
           className={INPUT_CLASS}
-          placeholder="010-1234-1234"
+          placeholder="01012345678"
+          maxLength={11}
           size={15}
         />
       </div>
@@ -292,7 +294,6 @@ export default function Form() {
           id="birthDate"
           {...register('birthDate', { required: true })}
           className={INPUT_CLASS}
-          placeholder="2023.01.01"
           size={10}
         />
         <label
@@ -305,7 +306,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="MALE"
+            value={Sex.MALE}
             {...register('sex')}
           />
           남
@@ -314,7 +315,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="FEMALE"
+            value={Sex.FEMALE}
             {...register('sex')}
           />
           여
@@ -347,14 +348,15 @@ export default function Form() {
           id="guardianPhone"
           {...register('guardianPhone', {
             required: true,
-            maxLength: 13,
+            maxLength: 11,
             pattern: {
               value: phoneReg,
               message: '보호자 핸드폰 형식에 맞지 않습니다.',
             },
           })}
           className={INPUT_CLASS}
-          placeholder="010-1234-1234"
+          placeholder="01012345678"
+          maxLength={11}
           size={15}
         />
       </div>
@@ -415,7 +417,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="RECOMMENDED"
+            value={ReasonForChoosing.RECOMMENDED}
             {...register('reason')}
           />
           지인추천
@@ -424,7 +426,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="LOCATION"
+            value={ReasonForChoosing.LOCATION}
             {...register('reason')}
           />
           위치
@@ -433,7 +435,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="GOSSIP"
+            value={ReasonForChoosing.GOSSIP}
             {...register('reason')}
           />
           주변소문
@@ -442,7 +444,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="SEARCHED"
+            value={ReasonForChoosing.SEARCHED}
             {...register('reason')}
           />
           검색
@@ -451,7 +453,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="ETC"
+            value={ReasonForChoosing.ETC}
             {...register('reason')}
           />
           기타
@@ -468,7 +470,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="DRAWING"
+            value={ArtActivity.DRAWING}
             {...register('importantActivity')}
           />
           그리기
@@ -477,7 +479,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="MATERIALCLASS"
+            value={ArtActivity.MATERIALCLASS}
             {...register('importantActivity')}
           />
           다양한 재료 수업
@@ -486,7 +488,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="MASTERPIECECLASS"
+            value={ArtActivity.MASTERPIECECLASS}
             {...register('importantActivity')}
           />
           명화 수업
@@ -495,7 +497,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="TECHNIQUECLASS"
+            value={ArtActivity.TECHNIQUECLASS}
             {...register('importantActivity')}
           />
           기법 수업
@@ -504,7 +506,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="ETC"
+            value={ArtActivity.ETC}
             {...register('importantActivity')}
           />
           기타
@@ -521,7 +523,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="DRAWING"
+            value={ArtActivity.DRAWING}
             {...register('interestingActivity')}
           />
           그리기
@@ -530,7 +532,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="MATERIALCLASS"
+            value={ArtActivity.MATERIALCLASS}
             {...register('interestingActivity')}
           />
           다양한 재료 수업
@@ -539,7 +541,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="MASTERPIECECLASS"
+            value={ArtActivity.MASTERPIECECLASS}
             {...register('interestingActivity')}
           />
           명화 수업
@@ -548,7 +550,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="TECHNIQUECLASS"
+            value={ArtActivity.TECHNIQUECLASS}
             {...register('interestingActivity')}
           />
           기법 수업
@@ -557,7 +559,7 @@ export default function Form() {
           <input
             type="radio"
             className="mr-2"
-            value="ETC"
+            value={ArtActivity.ETC}
             {...register('interestingActivity')}
           />
           기타
