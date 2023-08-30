@@ -7884,7 +7884,7 @@ export namespace Prisma {
     time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
-    birthDate?: Date | string
+    birthDate: Date | string
     sex?: Sex
     address: string
     school?: string | null
@@ -7906,7 +7906,7 @@ export namespace Prisma {
     time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
-    birthDate?: Date | string
+    birthDate: Date | string
     sex?: Sex
     guardianId: number
     address: string
@@ -7971,7 +7971,7 @@ export namespace Prisma {
     time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
-    birthDate?: Date | string
+    birthDate: Date | string
     sex?: Sex
     guardianId: number
     address: string
@@ -9218,7 +9218,7 @@ export namespace Prisma {
     time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
-    birthDate?: Date | string
+    birthDate: Date | string
     sex?: Sex
     address: string
     school?: string | null
@@ -9239,7 +9239,7 @@ export namespace Prisma {
     time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
-    birthDate?: Date | string
+    birthDate: Date | string
     sex?: Sex
     address: string
     school?: string | null
@@ -9343,7 +9343,7 @@ export namespace Prisma {
     time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
-    birthDate?: Date | string
+    birthDate: Date | string
     sex?: Sex
     address: string
     school?: string | null
@@ -9364,7 +9364,7 @@ export namespace Prisma {
     time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
-    birthDate?: Date | string
+    birthDate: Date | string
     sex?: Sex
     guardianId: number
     address: string
@@ -9492,7 +9492,7 @@ export namespace Prisma {
     time?: StudentCreatetimeInput | number[]
     name: string
     phone?: string | null
-    birthDate?: Date | string
+    birthDate: Date | string
     sex?: Sex
     address: string
     school?: string | null

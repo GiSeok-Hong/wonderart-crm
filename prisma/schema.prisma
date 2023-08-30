@@ -21,7 +21,7 @@ model Student {
   time Int[]
   name String @db.VarChar(5)
   phone String? @db.Char(13)
-  birthDate DateTime @default(now()) @db.Date
+  birthDate DateTime @db.Date
   sex Sex @default(MALE)
   guardian Guardian @relation(fields: [guardianId], references: [id])
   guardianId Int
