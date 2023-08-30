@@ -35,7 +35,7 @@ export type StudentPayload<ExtArgs extends $Extensions.Args = $Extensions.Defaul
     importantActivity: ArtActivity
     interestingActivity: ArtActivity
     caution: string | null
-    agree: Agree
+    agree: boolean
     teacherMemo: string | null
   }, ExtArgs["result"]["student"]>
   composites: {}
@@ -170,14 +170,6 @@ export const ArtActivity: {
 };
 
 export type ArtActivity = (typeof ArtActivity)[keyof typeof ArtActivity]
-
-
-export const Agree: {
-  YES: 'YES',
-  NO: 'NO'
-};
-
-export type Agree = (typeof Agree)[keyof typeof Agree]
 
 
 /**
@@ -1557,7 +1549,7 @@ export namespace Prisma {
     importantActivity: ArtActivity | null
     interestingActivity: ArtActivity | null
     caution: string | null
-    agree: Agree | null
+    agree: boolean | null
     teacherMemo: string | null
   }
 
@@ -1576,7 +1568,7 @@ export namespace Prisma {
     importantActivity: ArtActivity | null
     interestingActivity: ArtActivity | null
     caution: string | null
-    agree: Agree | null
+    agree: boolean | null
     teacherMemo: string | null
   }
 
@@ -1781,7 +1773,7 @@ export namespace Prisma {
     importantActivity: ArtActivity
     interestingActivity: ArtActivity
     caution: string | null
-    agree: Agree
+    agree: boolean
     teacherMemo: string | null
     _count: StudentCountAggregateOutputType | null
     _avg: StudentAvgAggregateOutputType | null
@@ -2277,7 +2269,7 @@ export namespace Prisma {
     readonly importantActivity: FieldRef<"Student", 'ArtActivity'>
     readonly interestingActivity: FieldRef<"Student", 'ArtActivity'>
     readonly caution: FieldRef<"Student", 'String'>
-    readonly agree: FieldRef<"Student", 'Agree'>
+    readonly agree: FieldRef<"Student", 'Boolean'>
     readonly teacherMemo: FieldRef<"Student", 'String'>
   }
     
@@ -7485,16 +7477,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Agree'
+   * Reference to a field of type 'Boolean'
    */
-  export type EnumAgreeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Agree'>
-    
-
-
-  /**
-   * Reference to a field of type 'Agree[]'
-   */
-  export type ListEnumAgreeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Agree[]'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -7535,7 +7520,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     interestingActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     caution?: StringNullableFilter<"Student"> | string | null
-    agree?: EnumAgreeFilter<"Student"> | Agree
+    agree?: BoolFilter<"Student"> | boolean
     teacherMemo?: StringNullableFilter<"Student"> | string | null
     class?: StudentOnClassListRelationFilter
     guardian?: XOR<GuardianRelationFilter, GuardianWhereInput>
@@ -7584,7 +7569,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     interestingActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     caution?: StringNullableFilter<"Student"> | string | null
-    agree?: EnumAgreeFilter<"Student"> | Agree
+    agree?: BoolFilter<"Student"> | boolean
     teacherMemo?: StringNullableFilter<"Student"> | string | null
     class?: StudentOnClassListRelationFilter
     guardian?: XOR<GuardianRelationFilter, GuardianWhereInput>
@@ -7636,7 +7621,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityWithAggregatesFilter<"Student"> | ArtActivity
     interestingActivity?: EnumArtActivityWithAggregatesFilter<"Student"> | ArtActivity
     caution?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    agree?: EnumAgreeWithAggregatesFilter<"Student"> | Agree
+    agree?: BoolWithAggregatesFilter<"Student"> | boolean
     teacherMemo?: StringNullableWithAggregatesFilter<"Student"> | string | null
   }
 
@@ -7908,7 +7893,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree?: Agree
+    agree: boolean
     teacherMemo?: string | null
     class?: StudentOnClassCreateNestedManyWithoutStudentInput
     guardian: GuardianCreateNestedOneWithoutStudentInput
@@ -7931,7 +7916,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree?: Agree
+    agree: boolean
     teacherMemo?: string | null
     class?: StudentOnClassUncheckedCreateNestedManyWithoutStudentInput
   }
@@ -7951,7 +7936,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     class?: StudentOnClassUpdateManyWithoutStudentNestedInput
     guardian?: GuardianUpdateOneRequiredWithoutStudentNestedInput
@@ -7974,7 +7959,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     class?: StudentOnClassUncheckedUpdateManyWithoutStudentNestedInput
   }
@@ -7996,7 +7981,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree?: Agree
+    agree: boolean
     teacherMemo?: string | null
   }
 
@@ -8015,7 +8000,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -8036,7 +8021,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -8354,11 +8339,9 @@ export namespace Prisma {
     not?: NestedEnumArtActivityFilter<$PrismaModel> | ArtActivity
   }
 
-  export type EnumAgreeFilter<$PrismaModel = never> = {
-    equals?: Agree | EnumAgreeFieldRefInput<$PrismaModel>
-    in?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
-    notIn?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreeFilter<$PrismaModel> | Agree
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type StudentOnClassListRelationFilter = {
@@ -8550,14 +8533,12 @@ export namespace Prisma {
     _max?: NestedEnumArtActivityFilter<$PrismaModel>
   }
 
-  export type EnumAgreeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Agree | EnumAgreeFieldRefInput<$PrismaModel>
-    in?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
-    notIn?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreeWithAggregatesFilter<$PrismaModel> | Agree
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreeFilter<$PrismaModel>
-    _max?: NestedEnumAgreeFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type StudentListRelationFilter = {
@@ -8791,8 +8772,8 @@ export namespace Prisma {
     set?: ArtActivity
   }
 
-  export type EnumAgreeFieldUpdateOperationsInput = {
-    set?: Agree
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type StudentOnClassUpdateManyWithoutStudentNestedInput = {
@@ -9022,11 +9003,9 @@ export namespace Prisma {
     not?: NestedEnumArtActivityFilter<$PrismaModel> | ArtActivity
   }
 
-  export type NestedEnumAgreeFilter<$PrismaModel = never> = {
-    equals?: Agree | EnumAgreeFieldRefInput<$PrismaModel>
-    in?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
-    notIn?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreeFilter<$PrismaModel> | Agree
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9145,14 +9124,12 @@ export namespace Prisma {
     _max?: NestedEnumArtActivityFilter<$PrismaModel>
   }
 
-  export type NestedEnumAgreeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Agree | EnumAgreeFieldRefInput<$PrismaModel>
-    in?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
-    notIn?: Agree[] | ListEnumAgreeFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreeWithAggregatesFilter<$PrismaModel> | Agree
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreeFilter<$PrismaModel>
-    _max?: NestedEnumAgreeFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type StudentOnClassCreateWithoutStudentInput = {
@@ -9250,7 +9227,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree?: Agree
+    agree: boolean
     teacherMemo?: string | null
     class?: StudentOnClassCreateNestedManyWithoutStudentInput
   }
@@ -9271,7 +9248,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree?: Agree
+    agree: boolean
     teacherMemo?: string | null
     class?: StudentOnClassUncheckedCreateNestedManyWithoutStudentInput
   }
@@ -9322,7 +9299,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     interestingActivity?: EnumArtActivityFilter<"Student"> | ArtActivity
     caution?: StringNullableFilter<"Student"> | string | null
-    agree?: EnumAgreeFilter<"Student"> | Agree
+    agree?: BoolFilter<"Student"> | boolean
     teacherMemo?: StringNullableFilter<"Student"> | string | null
   }
 
@@ -9375,7 +9352,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree?: Agree
+    agree: boolean
     teacherMemo?: string | null
     guardian: GuardianCreateNestedOneWithoutStudentInput
   }
@@ -9397,7 +9374,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree?: Agree
+    agree: boolean
     teacherMemo?: string | null
   }
 
@@ -9446,7 +9423,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     guardian?: GuardianUpdateOneRequiredWithoutStudentNestedInput
   }
@@ -9468,7 +9445,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -9524,7 +9501,7 @@ export namespace Prisma {
     importantActivity?: ArtActivity
     interestingActivity?: ArtActivity
     caution?: string | null
-    agree?: Agree
+    agree: boolean
     teacherMemo?: string | null
   }
 
@@ -9543,7 +9520,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     class?: StudentOnClassUpdateManyWithoutStudentNestedInput
   }
@@ -9564,7 +9541,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
     class?: StudentOnClassUncheckedUpdateManyWithoutStudentNestedInput
   }
@@ -9585,7 +9562,7 @@ export namespace Prisma {
     importantActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     interestingActivity?: EnumArtActivityFieldUpdateOperationsInput | ArtActivity
     caution?: NullableStringFieldUpdateOperationsInput | string | null
-    agree?: EnumAgreeFieldUpdateOperationsInput | Agree
+    agree?: BoolFieldUpdateOperationsInput | boolean
     teacherMemo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

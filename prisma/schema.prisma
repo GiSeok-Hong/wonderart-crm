@@ -32,7 +32,7 @@ model Student {
   importantActivity ArtActivity @default(DRAWING)
   interestingActivity ArtActivity @default(DRAWING)
   caution String? @db.VarChar(200)
-  agree Agree @default(NO)
+  agree Boolean
   teacherMemo String? @db.VarChar(200)
 }
 
@@ -95,9 +95,4 @@ enum ArtActivity {
   MASTERPIECECLASS
   TECHNIQUECLASS
   ETC
-}
-
-enum Agree {
-  YES
-  NO
 }

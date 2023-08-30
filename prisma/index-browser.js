@@ -195,11 +195,6 @@ exports.ArtActivity = {
   ETC: 'ETC'
 };
 
-exports.Agree = {
-  YES: 'YES',
-  NO: 'NO'
-};
-
 exports.Prisma.ModelName = {
   Student: 'Student',
   Guardian: 'Guardian',
