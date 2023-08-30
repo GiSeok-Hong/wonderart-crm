@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "./"
 }
 
 datasource db {
@@ -14,20 +15,22 @@ datasource db {
 
 model Student {
   id Int @id @default(autoincrement())
-  entranceDate String @db.VarChar(10)
+  entranceDate DateTime @default(now()) @db.Date
   class StudentOnClass[]
+  day Int[]
+  time Int[]
   name String @db.VarChar(5)
-  phone String? @db.VarChar(13)
-  birthDate String @db.VarChar(10)
-  sex String @db.VarChar(1)
+  phone String? @db.Char(13)
+  birthDate DateTime @db.Date
+  sex Sex @default(MALE)
   guardian Guardian @relation(fields: [guardianId], references: [id])
   guardianId Int
   address String @db.VarChar(100)
   school String? @db.VarChar(20)
   experience String? @db.VarChar(100)
-  reason String @db.VarChar(5)
-  importantActivity String @db.VarChar(10)
-  interestingActivity String @db.VarChar(10)
+  reason ReasonForChoosing @default(RECOMMENDED)
+  importantActivity ArtActivity @default(DRAWING)
+  interestingActivity ArtActivity @default(DRAWING)
   caution String? @db.VarChar(200)
   agree Boolean
   teacherMemo String? @db.VarChar(200)
@@ -36,14 +39,14 @@ model Student {
 model Guardian {
   id Int @id @default(autoincrement())
   name String @db.VarChar(5)
-  phone String @db.VarChar(13)
+  phone String @db.Char(13)
   student Student[]
 }
 
 model Teacher {
   id Int @id @default(autoincrement())
   name String @db.VarChar(5)
-  phone String @db.VarChar(13)
+  phone String @db.Char(13)
   loginId String @unique @db.VarChar(20)
   password String @db.VarChar(20)
 }
@@ -60,8 +63,7 @@ model ScheduleMemo {
 
 model Class {
   id Int @id @default(autoincrement())
-  day String @db.VarChar(1)
-  time Int
+  classTime DateTime @default(now()) @db.Time()
   student StudentOnClass[]
 }
 
@@ -72,4 +74,25 @@ model StudentOnClass {
   classId Int
 
   @@id([studentId, classId])
+}
+
+enum Sex {
+  MALE
+  FEMALE
+}
+
+enum ReasonForChoosing {
+  RECOMMENDED
+  LOCATION
+  GOSSIP
+  SEARCHED
+  ETC
+}
+
+enum ArtActivity {
+  DRAWING
+  MATERIALCLASS
+  MASTERPIECECLASS
+  TECHNIQUECLASS
+  ETC
 }
