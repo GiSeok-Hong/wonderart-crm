@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { prisma } from '../../../../lib/prisma';
 
 export async function POST(req: Request) {
+  const data = await req.json();
+
+  if (data === null || data === undefined) throw Error('non null');
+
   const {
     entranceDate,
     day,
@@ -20,7 +24,7 @@ export async function POST(req: Request) {
     agree,
     guardianName,
     guardianPhone,
-  } = await req.json();
+  } = data;
 
   try {
     await prisma.student.create({
