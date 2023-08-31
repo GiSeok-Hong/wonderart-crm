@@ -18,7 +18,7 @@ const navList = [
     text: '입학원서',
   },
   {
-    href: '/list',
+    href: '/students',
     text: '학원생',
   },
 ];
