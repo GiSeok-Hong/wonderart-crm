@@ -7,5 +7,6 @@ export async function GET() {
     return NextResponse.json(students, { status: 200 });
   } catch (error) {
     console.log(error);
+    return NextResponse.error();
   }
 }
