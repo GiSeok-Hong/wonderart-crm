@@ -1,7 +1,6 @@
 import StudentSearchInput from '@/components/StudentSearchInput';
 import StudentTable from '@/components/StudentTable';
 import { Metadata } from 'next';
-import { prisma } from '../../../lib/prisma';
 import { getStudentList } from '@/service/student';
 
 export const metadata: Metadata = {
@@ -10,11 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default async function ListPage() {
-  const studentList = await getStudentList();
-  return (
-    <div className="flex flex-col gap-5">
-      <StudentSearchInput />
-      <StudentTable studentList={studentList} />
-    </div>
-  );
+  return <StudentTable />;
 }
