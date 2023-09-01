@@ -1,7 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { ArtActivity, ReasonForChoosing, Sex } from '../../prisma';
+import { ArtActivity, ReasonForChoosing, Sex } from '@prisma/client';
 
 const DIV_CLASS = 'mb-5 ';
 const LABEL_CLASS = 'text-xl font-bold inline-block min-w-label ';

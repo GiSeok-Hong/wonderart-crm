@@ -1,11 +1,23 @@
 import { prisma } from '../../lib/prisma';
 
 export async function getStudent(id: number) {
-  return prisma.student.findUnique({
+  const student = await prisma.student.findUnique({
     where: {
       id
+    },
+    include: {
+      guardian: {
+        select: {
+          phone: true,
+          name: true,
+        }
+      }
     }
   })
+  if (!student) throw new Error('학생이 존재하지 않습니다.');
+  return student;
+
+
 }
 
 export async function getStudentList() {
