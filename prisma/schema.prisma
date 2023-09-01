@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./"
 }
 
 datasource db {
@@ -20,7 +19,7 @@ model Student {
   day Int[]
   time Int[]
   name String @db.VarChar(5)
-  phone String? @db.Char(13)
+  phone String? @db.Char(11)
   birthDate DateTime @db.Date
   sex Sex @default(MALE)
   guardian Guardian @relation(fields: [guardianId], references: [id])
@@ -39,16 +38,17 @@ model Student {
 model Guardian {
   id Int @id @default(autoincrement())
   name String @db.VarChar(5)
-  phone String @db.Char(13)
+  phone String @db.Char(11)
   student Student[]
 }
 
 model Teacher {
   id Int @id @default(autoincrement())
   name String @db.VarChar(5)
-  phone String @db.Char(13)
-  loginId String @unique @db.VarChar(20)
+  phone String @db.Char(11)
+  email String @unique @db.VarChar(30)
   password String @db.VarChar(20)
+  role Role @default(TEACHER)
 }
 
 model ScheduleMemo {
@@ -95,4 +95,9 @@ enum ArtActivity {
   MASTERPIECECLASS
   TECHNIQUECLASS
   ETC
+}
+
+enum Role {
+  MASTER
+  TEACHER
 }

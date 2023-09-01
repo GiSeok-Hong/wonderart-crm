@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import SignInButton from './SignInButton';
 
 const navList = [
   {
@@ -51,7 +52,6 @@ export default function Header() {
           />
         </div>
       </Link>
-
       <nav>
         <ul className="flex gap-4 items-center text-xl min-w-max">
           {navList.map((item) => (
@@ -66,6 +66,7 @@ export default function Header() {
               <Link href={item.href}>{item.text}</Link>
             </li>
           ))}
+          <SignInButton />
         </ul>
       </nav>
     </header>
