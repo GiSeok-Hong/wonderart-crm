@@ -2,7 +2,7 @@
 
 import { getAge } from '@/helper/age';
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { type Student } from '../../prisma';
+import { type Student } from '@prisma/client';
 import StudentSearchInput from './StudentSearchInput';
 
 const TABLE_BORDER = 'border border-black';
