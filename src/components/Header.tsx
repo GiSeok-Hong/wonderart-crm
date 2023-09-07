@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import SignInButton from './SignInButton';
+import { useSession } from 'next-auth/react';
 
 const navList = [
   {
@@ -26,6 +27,7 @@ const navList = [
 
 export default function Header() {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   return (
     <header className="flex justify-between items-center px-10 py-5">
@@ -52,23 +54,39 @@ export default function Header() {
           />
         </div>
       </Link>
-      <nav>
-        <ul className="flex gap-4 items-center text-xl min-w-max">
-          {navList.map((item) => (
+      {session && session.user ? (
+        <nav>
+          <ul className="flex gap-4 items-center text-xl min-w-max">
+            {navList.map((item) => (
+              <li
+                key={item.href}
+                className={
+                  'hover:text-primary-color' +
+                  (pathname === item.href ? ' text-primary-color font-bold' : '') +
+                  (item.href === '/list' && pathname.includes(`/list/`) ? ' text-primary-color font-bold' : '')
+                }
+              >
+                <Link href={item.href}>{item.text}</Link>
+              </li>
+            ))}
+            <SignInButton />
+          </ul>
+        </nav>
+      ) : (
+        <nav>
+          <ul className="flex gap-4 items-center text-xl min-w-max">
             <li
-              key={item.href}
               className={
-                'hover:text-primary-color' +
-                (pathname === item.href ? ' text-primary-color font-bold' : '') +
-                (item.href === '/list' && pathname.includes(`/list/`) ? ' text-primary-color font-bold' : '')
+                'hover:text-primary-color' + (pathname === navList[0].href ? ' text-primary-color font-bold' : '')
               }
             >
-              <Link href={item.href}>{item.text}</Link>
+              <Link href={navList[0].href}>{navList[0].text}</Link>
             </li>
-          ))}
-          <SignInButton />
-        </ul>
-      </nav>
+
+            <SignInButton />
+          </ul>
+        </nav>
+      )}
     </header>
   );
 }
