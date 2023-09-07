@@ -1,3 +1,4 @@
+import { signJwtAccessToken } from '../../../../lib/jwt';
 import { prisma } from '../../../../lib/prisma';
 
 type RequestBody = {
@@ -16,6 +17,11 @@ export async function POST(req: Request) {
 
   if (user && body.password === user.password) {
     const { password, ...userWithoutPassword } = user;
-    return new Response(JSON.stringify(userWithoutPassword));
+    const accessToken = signJwtAccessToken(userWithoutPassword);
+    const result = {
+      ...userWithoutPassword,
+      accessToken,
+    };
+    return new Response(JSON.stringify(result));
   } else return new Response(JSON.stringify(null));
 }
