@@ -29,6 +29,10 @@ export default function Header() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
+  if (pathname === '/login') {
+    return;
+  }
+
   return (
     <header className="flex justify-between items-center px-10 py-5">
       <Link
