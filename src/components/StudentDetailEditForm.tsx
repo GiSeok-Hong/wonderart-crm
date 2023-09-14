@@ -1,5 +1,6 @@
 'use client';
 import { DAY_OPTION } from '@/consts/day-option';
+import { GUARDIANS_INTERESTING_OPTION } from '@/consts/guardians-interesting-option';
 import { REASON_OPTION } from '@/consts/reason-option';
 import { TIME_OPTION } from '@/consts/time-option';
 import { Student } from '@prisma/client';
@@ -91,11 +92,41 @@ export default function StudentDetailEditForm({ student }: { student: Student })
         <Input style={{ width: '100%', padding: '10px' }} />
       </div>
       <div>
-        <p className="text-lg font-normal">원더아트 스튜디오에 등록하기 전 미술활동 경험</p>
+        <p className="text-lg font-normal">원더아트 스튜디오를 선택한 이유</p>
         <Select>
           {Object.entries(REASON_OPTION).map(([key, value]) => {
             return <Option key={key}>{value}</Option>;
           })}
+        </Select>
+      </div>
+      <div>
+        <p className="text-lg font-normal">학부모님이 가장 중요하다고 생각하는 미술활동</p>
+        <Select>
+          {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+            return <Option key={key}>{value}</Option>;
+          })}
+        </Select>
+      </div>
+      <div>
+        <p className="text-lg font-normal">학생이 가장 흥미있어 하는 미술활동</p>
+        <Select>
+          {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+            return <Option key={key}>{value}</Option>;
+          })}
+        </Select>
+      </div>
+      <div>
+        <p className="text-lg font-normal">학생에 대해 특별히 알아야 하거나, 주의해야 할 점</p>
+        <Input style={{ width: '100%', padding: '10px' }} />
+      </div>
+      <div>
+        <p className="text-lg font-normal">
+          원더아트 스튜디오에서 작업한 모든 작품과 사진의 저작권은 <br />
+          원더아트 스튜디오에 있음에 동의하십니까?
+        </p>
+        <Select>
+          <Option>예</Option>
+          <Option>아니요</Option>
         </Select>
       </div>
     </div>
@@ -117,7 +148,7 @@ const FlexRow = ({ children, ...props }: DivProps) => {
 const FlexRowItem = ({ children, ...props }: DivProps) => {
   return (
     <div
-      className="flex gap-3 items-center"
+      className="flex gap-3 items-center w-full"
       {...props}
     >
       {children}
@@ -152,7 +183,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 const Input = (props: InputProps) => {
   return (
     <input
-      className="flex h-11 bg-[#eee] py-2"
+      className="flex h-11 bg-[#eee] py-2 flex-1 p-2"
       {...props}
     />
   );
