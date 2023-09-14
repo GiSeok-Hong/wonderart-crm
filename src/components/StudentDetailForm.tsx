@@ -10,12 +10,6 @@ import { TIME_OPTION } from '@/consts/time-option';
 import StudentDetailEditForm from './StudentDetailEditForm';
 import { type ArtActivity, type ReasonForChoosing, type Sex, type Student } from '@prisma/client';
 
-const DIV_CLASS = 'mb-5 ';
-const CHILDREN_DIV_CLASS = 'bg-gray-200 text-center text-xl inline-block px-1';
-const LABEL_CLASS = 'text-xl font-bold inline-block min-w-label ';
-const INPUT_CLASS = 'bg-gray-200 text-center text-xl mr-6 px-2';
-const TEXTAREA_CLASS = 'bg-gray-200 text-xl w-full p-1 resize-none';
-const UNDERLINE_CLASS = ' block w-full mb-1';
 const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
 
 type UpdateStudentForm = {
@@ -77,7 +71,7 @@ export default function StudentDetailForm({
   });
 
   const [student, setStudentData] = useState(studentData);
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
 
   const now = moment();
   const age = now.diff(moment(studentData.birthDate, 'YYYY.MM.DD'), 'years');
@@ -109,7 +103,10 @@ export default function StudentDetailForm({
       className="w-full border-4 p-5 "
     >
       <h1 className="text-4xl text-center mb-5">{`${student?.name} (만 ${age}세)`}</h1>
-      {editMode ? <StudentDetailEditForm student={studentData} /> : null}
+      <StudentDetailEditForm
+        student={studentData}
+        disabled={!editMode}
+      />
       <div className="flex gap-20 justify-center">
         <button
           className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}
