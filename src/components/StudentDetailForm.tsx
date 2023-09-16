@@ -9,6 +9,7 @@ import { DAY_OPTION } from '@/consts/day-option';
 import { REASON_OPTION } from '@/consts/reason-option';
 import { GUARDIANS_INTERESTING_OPTION } from '@/consts/guardians-interesting-option';
 import { TIME_OPTION } from '@/consts/time-option';
+import { useRouter } from 'next/navigation';
 
 const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
 
@@ -36,6 +37,7 @@ export default function StudentDetailForm({
 }: {
   studentData: Student & { guardian: { name: string; phone: string } };
 }) {
+  const router = useRouter();
   const { register, handleSubmit, setValue, watch } = useForm<UpdateStudentForm>({
     defaultValues: {
       address: studentData?.address,
@@ -391,7 +393,17 @@ export default function StudentDetailForm({
       </div>
       <div className="flex gap-20 justify-center">
         {editMode ? <SubmitButton /> : <EditButton onClick={handleClick} />}
-        <button className={BUTTON_CLASS + 'border-red-400 bg-red-400'}>{`${!editMode ? '뒤로' : '취소'}`}</button>
+        <button
+          type="button"
+          onClick={() => {
+            if (editMode) {
+              setEditMode(false);
+            } else {
+              router.back();
+            }
+          }}
+          className={BUTTON_CLASS + 'border-red-400 bg-red-400'}
+        >{`${!editMode ? '뒤로' : '취소'}`}</button>
       </div>
     </form>
   );
