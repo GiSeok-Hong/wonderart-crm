@@ -19,7 +19,7 @@ export default function StudentTable() {
 
   useEffect(() => {
     const getStudentList = async () => {
-      const studentList: StudentTableItem[] = await fetch('/students/api').then((res) => res.json());
+      const studentList: StudentTableItem[] = await fetch('/api/student').then((res) => res.json());
       setStudentList(studentList);
       studentRef.current = studentList;
     };
