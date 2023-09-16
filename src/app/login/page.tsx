@@ -40,14 +40,14 @@ export default function LoginPage() {
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
       <div className="h-full flex justify-center items-center">
-        <article className="flex gap-20 flex-col items-center w-96 h-176 border-2 shadow-lg">
+        <article className="flex gap-14 flex-col items-center w-96 h-176 border-2 shadow-lg">
           <Link href="/">
             <Image
               width={242}
               height={55}
-              src="/images/logo-text-img.png"
+              src="/images/logo.png"
               alt="로고"
-              className="mt-32"
+              className="mt-14"
             />
           </Link>
           <div className="w-80 h-[343] flex-col">
