@@ -125,15 +125,6 @@ export default function StudentDetailForm({
     if (errors.reason) {
       alert('원더아트 스튜디오를 선택한 이유를 선택해주세요.');
     }
-    if (errors.importantActivity) {
-      alert('학부모님이 가장 중요하다고 생각하는 미술활동을 선택해주세요.');
-    }
-    if (errors.interestingActivity) {
-      alert('학생이 가장 흥미있어 하는 미술활동을 선택해주세요.');
-    }
-    if (errors.experience) {
-      alert('원더아트 스튜디오에 등록하기 전 미술활동 경험을 입력해주세요.');
-    }
     if (errors.phone?.type === 'maxLength' || errors.phone?.type === 'minLength') {
       alert('학생 연락처를 정확히 입력해주세요.');
     }
@@ -324,7 +315,7 @@ export default function StudentDetailForm({
           <Input
             disabled={!editMode}
             style={{ width: '100%', padding: '10px' }}
-            {...register('experience', { required: true })}
+            {...register('experience')}
           />
         </div>
         <div>
@@ -349,7 +340,7 @@ export default function StudentDetailForm({
           <p className="text-lg font-normal">학부모님이 가장 중요하다고 생각하는 미술활동</p>
           <Select
             disabled={!editMode}
-            {...register('importantActivity', { required: true })}
+            {...register('importantActivity')}
           >
             {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
               return (
@@ -367,7 +358,7 @@ export default function StudentDetailForm({
           <p className="text-lg font-normal">학생이 가장 흥미있어 하는 미술활동</p>
           <Select
             disabled={!editMode}
-            {...register('interestingActivity', { required: true })}
+            {...register('interestingActivity')}
           >
             {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
               return (
