@@ -36,7 +36,7 @@ export default function StudentDetailForm({
 }: {
   studentData: Student & { guardian: { name: string; phone: string } };
 }) {
-  const { register, handleSubmit, setValue } = useForm<UpdateStudentForm>({
+  const { register, handleSubmit, setValue, watch } = useForm<UpdateStudentForm>({
     defaultValues: {
       address: studentData?.address,
       birthDate: moment(studentData?.birthDate).format('YYYY.MM.DD'),
@@ -61,13 +61,8 @@ export default function StudentDetailForm({
 
   const age = getAge(studentData?.birthDate);
 
-  const handleClick = (e: any) => {
-    if (editMode) {
-    } else {
-    }
+  const handleClick = () => {
     setEditMode(!editMode);
-
-    e.preventDefault();
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>, type: 'entranceDate' | 'birthDate') => {
@@ -90,12 +85,61 @@ export default function StudentDetailForm({
     setValue(type, result);
   };
 
-  const onSubmit: SubmitHandler<UpdateStudentForm> = (data: UpdateStudentForm) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<UpdateStudentForm> = async (data: UpdateStudentForm) => {
+    const { entranceDate, birthDate, day, time, ...rest } = data;
+    const body = {
+      ...rest,
+      entranceDate: moment(entranceDate, 'YYYY.MM.DD').toDate(),
+      birthDate: moment(birthDate, 'YYYY.MM.DD').toDate(),
+      day: day.map(Number).filter(Boolean),
+      time: time.map(Number).filter(Boolean),
+    };
+    try {
+      await fetch(`/api/student/${studentData?.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      alert('수정에 실패했습니다.');
+    } finally {
+      setEditMode(false);
+    }
   };
 
-  const onError: SubmitErrorHandler<UpdateStudentForm> = (errors: any) => {
-    console.log(errors);
+  const onError: SubmitErrorHandler<UpdateStudentForm> = (errors) => {
+    if (errors.birthDate) {
+      alert('생년월일을 정확히 입력해주세요.');
+    }
+    if (errors.entranceDate) {
+      alert('입학날짜를 정확히 입력해주세요.');
+    }
+    if (errors.name) {
+      alert('학생명을 입력해주세요.');
+    }
+    if (errors.address) {
+      alert('주소를 입력해주세요.');
+    }
+    if (errors.reason) {
+      alert('원더아트 스튜디오를 선택한 이유를 선택해주세요.');
+    }
+    if (errors.importantActivity) {
+      alert('학부모님이 가장 중요하다고 생각하는 미술활동을 선택해주세요.');
+    }
+    if (errors.interestingActivity) {
+      alert('학생이 가장 흥미있어 하는 미술활동을 선택해주세요.');
+    }
+    if (errors.experience) {
+      alert('원더아트 스튜디오에 등록하기 전 미술활동 경험을 입력해주세요.');
+    }
+    if (errors.phone?.type === 'maxLength' || errors.phone?.type === 'minLength') {
+      alert('학생 연락처를 정확히 입력해주세요.');
+    }
+    if (errors.guardianPhone?.type === 'maxLength' || errors.guardianPhone?.type === 'minLength') {
+      alert('보호자 연락처를 정확히 입력해주세요.');
+    }
   };
 
   return (
@@ -193,14 +237,18 @@ export default function StudentDetailForm({
             <Label>학생명</Label>
             <Input
               disabled={!editMode}
-              {...register('name')}
+              {...register('name', { required: true })}
             />
           </FlexRowItem>
           <FlexRowItem>
             <Label>학생 연락처</Label>
             <Input
               disabled={!editMode}
-              {...register('phone')}
+              {...(register('phone'),
+              {
+                minLength: 11,
+                maxLength: 11,
+              })}
             />
           </FlexRowItem>
         </FlexRow>
@@ -242,7 +290,10 @@ export default function StudentDetailForm({
             <Label>보호자 연락처</Label>
             <Input
               disabled={!editMode}
-              {...register('guardianPhone')}
+              {...register('guardianPhone', {
+                minLength: 11,
+                maxLength: 11,
+              })}
             />
           </FlexRowItem>
         </FlexRow>
@@ -348,17 +399,34 @@ export default function StudentDetailForm({
         </div>
       </div>
       <div className="flex gap-20 justify-center">
-        <button
-          className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}
-          onClick={handleClick}
-        >
-          {`${!editMode ? '수정하기' : '수정완료'}`}
-        </button>
+        {editMode ? <SubmitButton /> : <EditButton onClick={handleClick} />}
         <button className={BUTTON_CLASS + 'border-red-400 bg-red-400'}>{`${!editMode ? '뒤로' : '취소'}`}</button>
       </div>
     </form>
   );
 }
+
+const EditButton = ({ onClick }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+  return (
+    <button
+      className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}
+      onClick={onClick}
+    >
+      수정하기
+    </button>
+  );
+};
+
+const SubmitButton = () => {
+  return (
+    <button
+      className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}
+      type="submit"
+    >
+      수정완료
+    </button>
+  );
+};
 
 interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
 const FlexRow = ({ children, ...props }: DivProps) => {
