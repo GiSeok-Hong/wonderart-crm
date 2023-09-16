@@ -59,7 +59,7 @@ export async function PUT(request: NextRequest, context: { params: Params }) {
         caution,
       }
     })
-    return NextResponse.json({ data: result }, { status: 200 });
+    return NextResponse.json({ data: result }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: '학생 정보 수정에 실패했습니다.' }, { status: 500 });
   }
