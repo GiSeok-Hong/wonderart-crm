@@ -23,4 +23,4 @@ export const DAY_OPTION = [
     value: 5,
     name: '토',
   },
-];
+] as const;

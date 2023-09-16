@@ -19,4 +19,4 @@ export const TIME_OPTION = [
     value: 18,
     name: '6시',
   },
-];
+] as const;
