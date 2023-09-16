@@ -29,14 +29,13 @@ const handler = NextAuth({
 
         const user = await res.json();
 
-        if (user) {
+        if (user.result && user.success) {
           // Any object returned will be saved in `user` property of the JWT
 
           return user;
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
-          return null;
-
+          throw new Error(`${user.message}`);
           // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },

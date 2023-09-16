@@ -1,8 +1,9 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 
 type InputLogin = {
@@ -11,17 +12,29 @@ type InputLogin = {
 };
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const { register, handleSubmit } = useForm<InputLogin>({
     mode: 'onSubmit',
   });
 
   const submitHandler = async (data: InputLogin) => {
-    await signIn('credentials', {
-      username: data.email,
-      password: data.password,
-      redirect: true,
-      callbackUrl: '/',
-    });
+    try {
+      const res = await signIn('credentials', {
+        username: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        return alert(res.error);
+      } else {
+        return router.push('/');
+      }
+    } catch (error) {
+      console.log('로그인 에러 ::: ' + error);
+      return alert('알 수 없는 에러로 로그인에 실패했습니다.');
+    }
   };
 
   return (
