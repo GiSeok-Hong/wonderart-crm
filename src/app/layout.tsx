@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Providers from '@/components/Providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -129,8 +130,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         /> */}
       </head>
       <body className={inter.className}>
-        <Header />
-        <main className="h-full px-10 py-5">{children}</main>
+        <Providers>
+          <Header />
+          <main className="h-full px-10 py-5">{children}</main>
+        </Providers>
       </body>
     </html>
   );
