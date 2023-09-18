@@ -386,7 +386,7 @@ export default function StudentDetailForm({
           <p className="text-lg font-normal">선생님 메모</p>
           <Input
             style={{ width: '100%', padding: '10px' }}
-            {...register('teacherMemo')}
+            {...register('teacherMemo', { maxLength: 200 })}
             disabled={!editMode}
           />
         </div>
