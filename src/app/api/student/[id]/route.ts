@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../../../../../lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '../../../../../lib/prisma';
 
 type Params = {
   id: string;
@@ -9,7 +9,7 @@ export async function PUT(request: NextRequest, context: { params: Params }) {
   const { id } = context.params;
   const body = await request.json();
   if (body === undefined) {
-    return NextResponse.json({ error: 'Bad Request' }, { status: 400 })
+    return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
   }
 
   const {
@@ -30,6 +30,7 @@ export async function PUT(request: NextRequest, context: { params: Params }) {
     interestingActivity,
     teacherMemo,
     caution,
+    isRegister,
   } = body;
 
   try {
@@ -43,7 +44,7 @@ export async function PUT(request: NextRequest, context: { params: Params }) {
           update: {
             name: guardianName,
             phone: guardianPhone,
-          }
+          },
         },
         name,
         phone,
@@ -57,11 +58,11 @@ export async function PUT(request: NextRequest, context: { params: Params }) {
         interestingActivity,
         teacherMemo,
         caution,
-      }
-    })
+        isRegister,
+      },
+    });
     return NextResponse.json({ data: result }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: '학생 정보 수정에 실패했습니다.' }, { status: 500 });
   }
-
 }

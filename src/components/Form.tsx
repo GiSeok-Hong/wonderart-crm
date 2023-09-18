@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { ArtActivity, ReasonForChoosing, Sex } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 const DIV_CLASS = 'mb-5 ';
 const LABEL_CLASS = 'text-xl font-bold inline-block min-w-label ';
@@ -84,10 +85,11 @@ type InputStudent = {
   importantActivity: ArtActivity;
   interestingActivity: ArtActivity;
   caution?: string;
-  agree: string;
+  isCopyrightAgree: string;
 };
 
 export default function Form() {
+  const router = useRouter();
   const phoneReg = /^01([0|1|6|7|8|9])([0-9]{7,8})$/;
 
   const {
@@ -115,7 +117,7 @@ export default function Form() {
       importantActivity: 'DRAWING',
       interestingActivity: 'DRAWING',
       caution: '',
-      agree: 'NO',
+      isCopyrightAgree: 'NO',
     },
   });
 
@@ -125,7 +127,7 @@ export default function Form() {
     const time = [Number(data.time1)];
     if (data.time2 !== 0) time.push(Number(data.time2));
 
-    const agree = data.agree === 'YES' ? true : false;
+    const isCopyrightAgree = data.isCopyrightAgree === 'YES' ? true : false;
 
     const body = {
       entranceDate: data.entranceDate,
@@ -142,18 +144,30 @@ export default function Form() {
       importantActivity: data.importantActivity,
       interestingActivity: data.interestingActivity,
       caution: data.caution,
-      agree,
+      isCopyrightAgree,
       guardianName: data.guardianName,
       guardianPhone: data.guardianPhone,
+      isRegister: true,
     };
 
-    const res = await fetch('/registration/api', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    }).then((res) => res.json());
+    try {
+      const res = await fetch('/registration/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      }).then((res) => res.json());
+
+      alert(`${res.message}`);
+
+      if (res?.success) {
+        return router.push('/');
+      }
+    } catch (error) {
+      console.log('학생등록 에러 ::: ' + error);
+      alert('알 수 없는 에러로 학생등록에 실패했습니다.');
+    }
   };
 
   return (
@@ -580,7 +594,7 @@ export default function Form() {
       </div>
       <div className={DIV_CLASS}>
         <label
-          htmlFor="agree"
+          htmlFor="isCopyrightAgree"
           className={LABEL_CLASS + UNDERLINE_CLASS}
         >
           원더아트 스튜디오에서 작업한 모든 작품과 사진의 저작권은 <br />
@@ -591,7 +605,7 @@ export default function Form() {
             type="radio"
             className="mr-2"
             value="YES"
-            {...register('agree')}
+            {...register('isCopyrightAgree')}
           />
           예
         </label>
@@ -600,7 +614,7 @@ export default function Form() {
             type="radio"
             className="mr-2"
             value="NO"
-            {...register('agree')}
+            {...register('isCopyrightAgree')}
           />
           아니오
         </label>
