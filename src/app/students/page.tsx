@@ -1,7 +1,6 @@
 import StudentSearchInput from '@/components/StudentSearchInput';
 import StudentTable from '@/components/StudentTable';
 import { Metadata } from 'next';
-import { getStudentList } from '@/service/student';
 
 export const metadata: Metadata = {
   title: '학원생',

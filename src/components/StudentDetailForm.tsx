@@ -1,554 +1,508 @@
 'use client';
 
+import { ChangeEvent, forwardRef, useState } from 'react';
+import { Sex, type Student } from '@prisma/client';
+import { getAge } from '@/helper/age';
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import moment from 'moment';
-import { useState } from 'react';
-import { Student } from '@/types/student';
-import RadioBtn from './RadioBtn';
+import { DAY_OPTION } from '@/consts/day-option';
+import { REASON_OPTION } from '@/consts/reason-option';
+import { GUARDIANS_INTERESTING_OPTION } from '@/consts/guardians-interesting-option';
+import { TIME_OPTION } from '@/consts/time-option';
+import { useRouter } from 'next/navigation';
 
-export default function StudentDetailForm({ studentData }: { studentData: Student }) {
-  const [student, setStudentData] = useState(studentData);
+const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
+
+type UpdateStudentForm = {
+  name: string;
+  phone: string | null;
+  birthDate: string;
+  entranceDate: string;
+  time: number[];
+  day: number[];
+  guardianName: string;
+  guardianPhone: string;
+  address: string;
+  school?: string | null;
+  sex: Sex;
+  experience: string | null;
+  reason: string;
+  importantActivity: string;
+  interestingActivity: string;
+  teacherMemo: string | null;
+  caution: string | null;
+};
+export default function StudentDetailForm({
+  studentData,
+}: {
+  studentData: Student & { guardian: { name: string; phone: string } };
+}) {
+  const router = useRouter();
+  const { register, handleSubmit, setValue, watch } = useForm<UpdateStudentForm>({
+    defaultValues: {
+      address: studentData?.address,
+      birthDate: moment(studentData?.birthDate).format('YYYY.MM.DD'),
+      entranceDate: moment(studentData?.entranceDate).format('YYYY.MM.DD'),
+      guardianName: studentData?.guardian.name,
+      guardianPhone: studentData?.guardian.phone,
+      name: studentData?.name,
+      phone: studentData?.phone,
+      sex: studentData?.sex,
+      school: studentData?.school,
+      time: studentData?.time,
+      day: studentData?.day,
+      experience: studentData?.experience,
+      reason: studentData?.reason,
+      importantActivity: studentData?.importantActivity,
+      interestingActivity: studentData?.interestingActivity,
+      teacherMemo: studentData?.teacherMemo,
+      caution: studentData?.caution,
+    },
+  });
   const [editMode, setEditMode] = useState(false);
 
-  const now = moment();
-  const age = now.diff(moment(studentData.birthDate, 'YYYY.MM.DD'), 'years');
+  const age = getAge(studentData?.birthDate);
 
-  const DIV_CLASS = 'mb-5 ';
-  const CHILDREN_DIV_CLASS = 'bg-gray-200 text-center text-xl inline-block px-1';
-  const LABEL_CLASS = 'text-xl font-bold inline-block min-w-label ';
-  const INPUT_CLASS = 'bg-gray-200 text-center text-xl mr-6 px-2';
-  const TEXTAREA_CLASS = 'bg-gray-200 text-xl w-full p-1 resize-none';
-  const UNDERLINE_CLASS = ' block w-full mb-1';
-  const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
-  const DEFAULT_SHOW_CLASS = editMode ? ' hidden ' : '';
-  const DEFAULT_HIDDEN_CLASS = editMode ? ' ' : ' hidden';
-
-  const DAY_OPTION = [
-    {
-      value: '월',
-      name: '월',
-    },
-    {
-      value: '화',
-      name: '화',
-    },
-    {
-      value: '수',
-      name: '수',
-    },
-    {
-      value: '목',
-      name: '목',
-    },
-    {
-      value: '금',
-      name: '금',
-    },
-  ];
-
-  const TIME_OPTION = [
-    {
-      value: 14,
-      name: '2시',
-    },
-    {
-      value: 15,
-      name: '3시',
-    },
-    {
-      value: 16,
-      name: '4시',
-    },
-    {
-      value: 17,
-      name: '5시',
-    },
-    {
-      value: 18,
-      name: '6시',
-    },
-  ];
-
-  const onChangeStudentData = (e: { target: { value: string; name: string } }) => {
-    const { value, name } = e.target;
-    setStudentData({
-      ...student,
-      [name]: value,
-    });
+  const handleClick = () => {
+    setEditMode(!editMode);
   };
 
-  const onClickEditMode = (e: any) => {
-    setEditMode(!editMode);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>, type: 'entranceDate' | 'birthDate') => {
+    let val = e.target.value.replace(/\D/g, '');
+    let length = val.length;
+    let result = '';
 
-    e.preventDefault();
+    if (length < 6) result = val;
+    else if (length < 8) {
+      result += val.substring(0, 4);
+      result += '.';
+      result += val.substring(4);
+    } else {
+      result += val.substring(0, 4);
+      result += '.';
+      result += val.substring(4, 6);
+      result += '.';
+      result += val.substring(6);
+    }
+    setValue(type, result);
+  };
+
+  const onSubmit: SubmitHandler<UpdateStudentForm> = async (data: UpdateStudentForm) => {
+    const { entranceDate, birthDate, day, time, ...rest } = data;
+    const body = {
+      ...rest,
+      entranceDate: moment(entranceDate, 'YYYY.MM.DD').toDate(),
+      birthDate: moment(birthDate, 'YYYY.MM.DD').toDate(),
+      day: day.map(Number).filter(Boolean),
+      time: time.map(Number).filter(Boolean),
+    };
+    try {
+      await fetch(`/api/student/${studentData?.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      alert('수정에 실패했습니다.');
+    } finally {
+      setEditMode(false);
+    }
+  };
+
+  const onError: SubmitErrorHandler<UpdateStudentForm> = (errors) => {
+    if (errors.birthDate) {
+      alert('생년월일을 정확히 입력해주세요.');
+    }
+    if (errors.entranceDate) {
+      alert('입학날짜를 정확히 입력해주세요.');
+    }
+    if (errors.name) {
+      alert('학생명을 입력해주세요.');
+    }
+    if (errors.address) {
+      alert('주소를 입력해주세요.');
+    }
+    if (errors.reason) {
+      alert('원더아트 스튜디오를 선택한 이유를 선택해주세요.');
+    }
+    if (errors.phone?.type === 'maxLength' || errors.phone?.type === 'minLength') {
+      alert('학생 연락처를 정확히 입력해주세요.');
+    }
+    if (errors.guardianPhone?.type === 'maxLength' || errors.guardianPhone?.type === 'minLength') {
+      alert('보호자 연락처를 정확히 입력해주세요.');
+    }
   };
 
   return (
     <form
-      action={`/list/${student.id}`}
-      className="w-full  border-4 p-5"
+      onSubmit={handleSubmit(onSubmit, onError)}
+      className="w-full border-4 p-5 "
     >
-      <h1 className="text-4xl text-center mb-5">{`${student.studentName} (만 ${age}세)`}</h1>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="entranceDate"
-          className={LABEL_CLASS}
-        >
-          입학일자
-        </label>
-        <input
-          type="text"
-          id="entranceDate"
-          name="entranceDate"
-          required
-          className={INPUT_CLASS}
-          size={10}
-          maxLength={10}
-          placeholder="2023.01.01"
-          value={student.entranceDate}
-          onChange={onChangeStudentData}
-          disabled
-        ></input>
-        <label
-          htmlFor="ClassTime"
-          className={LABEL_CLASS}
-        >
-          수업 시간
-        </label>
-        {student.classTime.map((i) => (
-          <div
-            key={i.day}
-            className={CHILDREN_DIV_CLASS + DEFAULT_SHOW_CLASS}
-          >
-            {`${i.day} ${i.time}시`}
-          </div>
-        ))}
-        <div className={CHILDREN_DIV_CLASS + DEFAULT_HIDDEN_CLASS}>
-          {/* TODO:  */}
-          <select
-            name=""
-            id=""
-          >
-            {DAY_OPTION.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
+      <h1 className="text-4xl text-center mb-5">{`${studentData?.name} (만 ${age}세)`}</h1>
+      <div className="flex flex-col w-full gap-2 mb-7">
+        <FlexRow>
+          <FlexRowItem>
+            <Label>입학날짜</Label>
+            <Input
+              disabled={!editMode}
+              maxLength={10}
+              {...register('entranceDate', {
+                required: true,
+                minLength: 10,
+                maxLength: 10,
+                validate: (value) => value.length === 10 && moment(value, 'YYYY.MM.DD').isValid(),
+                onChange: (e) => handleInputChange(e, 'entranceDate'),
+              })}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label>수업 시간</Label>
+            <FlexColumnItem>
+              <Select
+                disabled={!editMode}
+                {...register('day.0', { required: true })}
               >
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <select
-            name=""
-            id=""
-          >
-            {TIME_OPTION.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
+                {DAY_OPTION.map((day) => {
+                  return (
+                    <Option
+                      key={day.value}
+                      value={day.value}
+                    >
+                      {day.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+              <Select
+                disabled={!editMode}
+                {...register('time.0', { required: true })}
               >
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className={CHILDREN_DIV_CLASS + DEFAULT_HIDDEN_CLASS}>
-          {/* TODO:  */}
-          <select
-            name=""
-            id=""
-          >
-            {DAY_OPTION.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
+                {TIME_OPTION.map((time) => {
+                  return (
+                    <Option
+                      key={time.value}
+                      value={time.value}
+                    >
+                      {time.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </FlexColumnItem>
+            <FlexColumnItem>
+              <Select
+                disabled={!editMode}
+                {...register('day.1')}
               >
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <select
-            name=""
-            id=""
-          >
-            {TIME_OPTION.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
+                {DAY_OPTION.map((day) => {
+                  return (
+                    <Option
+                      key={day.value}
+                      value={day.value}
+                    >
+                      {day.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+              <Select
+                disabled={!editMode}
+                {...register('time.1')}
               >
-                {option.name}
-              </option>
-            ))}
-          </select>
+                {TIME_OPTION.map((time) => {
+                  return (
+                    <Option
+                      key={time.value}
+                      value={time.value}
+                    >
+                      {time.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </FlexColumnItem>
+          </FlexRowItem>
+        </FlexRow>
+        <FlexRow>
+          <FlexRowItem>
+            <Label>학생명</Label>
+            <Input
+              disabled={!editMode}
+              {...register('name', { required: true, maxLength: 5 })}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label>학생 연락처</Label>
+            <Input
+              disabled={!editMode}
+              {...(register('phone'),
+              {
+                minLength: 11,
+                maxLength: 11,
+              })}
+            />
+          </FlexRowItem>
+        </FlexRow>
+        <FlexRow>
+          <FlexRowItem>
+            <Label>생년월일</Label>
+            <Input
+              disabled={!editMode}
+              maxLength={10}
+              {...register('birthDate', {
+                required: true,
+                minLength: 10,
+                maxLength: 10,
+                validate: (value) => value.length === 10 && moment(value, 'YYYY.MM.DD').isValid(),
+                onChange: (e) => handleInputChange(e, 'birthDate'),
+              })}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label>성별</Label>
+            <Select
+              disabled={!editMode}
+              {...register('sex', { required: true })}
+            >
+              <Option value={Sex.MALE}>남</Option>
+              <Option value={Sex.FEMALE}>여</Option>
+            </Select>
+          </FlexRowItem>
+        </FlexRow>
+        <FlexRow>
+          <FlexRowItem>
+            <Label>보호자명</Label>
+            <Input
+              disabled={!editMode}
+              {...register('guardianName', { maxLength: 5 })}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label>보호자 연락처</Label>
+            <Input
+              disabled={!editMode}
+              {...register('guardianPhone', {
+                minLength: 11,
+                maxLength: 11,
+              })}
+            />
+          </FlexRowItem>
+        </FlexRow>
+        <FlexRow>
+          <FlexRowItem style={{ flex: 1 }}>
+            <Label>주소</Label>
+            <Input
+              disabled={!editMode}
+              style={{ flex: 1 }}
+              {...register('address', { required: true, maxLength: 100 })}
+            />
+          </FlexRowItem>
+        </FlexRow>
+        <FlexRow>
+          <FlexRowItem>
+            <Label>학교 / 유치원</Label>
+            <Input
+              disabled={!editMode}
+              {...register('school', { maxLength: 20 })}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label>등록 여부</Label>
+          </FlexRowItem>
+        </FlexRow>
+        <div>
+          <p className="text-lg font-normal">원더아트 스튜디오에 등록하기 전 미술활동 경험</p>
+          <Input
+            disabled={!editMode}
+            style={{ width: '100%', padding: '10px' }}
+            {...(register('experience'), { maxLength: 100 })}
+          />
         </div>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="studentName"
-          className={LABEL_CLASS}
-        >
-          학생명
-        </label>
-        <input
-          type="text"
-          id="studentName"
-          name="studentName"
-          required
-          className={INPUT_CLASS}
-          value={student.studentName}
-          onChange={onChangeStudentData}
-          size={10}
-          disabled={!editMode}
-        />
-        <label
-          htmlFor="studentPhone"
-          className={LABEL_CLASS}
-        >
-          학생 연락처
-        </label>
-        <input
-          type="text"
-          id="studentPhone"
-          name="studentPhone"
-          className={INPUT_CLASS}
-          size={12}
-          value={student.studentPhone}
-          onChange={onChangeStudentData}
-          disabled={!editMode}
-        />
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="birthDate"
-          className={LABEL_CLASS}
-        >
-          생년월일
-        </label>
-        <input
-          type="text"
-          id="birthDate"
-          name="birthDate"
-          required
-          className={INPUT_CLASS}
-          value={student.birthDate}
-          onChange={onChangeStudentData}
-          size={10}
-          disabled={!editMode}
-        />
-        <label
-          htmlFor="sex"
-          className={LABEL_CLASS}
-        >
-          성별
-        </label>
-        <div className={CHILDREN_DIV_CLASS + DEFAULT_SHOW_CLASS}>{student.sex}</div>
-        <div className={'inline-block' + DEFAULT_HIDDEN_CLASS}>
-          <RadioBtn
-            name="sex"
-            value="남"
-            onChange={onChangeStudentData}
+        <div>
+          <p className="text-lg font-normal">원더아트 스튜디오를 선택한 이유</p>
+          <Select
+            disabled={!editMode}
+            {...register('reason', { required: true })}
           >
-            남
-          </RadioBtn>
-          <RadioBtn
-            name="sex"
-            value="여"
-            onChange={onChangeStudentData}
-          >
-            여
-          </RadioBtn>
+            {Object.entries(REASON_OPTION).map(([key, value]) => {
+              return (
+                <Option
+                  key={key}
+                  value={key}
+                >
+                  {value}
+                </Option>
+              );
+            })}
+          </Select>
         </div>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="guardianName"
-          className={LABEL_CLASS}
-        >
-          보호자명
-        </label>
-        <input
-          type="text"
-          id="guardianName"
-          name="guardianName"
-          required
-          className={INPUT_CLASS}
-          placeholder="홍길동"
-          value={student.guardianName}
-          onChange={onChangeStudentData}
-          size={10}
-          disabled={!editMode}
-        />
-        <label
-          htmlFor="guardianPhone"
-          className={LABEL_CLASS}
-        >
-          보호자 연락처
-        </label>
-        <input
-          type="text"
-          id="guardianPhone"
-          name="guardianPhone"
-          required
-          className={INPUT_CLASS}
-          placeholder="010-1234-1234"
-          size={12}
-          value={student.guardianPhone}
-          onChange={onChangeStudentData}
-          disabled={!editMode}
-        />
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="address"
-          className={LABEL_CLASS}
-        >
-          주소
-        </label>
-        <input
-          type="text"
-          id="address"
-          name="address"
-          required
-          className={INPUT_CLASS + ' w-3/4'}
-          placeholder="경기도 가나시 나나1로 12 동글아파트 111동 1234호"
-          value={student.address}
-          onChange={onChangeStudentData}
-          disabled={!editMode}
-        />
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="school"
-          className={LABEL_CLASS}
-        >
-          학교 / 유치원
-        </label>
-        <input
-          type="text"
-          id="school"
-          name="school"
-          className={INPUT_CLASS}
-          placeholder="동글초등학교"
-          value={student.school}
-          onChange={onChangeStudentData}
-          disabled={!editMode}
-        />
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="experience"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          원더아트 스튜디오에 등록하기 전 미술 활동 경험
-        </label>
-        <textarea
-          id="experience"
-          name="experience"
-          className={TEXTAREA_CLASS}
-          value={student.experience}
-          onChange={onChangeStudentData}
-          disabled={!editMode}
-        ></textarea>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="reason"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          원더아트 스튜디오를 선택하신 이유
-        </label>
-        <textarea
-          id="reason"
-          name="reason"
-          className={TEXTAREA_CLASS + DEFAULT_SHOW_CLASS}
-          value={student.reason}
-          onChange={onChangeStudentData}
-          disabled
-        ></textarea>
-        <div className={DEFAULT_HIDDEN_CLASS}>
-          <RadioBtn
-            name="reason"
-            value="지인추천"
-            onChange={onChangeStudentData}
+        <div>
+          <p className="text-lg font-normal">학부모님이 가장 중요하다고 생각하는 미술활동</p>
+          <Select
+            disabled={!editMode}
+            {...register('importantActivity')}
           >
-            지인추천
-          </RadioBtn>
-          <RadioBtn
-            name="reason"
-            value="위치"
-            onChange={onChangeStudentData}
-          >
-            위치
-          </RadioBtn>
-          <RadioBtn
-            name="reason"
-            value="주변소문"
-            onChange={onChangeStudentData}
-          >
-            주변소문
-          </RadioBtn>
-          <RadioBtn
-            name="reason"
-            value="검색"
-            onChange={onChangeStudentData}
-          >
-            검색
-          </RadioBtn>
-          <RadioBtn
-            name="reason"
-            value="기타"
-            onChange={onChangeStudentData}
-          >
-            기타
-          </RadioBtn>
+            {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+              return (
+                <Option
+                  key={key}
+                  value={key}
+                >
+                  {value}
+                </Option>
+              );
+            })}
+          </Select>
         </div>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="importantActivity"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          학부모님이 가장 중요하다고 생각하는 미술 활동
-        </label>
-        <textarea
-          id="importantActivity"
-          name="importantActivity"
-          className={TEXTAREA_CLASS + (editMode ? ' hidden' : '')}
-          value={student.importantActivity}
-          onChange={onChangeStudentData}
-          disabled
-        ></textarea>
-        <div className={DEFAULT_HIDDEN_CLASS}>
-          <RadioBtn
-            name="importantActivity"
-            value="그리기"
-            onChange={onChangeStudentData}
+        <div>
+          <p className="text-lg font-normal">학생이 가장 흥미있어 하는 미술활동</p>
+          <Select
+            disabled={!editMode}
+            {...register('interestingActivity')}
           >
-            그리기
-          </RadioBtn>
-          <RadioBtn
-            name="importantActivity"
-            value="다양한 재료 수업"
-            onChange={onChangeStudentData}
-          >
-            다양한 재료 수업
-          </RadioBtn>
-          <RadioBtn
-            name="importantActivity"
-            value="명화 수업"
-            onChange={onChangeStudentData}
-          >
-            명화 수업
-          </RadioBtn>
-          <RadioBtn
-            name="importantActivity"
-            value="기법 수업"
-            onChange={onChangeStudentData}
-          >
-            기법 수업
-          </RadioBtn>
-          <RadioBtn
-            name="importantActivity"
-            value="기타"
-            onChange={onChangeStudentData}
-          >
-            기타
-          </RadioBtn>
+            {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+              return (
+                <Option
+                  key={key}
+                  value={key}
+                >
+                  {value}
+                </Option>
+              );
+            })}
+          </Select>
         </div>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="interestingActivity"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          학생이 가장 흥미있어하는 미술 활동
-        </label>
-        <textarea
-          id="interestingActivity"
-          name="interestingActivity"
-          className={TEXTAREA_CLASS + (editMode ? ' hidden' : '')}
-          value={student.interestingActivity}
-          onChange={onChangeStudentData}
-          disabled
-        ></textarea>
-        <div className={DEFAULT_HIDDEN_CLASS}>
-          <RadioBtn
-            name="interestingActivity"
-            value="그리기"
-            onChange={onChangeStudentData}
-          >
-            그리기
-          </RadioBtn>
-          <RadioBtn
-            name="interestingActivity"
-            value="다양한 재료 수업"
-            onChange={onChangeStudentData}
-          >
-            다양한 재료 수업
-          </RadioBtn>
-          <RadioBtn
-            name="interestingActivity"
-            value="명화 수업"
-            onChange={onChangeStudentData}
-          >
-            명화 수업
-          </RadioBtn>
-          <RadioBtn
-            name="interestingActivity"
-            value="기법 수업"
-            onChange={onChangeStudentData}
-          >
-            기법 수업
-          </RadioBtn>
-          <RadioBtn
-            name="interestingActivity"
-            value="기타"
-            onChange={onChangeStudentData}
-          >
-            기타
-          </RadioBtn>
+        <div>
+          <p className="text-lg font-normal">학생에 대해 특별히 알아야 하거나, 주의해야 할 점</p>
+          <Input
+            style={{ width: '100%', padding: '10px' }}
+            {...register('caution', { maxLength: 200 })}
+            disabled={!editMode}
+          />
         </div>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="caution"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          학생에 대해 특별히 알아야 하거나, 주의해야 할 점
-        </label>
-        <textarea
-          id="caution"
-          name="caution"
-          className={TEXTAREA_CLASS}
-          value={student.caution}
-          onChange={onChangeStudentData}
-          disabled={!editMode}
-        ></textarea>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="teacherMemo"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          선생님 메모
-        </label>
-        <textarea
-          id="teacherMemo"
-          name="teacherMemo"
-          className={TEXTAREA_CLASS}
-          value={student.teacherMemo}
-          onChange={onChangeStudentData}
-          disabled={!editMode}
-        ></textarea>
+        <div>
+          <p className="text-lg font-normal">선생님 메모</p>
+          <Input
+            style={{ width: '100%', padding: '10px' }}
+            {...register('teacherMemo', { maxLength: 200 })}
+            disabled={!editMode}
+          />
+        </div>
       </div>
       <div className="flex gap-20 justify-center">
+        {editMode ? <SubmitButton /> : <EditButton onClick={handleClick} />}
         <button
-          className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}
-          onClick={onClickEditMode}
-        >
-          {`${!editMode ? '수정하기' : '수정완료'}`}
-        </button>
-        <button className={BUTTON_CLASS + 'border-red-400 bg-red-400'}>{`${!editMode ? '뒤로' : '취소'}`}</button>
+          type="button"
+          onClick={() => {
+            if (editMode) {
+              setEditMode(false);
+            } else {
+              router.back();
+            }
+          }}
+          className={BUTTON_CLASS + 'border-red-400 bg-red-400'}
+        >{`${!editMode ? '뒤로' : '취소'}`}</button>
       </div>
     </form>
   );
 }
+
+const EditButton = ({ onClick }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+  return (
+    <button
+      className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}
+      onClick={onClick}
+    >
+      수정하기
+    </button>
+  );
+};
+
+const SubmitButton = () => {
+  return (
+    <button
+      className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}
+      type="submit"
+    >
+      수정완료
+    </button>
+  );
+};
+
+interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
+const FlexRow = ({ children, ...props }: DivProps) => {
+  return (
+    <div
+      className="flex justify-between gap-4"
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
+
+const FlexRowItem = ({ children, ...props }: DivProps) => {
+  return (
+    <div
+      className="flex gap-3 items-center w-full"
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
+
+const FlexColumnItem = ({ children, ...props }: DivProps) => {
+  return (
+    <div
+      className="flex items-center gap-2"
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
+
+interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
+const Label = ({ children, ...props }: LabelProps) => {
+  return (
+    <label
+      className="w-28 text-black text-lg font-normal"
+      {...props}
+    >
+      {children}
+    </label>
+  );
+};
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) => {
+  return (
+    <input
+      ref={ref}
+      className="flex h-11 bg-[#eee] py-2 flex-1 p-2"
+      {...props}
+    />
+  );
+});
+Input.displayName = 'Input';
+
+const Select = forwardRef<HTMLSelectElement, React.SelectHTMLAttributes<HTMLSelectElement>>(
+  ({ children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>, ref) => {
+    return (
+      <select
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </select>
+    );
+  },
+);
+Select.displayName = 'Select';
+
+const Option = ({ children, ...props }: React.OptionHTMLAttributes<HTMLOptionElement>) => {
+  return <option {...props}>{children}</option>;
+};

@@ -2,8 +2,9 @@
 
 import { getAge } from '@/helper/age';
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { type Student } from '@prisma/client';
 import StudentSearchInput from './StudentSearchInput';
+import { useRouter } from 'next/navigation';
+import { type Student } from '@prisma/client';
 
 const TABLE_BORDER = 'border border-black';
 
@@ -14,10 +15,11 @@ type StudentTableItem = Student & { guardian: { phone: string } };
 export default function StudentTable() {
   const [studentList, setStudentList] = useState<StudentTableItem[]>([]);
   const studentRef = useRef<StudentTableItem[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const getStudentList = async () => {
-      const studentList: StudentTableItem[] = await fetch('/students/api').then((res) => res.json());
+      const studentList: StudentTableItem[] = await fetch('/api/student').then((res) => res.json());
       setStudentList(studentList);
       studentRef.current = studentList;
     };
@@ -59,8 +61,11 @@ export default function StudentTable() {
           {studentList.map((student, index) => {
             return (
               <tr
-                className={`text-center ${index % 2 === 0 ? 'transparent' : 'bg-gray-EEE'}`}
+                onClick={() => {
+                  router.push(`/students/${student.id}`);
+                }}
                 key={student.id}
+                className={`text-center ${index % 2 === 0 ? 'transparent' : 'bg-gray-EEE'}`}
               >
                 <Td>{student.name}</Td>
                 <Td>만 {getAge(student.birthDate)}세</Td>
