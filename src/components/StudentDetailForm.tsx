@@ -230,7 +230,7 @@ export default function StudentDetailForm({
             <Label>학생명</Label>
             <Input
               disabled={!editMode}
-              {...register('name', { required: true })}
+              {...register('name', { required: true, maxLength: 5 })}
             />
           </FlexRowItem>
           <FlexRowItem>
@@ -276,7 +276,7 @@ export default function StudentDetailForm({
             <Label>보호자명</Label>
             <Input
               disabled={!editMode}
-              {...register('guardianName')}
+              {...register('guardianName', { maxLength: 5 })}
             />
           </FlexRowItem>
           <FlexRowItem>
@@ -296,7 +296,7 @@ export default function StudentDetailForm({
             <Input
               disabled={!editMode}
               style={{ flex: 1 }}
-              {...register('address', { required: true })}
+              {...register('address', { required: true, maxLength: 100 })}
             />
           </FlexRowItem>
         </FlexRow>
@@ -305,7 +305,7 @@ export default function StudentDetailForm({
             <Label>학교 / 유치원</Label>
             <Input
               disabled={!editMode}
-              {...register('school')}
+              {...register('school', { maxLength: 20 })}
             />
           </FlexRowItem>
           <FlexRowItem>
@@ -317,7 +317,7 @@ export default function StudentDetailForm({
           <Input
             disabled={!editMode}
             style={{ width: '100%', padding: '10px' }}
-            {...register('experience')}
+            {...(register('experience'), { maxLength: 100 })}
           />
         </div>
         <div>
@@ -378,7 +378,7 @@ export default function StudentDetailForm({
           <p className="text-lg font-normal">학생에 대해 특별히 알아야 하거나, 주의해야 할 점</p>
           <Input
             style={{ width: '100%', padding: '10px' }}
-            {...register('caution')}
+            {...register('caution', { maxLength: 200 })}
             disabled={!editMode}
           />
         </div>
