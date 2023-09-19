@@ -97,7 +97,7 @@ export default function StudentDetailForm({
       birthDate: moment(birthDate, 'YYYY.MM.DD').toDate(),
       day: day.map(Number).filter(Boolean),
       time: time.map(Number).filter(Boolean),
-      isRegister: isRegister === 'YES' ? true : false,
+      isRegister: isRegister === 'YES',
     };
     try {
       await fetch(`/api/student/${studentData?.id}`, {
