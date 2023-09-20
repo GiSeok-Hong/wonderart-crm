@@ -21,9 +21,10 @@ export async function POST(req: Request) {
     importantActivity,
     interestingActivity,
     caution,
-    agree,
+    isCopyrightAgree,
     guardianName,
     guardianPhone,
+    isRegister,
   } = data;
 
   try {
@@ -43,7 +44,8 @@ export async function POST(req: Request) {
         importantActivity,
         interestingActivity,
         caution,
-        agree,
+        isCopyrightAgree,
+        isRegister,
         guardian: {
           create: { name: guardianName, phone: guardianPhone },
         },
@@ -62,8 +64,8 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ message: '학원생 등록이 완료되었습니다..', success: true, status: 200 });
+    return NextResponse.json({ message: '학원생 등록이 완료되었습니다.', success: true, status: 201 });
   } catch {
-    return NextResponse.json({ message: '학원생 등록 실패', success: false, status: 400 });
+    return NextResponse.json({ message: '학원생 등록에 실패하였습니다.', success: false, status: 400 });
   }
 }

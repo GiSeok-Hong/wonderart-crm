@@ -31,8 +31,9 @@ model Student {
   importantActivity ArtActivity @default(DRAWING)
   interestingActivity ArtActivity @default(DRAWING)
   caution String? @db.VarChar(200)
-  agree Boolean
+  isCopyrightAgree Boolean @default(true)
   teacherMemo String? @db.VarChar(200)
+  isRegister Boolean @default(true)
 }
 
 model Guardian {
