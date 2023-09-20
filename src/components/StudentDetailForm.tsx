@@ -31,6 +31,7 @@ type UpdateStudentForm = {
   interestingActivity: string;
   teacherMemo: string | null;
   caution: string | null;
+  isRegister: 'YES' | 'NO';
 };
 export default function StudentDetailForm({
   studentData,
@@ -57,6 +58,7 @@ export default function StudentDetailForm({
       interestingActivity: studentData?.interestingActivity,
       teacherMemo: studentData?.teacherMemo,
       caution: studentData?.caution,
+      isRegister: studentData?.isRegister ? 'YES' : 'NO',
     },
   });
   const [editMode, setEditMode] = useState(false);
@@ -88,13 +90,14 @@ export default function StudentDetailForm({
   };
 
   const onSubmit: SubmitHandler<UpdateStudentForm> = async (data: UpdateStudentForm) => {
-    const { entranceDate, birthDate, day, time, ...rest } = data;
+    const { entranceDate, birthDate, day, time, isRegister, ...rest } = data;
     const body = {
       ...rest,
       entranceDate: moment(entranceDate, 'YYYY.MM.DD').toDate(),
       birthDate: moment(birthDate, 'YYYY.MM.DD').toDate(),
       day: day.map(Number).filter(Boolean),
       time: time.map(Number).filter(Boolean),
+      isRegister: isRegister === 'YES',
     };
     try {
       await fetch(`/api/student/${studentData?.id}`, {
@@ -310,6 +313,13 @@ export default function StudentDetailForm({
           </FlexRowItem>
           <FlexRowItem>
             <Label>등록 여부</Label>
+            <Select
+              disabled={!editMode}
+              {...register('isRegister', { required: true })}
+            >
+              <Option value={'YES'}>등록</Option>
+              <Option value={'NO'}>퇴원</Option>
+            </Select>
           </FlexRowItem>
         </FlexRow>
         <div>
