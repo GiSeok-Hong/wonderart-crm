@@ -23,10 +23,6 @@ const navList = [
     href: '/students',
     text: '학원생',
   },
-  {
-    href: '/teachers',
-    text: '선생님목록',
-  },
 ];
 
 export default function Header() {
@@ -77,6 +73,11 @@ export default function Header() {
                 <Link href={item.href}>{item.text}</Link>
               </li>
             ))}
+            {session.user.result.role === 'MASTER' && (
+              <li>
+                <Link href="/teachers">선생님목록</Link>
+              </li>
+            )}
             <SignInButton />
           </ul>
         </nav>
