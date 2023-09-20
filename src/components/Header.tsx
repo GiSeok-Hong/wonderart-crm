@@ -23,6 +23,10 @@ const navList = [
     href: '/students',
     text: '학원생',
   },
+  {
+    href: '/teachers',
+    text: '선생님목록',
+  },
 ];
 
 export default function Header() {
@@ -39,7 +43,7 @@ export default function Header() {
         href="/"
         className="flex items-center gap-2"
       >
-        <div className="w-[100px] h-[100px] relative">
+        <div className="w-[26px] h-[26px] relative">
           <Image
             src={`/images/logo-img.png`}
             alt="logo image"
@@ -48,7 +52,7 @@ export default function Header() {
             priority
           />
         </div>
-        <div className="w-[327px] h-[80px] relative">
+        <div className="w-[109px] h-[26px] relative">
           <Image
             src={`/images/logo-text.png`}
             alt="logo text image"

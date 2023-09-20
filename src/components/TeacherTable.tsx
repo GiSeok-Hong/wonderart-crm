@@ -1,30 +1,27 @@
-import { type ReactNode } from 'react';
+'use client';
+import { getTeacherList } from '@/service/teacher';
+import { Teacher } from '@prisma/client';
+import { useEffect, type ReactNode, useState } from 'react';
+import { createPortal } from 'react-dom';
+import plusIcon from '../../public/icons/plus.svg';
+import Image from 'next/image';
 
 const TABLE_BORDER = 'border border-black';
 
 const LABEL = ['이름', '이메일', '휴대폰번호'];
 
 export default function TeacherTable() {
-  const teacherList = [
-    {
-      id: 1,
-      name: '김원더',
-      email: 'e@gmail.com',
-      phone: '010-1234-5678',
-    },
-    {
-      id: 2,
-      name: '이원더',
-      email: 'e@gmail.com',
-      phone: '010-1234-5678',
-    },
-    {
-      id: 3,
-      name: '박원더',
-      email: 'e@gmail.com',
-      phone: '010-1234-5678',
-    },
-  ];
+  const [teacherList, setTeacherList] = useState<Teacher[]>([]);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    (async function () {
+      const teacherList = await fetch('/api/teacher').then((res) => res.json());
+      setTeacherList(teacherList);
+    })();
+  }, []);
+
   return (
     <div className="flex flex-col gap-5">
       <table className={`${TABLE_BORDER} border-collapse w-full mb-5`}>
@@ -50,6 +47,34 @@ export default function TeacherTable() {
           })}
         </tbody>
       </table>
+      {openModal &&
+        createPortal(
+          <>
+            <div className="fixed inset-0 bg-black opacity-50 z-10"></div>
+            <div className="fixed inset-0 flex justify-center items-center z-10">
+              <div className="bg-white w-[500px] h-[500px] flex justify-center items-center">
+                <h1>선생님 등록</h1>
+              </div>
+            </div>
+          </>,
+          document.body,
+        )}
+      {createPortal(
+        <button
+          className="fixed bottom-5 right-5 border rounded-full bg-primary-color text-white w-20 h-20 flex items-center justify-center text-4xl"
+          onClick={() => {
+            setOpenModal(true);
+          }}
+        >
+          <Image
+            src={plusIcon}
+            width={35}
+            height={35}
+            alt="plus"
+          />
+        </button>,
+        document.body,
+      )}
     </div>
   );
 }
