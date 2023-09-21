@@ -1,5 +1,4 @@
 'use client';
-import { getTeacherList } from '@/service/teacher';
 import { Teacher } from '@prisma/client';
 import { useEffect, type ReactNode, useState } from 'react';
 import { createPortal } from 'react-dom';
