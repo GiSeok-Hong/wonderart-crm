@@ -63,6 +63,7 @@ export default function TeacherTable() {
         <button
           className="fixed bottom-5 right-5 border rounded-full bg-primary-color text-white w-20 h-20 flex items-center justify-center text-4xl"
           onClick={() => {
+            console.log('미구현기능');
             setOpenModal(true);
           }}
         >
