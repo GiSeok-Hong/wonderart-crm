@@ -64,17 +64,17 @@ export default function Header() {
             {navList.map((item) => (
               <li
                 key={item.href}
-                className={
-                  'hover:text-primary-color' +
-                  (pathname === item.href ? ' text-primary-color font-bold' : '') +
-                  (item.href === '/list' && pathname.includes(`/list/`) ? ' text-primary-color font-bold' : '')
-                }
+                className={'hover:text-primary-color' + (pathname === item.href ? ' text-primary-color font-bold' : '')}
               >
                 <Link href={item.href}>{item.text}</Link>
               </li>
             ))}
             {session.user.result.role === 'MASTER' && (
-              <li>
+              <li
+                className={
+                  'hover:text-primary-color' + (pathname.includes('teachers') ? ' text-primary-color font-bold' : '')
+                }
+              >
                 <Link href="/teachers">선생님목록</Link>
               </li>
             )}
