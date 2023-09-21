@@ -46,36 +46,6 @@ export default function TeacherTable() {
           })}
         </tbody>
       </table>
-      {openModal &&
-        createPortal(
-          <>
-            <div className="fixed inset-0 bg-black opacity-50 z-10"></div>
-            <div className="fixed inset-0 flex justify-center items-center z-10">
-              <div className="bg-white w-[500px] h-[500px] flex justify-center items-center">
-                <h1>선생님 등록</h1>
-              </div>
-            </div>
-          </>,
-          document.body,
-        )}
-      {createPortal(
-        <button
-          className="fixed bottom-5 right-5 border rounded-full bg-primary-color text-white w-20 h-20 flex items-center justify-center text-4xl"
-          onClick={() => {
-            console.log('미구현기능');
-            return;
-            setOpenModal(true);
-          }}
-        >
-          <Image
-            src={plusIcon}
-            width={35}
-            height={35}
-            alt="plus"
-          />
-        </button>,
-        document.body,
-      )}
     </div>
   );
 }
