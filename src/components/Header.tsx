@@ -39,7 +39,7 @@ export default function Header() {
         href="/"
         className="flex items-center gap-2"
       >
-        <div className="w-[100px] h-[100px] relative">
+        <div className="w-[26px] h-[26px] relative">
           <Image
             src={`/images/logo-img.png`}
             alt="logo image"
@@ -48,7 +48,7 @@ export default function Header() {
             priority
           />
         </div>
-        <div className="w-[327px] h-[80px] relative">
+        <div className="w-[109px] h-[26px] relative">
           <Image
             src={`/images/logo-text.png`}
             alt="logo text image"
@@ -64,15 +64,20 @@ export default function Header() {
             {navList.map((item) => (
               <li
                 key={item.href}
-                className={
-                  'hover:text-primary-color' +
-                  (pathname === item.href ? ' text-primary-color font-bold' : '') +
-                  (item.href === '/list' && pathname.includes(`/list/`) ? ' text-primary-color font-bold' : '')
-                }
+                className={'hover:text-primary-color' + (pathname === item.href ? ' text-primary-color font-bold' : '')}
               >
                 <Link href={item.href}>{item.text}</Link>
               </li>
             ))}
+            {session.user.result.role === 'MASTER' && (
+              <li
+                className={
+                  'hover:text-primary-color' + (pathname.includes('teachers') ? ' text-primary-color font-bold' : '')
+                }
+              >
+                <Link href="/teachers">선생님목록</Link>
+              </li>
+            )}
             <SignInButton />
           </ul>
         </nav>

@@ -26,12 +26,6 @@ export default function StudentTable() {
     getStudentList();
   }, []);
 
-  const Th = ({ children }: { children: ReactNode }) => {
-    return <th className={`${TABLE_BORDER} p-2 bg-primary-color text-white`}>{children}</th>;
-  };
-  const Td = ({ children }: { children: ReactNode }) => {
-    return <td className={`${TABLE_BORDER} p-2`}>{children}</td>;
-  };
   return (
     <div className="flex flex-col gap-5">
       <StudentSearchInput
@@ -80,3 +74,10 @@ export default function StudentTable() {
     </div>
   );
 }
+
+const Th = ({ children }: { children: ReactNode }) => {
+  return <th className={`${TABLE_BORDER} p-2 bg-primary-color text-white`}>{children}</th>;
+};
+const Td = ({ children }: { children: ReactNode }) => {
+  return <td className={`${TABLE_BORDER} p-2`}>{children}</td>;
+};

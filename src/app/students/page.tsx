@@ -8,5 +8,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ListPage() {
-  return <StudentTable />;
+  return (
+    <>
+      <h2 className="text-bold text-2xl text-center mb-4">학생 목록</h2>
+      <StudentTable />
+    </>
+  );
 }
