@@ -1,9 +1,8 @@
 'use client';
 import { Teacher } from '@prisma/client';
 import { useEffect, type ReactNode, useState } from 'react';
-import { createPortal } from 'react-dom';
-import plusIcon from '../../public/icons/plus.svg';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
+const PlusButton = dynamic(() => import('@/components/PlusButton'), { ssr: false });
 
 const TABLE_BORDER = 'border border-black';
 
@@ -46,6 +45,7 @@ export default function TeacherTable() {
           })}
         </tbody>
       </table>
+      <PlusButton />
     </div>
   );
 }
