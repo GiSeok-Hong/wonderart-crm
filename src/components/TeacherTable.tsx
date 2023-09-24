@@ -3,15 +3,43 @@ import { Teacher } from '@prisma/client';
 import { useEffect, type ReactNode, useState } from 'react';
 import dynamic from 'next/dynamic';
 const PlusButton = dynamic(() => import('@/components/PlusButton'), { ssr: false });
+import Modal from 'react-modal';
 
 const TABLE_BORDER = 'border border-black';
 
 const LABEL = ['이름', '이메일', '휴대폰번호'];
 
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    height: '50%',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+};
+
+// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
+Modal.setAppElement('#modal-root');
+
 export default function TeacherTable() {
   const [teacherList, setTeacherList] = useState<Teacher[]>([]);
 
-  const [openModal, setOpenModal] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
 
   useEffect(() => {
     (async function () {
@@ -45,7 +73,25 @@ export default function TeacherTable() {
           })}
         </tbody>
       </table>
-      <PlusButton />
+      <PlusButton
+        onClick={() => {
+          openModal();
+        }}
+      />
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="flex justify-between items-center">
+          <h2 className="font-bold text-xl">선생님 등록</h2>
+          <button onClick={closeModal}>X</button>
+          <div className="">
+            <input type="text" />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

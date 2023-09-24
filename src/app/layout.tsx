@@ -134,6 +134,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main className="h-full px-10 py-5">{children}</main>
         </Providers>
+        <div id="modal-root"></div>
       </body>
     </html>
   );
