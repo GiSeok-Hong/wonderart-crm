@@ -6,6 +6,7 @@ const PlusButton = dynamic(() => import('@/components/PlusButton'), { ssr: false
 import Modal from 'react-modal';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { error } from 'console';
+import toast from 'react-hot-toast';
 
 const TABLE_BORDER = 'border border-black';
 
@@ -67,18 +68,29 @@ export default function TeacherTable() {
   }, []);
 
   const onSubmit: SubmitHandler<TForm> = async (data) => {
+    const toastId = `${data.email}`;
+    toast.loading('선생님 등록 중', { id: toastId });
     try {
-      await fetch('/api/teacher', {
+      console.log('에러');
+      const { ok } = await fetch('/api/teacher', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
-      fetchTeacherList();
-      closeModal();
+
+      if (ok) {
+        await fetchTeacherList();
+        closeModal();
+        toast.success('선생님 등록에 성공했습니다.');
+      } else {
+        toast.error('선생님 등록에 실패했습니다');
+      }
     } catch (error) {
-      alert('선생님 등록에 실패했습니다');
+      // toast.error('선생님 등록에 실패했습니다');
+    } finally {
+      toast.remove(toastId);
     }
   };
 

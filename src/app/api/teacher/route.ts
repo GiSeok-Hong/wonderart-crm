@@ -7,5 +7,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  return NextResponse.json(await createTeacher(await request.json()), { status: 201 })
+  const newTeacher = await createTeacher(await request.json())
+  return NextResponse.json(newTeacher, { status: 201 })
+
 };
