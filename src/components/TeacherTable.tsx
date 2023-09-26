@@ -4,6 +4,8 @@ import { useEffect, type ReactNode, useState } from 'react';
 import dynamic from 'next/dynamic';
 const PlusButton = dynamic(() => import('@/components/PlusButton'), { ssr: false });
 import Modal from 'react-modal';
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import { error } from 'console';
 
 const TABLE_BORDER = 'border border-black';
 
@@ -18,17 +20,30 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    height: '50%',
+    height: '250px',
   },
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 };
 
-// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
+type TForm = {
+  name: string;
+  email: string;
+  phone: string;
+};
+
 Modal.setAppElement('#modal-root');
 
 export default function TeacherTable() {
+  const { register, handleSubmit } = useForm<TForm>({
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+    },
+  });
+
   const [teacherList, setTeacherList] = useState<Teacher[]>([]);
 
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -47,6 +62,22 @@ export default function TeacherTable() {
       setTeacherList(teacherList);
     })();
   }, []);
+
+  const onSubmit: SubmitHandler<TForm> = async (data) => {
+    console.log(data);
+  };
+
+  const onError: SubmitErrorHandler<TForm> = (errors) => {
+    if (errors.name) {
+      alert('이름을 올바르게 입력해주세요');
+    }
+    if (errors.email) {
+      alert('email을 올바르게 입력해주세요');
+    }
+    if (errors.phone) {
+      alert('휴대폰 번호를 올바르게 입력해주세요');
+    }
+  };
 
   return (
     <div className="flex flex-col gap-5">
@@ -84,13 +115,66 @@ export default function TeacherTable() {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div className="flex justify-between items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit, onError)}
+          className="flex flex-col h-full justify-between items-center gap-2"
+        >
           <h2 className="font-bold text-xl">선생님 등록</h2>
-          <button onClick={closeModal}>X</button>
-          <div className="">
-            <input type="text" />
+          <div className="w-full flex justify-between gap-3">
+            <label
+              className="w-24"
+              htmlFor="name"
+            >
+              이름
+            </label>
+            <input
+              className="border border-black flex-1"
+              type="text"
+              {...register('name', { required: true, maxLength: 5 })}
+            />
           </div>
-        </div>
+          <div className="w-full flex justify-between gap-3">
+            <label
+              className="w-24"
+              htmlFor="email"
+            >
+              email
+            </label>
+            <input
+              className="border border-black flex-1"
+              type="text"
+              {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
+            />
+          </div>
+          <div className="w-full flex justify-between gap-3">
+            <label
+              className="w-24"
+              htmlFor="phone"
+            >
+              핸드폰번호
+            </label>
+            <input
+              className="border border-black flex-1"
+              type="text"
+              maxLength={11}
+              {...register('phone', { required: true, minLength: 11, maxLength: 11, pattern: /^[0-9]*$/ })}
+            />
+          </div>
+          <div className="flex flex-1 justify-center items-end gap-4">
+            <button
+              type="button"
+              className="border rounded-[10px] bg-white text-primary-color w-32 h-[40px]"
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              className="border rounded-[10px] bg-primary-color text-white w-32 h-[40px]"
+            >
+              저장
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );
