@@ -36,7 +36,7 @@ type TForm = {
 Modal.setAppElement('#modal-root');
 
 export default function TeacherTable() {
-  const { register, handleSubmit } = useForm<TForm>({
+  const { register, handleSubmit, reset } = useForm<TForm>({
     defaultValues: {
       name: '',
       email: '',
@@ -50,21 +50,36 @@ export default function TeacherTable() {
 
   const closeModal = () => {
     setIsOpen(false);
+    reset();
   };
 
   const openModal = () => {
     setIsOpen(true);
   };
 
+  const fetchTeacherList = async () => {
+    const teacherList = await fetch('/api/teacher').then((res) => res.json());
+    setTeacherList(teacherList);
+  };
+
   useEffect(() => {
-    (async function () {
-      const teacherList = await fetch('/api/teacher').then((res) => res.json());
-      setTeacherList(teacherList);
-    })();
+    fetchTeacherList();
   }, []);
 
   const onSubmit: SubmitHandler<TForm> = async (data) => {
-    console.log(data);
+    try {
+      await fetch('/api/teacher', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      fetchTeacherList();
+      closeModal();
+    } catch (error) {
+      alert('선생님 등록에 실패했습니다');
+    }
   };
 
   const onError: SubmitErrorHandler<TForm> = (errors) => {
@@ -130,6 +145,7 @@ export default function TeacherTable() {
             <input
               className="border border-black flex-1"
               type="text"
+              maxLength={5}
               {...register('name', { required: true, maxLength: 5 })}
             />
           </div>
@@ -143,6 +159,7 @@ export default function TeacherTable() {
             <input
               className="border border-black flex-1"
               type="text"
+              maxLength={50}
               {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
             />
           </div>
@@ -164,6 +181,7 @@ export default function TeacherTable() {
             <button
               type="button"
               className="border rounded-[10px] bg-white text-primary-color w-32 h-[40px]"
+              onClick={closeModal}
             >
               취소
             </button>
