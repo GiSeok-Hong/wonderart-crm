@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 const PlusButton = dynamic(() => import('@/components/PlusButton'), { ssr: false });
 import Modal from 'react-modal';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
-import { error } from 'console';
 import toast from 'react-hot-toast';
 
 const TABLE_BORDER = 'border border-black';
@@ -71,7 +70,6 @@ export default function TeacherTable() {
     const toastId = `${data.email}`;
     toast.loading('선생님 등록 중', { id: toastId });
     try {
-      console.log('에러');
       const { ok } = await fetch('/api/teacher', {
         method: 'POST',
         headers: {
