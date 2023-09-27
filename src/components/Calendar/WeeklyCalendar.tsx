@@ -198,17 +198,6 @@ export default function WeeklyCalendar({ studentsData }: { studentsData: Student
         onEventResize={resizeEvent}
         resizable
       />
-      {/* <div className="border-[1px] border-black mt-2 p-2">  
-        {Object.entries(counters).map(([name, count]) => (
-          <div
-            draggable="true"
-            key={name}
-            onDragStart={() => handleDragStart({ title: formatName(name, count), name })}
-          >
-            {formatName(name, count)}
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 }
