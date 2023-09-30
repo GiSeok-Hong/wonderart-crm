@@ -7,7 +7,7 @@ import Image from 'next/image';
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {}
 export default function PlusButton(props: Props) {
   return createPortal(
-    <div className="fixed bottom-5 right-5">
+    <div className="fixed bottom-5 right-10">
       <button
         {...props}
         className="w-16 h-16 rounded-full bg-primary-color text-white flex justify-center items-center"
