@@ -5,12 +5,12 @@ export async function getTeacherList() {
   return teacherList;
 }
 
-export async function createTeacher(data: { name: string, email: string, phone: string }) {
+export async function createTeacher(data: { name: string, email: string, phone: string, password: string }) {
   if (!data) {
     throw new Error("데이터가 없습니다.");
   }
 
-  const { email, name, phone } = data;
+  const { email, name, phone, password } = data;
 
   const isExist = await prisma.teacher.findUnique({
     where: {
@@ -26,7 +26,7 @@ export async function createTeacher(data: { name: string, email: string, phone: 
         name,
         email,
         phone,
-        password: '1234',
+        password,
       },
     });
     return teacher;

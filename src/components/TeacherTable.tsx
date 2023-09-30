@@ -29,6 +29,7 @@ const customStyles = {
 
 type TForm = {
   name: string;
+  password: string;
   email: string;
   phone: string;
 };
@@ -39,6 +40,7 @@ export default function TeacherTable() {
   const { register, handleSubmit, reset } = useForm<TForm>({
     defaultValues: {
       name: '',
+      password: '',
       email: '',
       phone: '',
     },
@@ -102,6 +104,13 @@ export default function TeacherTable() {
     if (errors.phone) {
       alert('휴대폰 번호를 올바르게 입력해주세요');
     }
+    if (errors.password) {
+      if (errors.password.type === 'minLength') {
+        alert('비밀번호를 4자 이상 입력해주세요');
+        return;
+      }
+      alert('비밀번호를 올바르게 입력해주세요');
+    }
   };
 
   return (
@@ -162,6 +171,20 @@ export default function TeacherTable() {
           <div className="w-full flex justify-between gap-3">
             <label
               className="w-24"
+              htmlFor="password"
+            >
+              password
+            </label>
+            <input
+              className="border border-black flex-1"
+              type="password"
+              maxLength={20}
+              {...register('password', { required: true, maxLength: 20, minLength: 4 })}
+            />
+          </div>
+          <div className="w-full flex justify-between gap-3">
+            <label
+              className="w-24"
               htmlFor="email"
             >
               email
@@ -169,7 +192,7 @@ export default function TeacherTable() {
             <input
               className="border border-black flex-1"
               type="text"
-              maxLength={50}
+              maxLength={30}
               {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
             />
           </div>
