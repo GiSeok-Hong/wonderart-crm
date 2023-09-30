@@ -89,7 +89,7 @@ button.rbc-input::-moz-focus-inner {
   font-weight: bold;
   font-size: 90%;
   min-height: 0;
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
 }
 .rbc-header + .rbc-header {
   border-left: 1px solid #ddd;
@@ -298,8 +298,10 @@ button.rbc-input::-moz-focus-inner {
   outline: 5px auto #3b99fc;
 }
 
+/* 수정: display: none - 시간 보이지 않기 위해 추가 */
 .rbc-event-label {
   font-size: 80%;
+  display: none;
 }
 
 .rbc-event-overlaps {
@@ -744,6 +746,12 @@ button.rbc-input::-moz-focus-inner {
 .rbc-time-view .rbc-allday-cell + .rbc-allday-cell {
   border-left: 1px solid #ddd;
 }
+
+/* 수정: .rbc-allday-cell display:none 추가 */
+.rbc-allday-cell {
+  display: none;
+}
+
 .rbc-time-view .rbc-allday-events {
   position: relative;
   z-index: 4;
@@ -766,7 +774,7 @@ button.rbc-input::-moz-focus-inner {
   -ms-flex-direction: row;
   flex-direction: row;
   /* 수정: height 값 추가 */
-  height: 65px;
+  height: 21px;
 }
 .rbc-time-header.rbc-overflowing {
   border-right: 1px solid #ddd;
