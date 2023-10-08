@@ -64,7 +64,7 @@ model ScheduleMemo {
 
 model Class {
   id Int @id @default(autoincrement())
-  classTime DateTime @default(now()) @db.Time()
+  classDate DateTime @db.Date
   student StudentOnClass[]
 }
 
@@ -73,7 +73,7 @@ model StudentOnClass {
   studentId Int
   class Class @relation(fields: [classId], references: [id])
   classId Int
-
+  isAttendance Boolean @default(false)
   @@id([studentId, classId])
 }
 
