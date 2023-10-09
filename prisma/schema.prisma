@@ -65,7 +65,7 @@ model ScheduleMemo {
 model Class {
   id Int @id @default(autoincrement())
   classDate DateTime @db.Date
-  student StudentOnClass[]
+  studentList StudentOnClass[]
 }
 
 model StudentOnClass {
