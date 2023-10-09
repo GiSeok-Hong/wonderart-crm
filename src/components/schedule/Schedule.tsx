@@ -1,8 +1,10 @@
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
+import TableTimeColumn from './TableTimeColumn';
 
 export default function schedule() {
   return (
     <div className="w-[600px] box-border">
+      {/* 스케쥴 툴바 */}
       <div className="schedule-toolbar h-[30px] mb-[10px] flex justify-between items-center">
         <div>
           <AiOutlineArrowLeft />
@@ -12,8 +14,11 @@ export default function schedule() {
           <AiOutlineArrowRight />
         </div>
       </div>
-      <div className="schedule-timeview">
-        <div className="timeview-header  flex border-t border-black text-center h-[30px]">
+
+      {/* 스케쥴 테이블 */}
+      <div className="schedule-table">
+        {/* 테이블 헤더 */}
+        <div className="schedule-table-header  flex border-t border-black text-center h-[30px]">
           <div className="w-[80px]  border-black border-x">빈 칸</div>
           <div className="w-[104px]  border-black bg-primary-color border-r">9 월</div>
           <div className="w-[104px]  border-black bg-primary-color border-r">10 화</div>
@@ -22,21 +27,12 @@ export default function schedule() {
           <div className="w-[104px]  border-black bg-primary-color border-r">13 금</div>
         </div>
 
-        <div className="timeview-content flex ">
-          <div className="timeview-time w-[80px]  border-black border-x border-b">
-            <div className="h-[180px] flex items-center justify-center border-black  border-t">오후 2시</div>
-            <div className="h-[180px] flex items-center justify-center border-black  border-t bg-gray-100">
-              오후 3시
-            </div>
-            <div className="h-[180px] flex items-center justify-center border-black  border-t">오후 4시</div>
-            <div className="h-[180px] flex items-center justify-center border-black  border-t bg-gray-100">
-              오후 5시
-            </div>
-            <div className="h-[180px] flex items-center justify-center border-black  border-t">오후 6시</div>
-          </div>
-
+        {/* 테이블 컨텐트 */}
+        <div className="schedule-table-content flex ">
+          {/* table-time-column */}
+          <TableTimeColumn />
           {/* 월 */}
-          <div className="studmentlist-mon w-[104px] box-boder border-r border-t  border-black">
+          <div className="schedule-table-student-list-mon w-[104px] box-boder border-r border-t  border-black">
             <div className="time-14 h-[180px] border-black border-b">
               <div className="h-[30px]">학생일, 7세</div>
               <div className="h-[30px]">학생이, 7세</div>
