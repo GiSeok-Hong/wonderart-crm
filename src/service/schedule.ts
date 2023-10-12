@@ -1,6 +1,6 @@
 import { prisma } from '../../lib/prisma';
 
-export async function getScheduleList() {
+export async function getAllScheduleList() {
   const scheduleList = await prisma.class.findMany({
     include: {
       studentList: {
