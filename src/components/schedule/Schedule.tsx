@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { type Class, type Student } from '@prisma/client';
 import moment from 'moment';
 import { getAge } from '@/helper/age';
+import DefaultStudentList from './DefaultStudentList';
 
 type StudentItem = { student: Student } & { isAttendance: boolean };
 type ScheduleItem = Class & { studentList: StudentItem[] };
@@ -29,10 +30,10 @@ export default function Schedule() {
   const fetchAllScheduleList = async () => {
     const scheduleList: ScheduleItem[] = await fetch(`/api/schedule`).then((res) => res.json());
     setAllScheduleList(scheduleList);
-    calculateWeeklyScheduleList(scheduleList);
+    calculateWeeklyScheduleList(scheduleList, startDate);
   };
 
-  const calculateWeeklyScheduleList = (scheduleList: ScheduleItem[]) => {
+  const calculateWeeklyScheduleList = (scheduleList: ScheduleItem[], startDate: string) => {
     const endDate = moment(startDate).add(4, 'days').format('YYYY-MM-DD');
 
     const result = scheduleList?.filter((schedule) =>
@@ -40,6 +41,17 @@ export default function Schedule() {
     );
 
     setWeeklyScheduleList(result);
+  };
+
+  const changeWeekOnClick = (action: 'PREV' | 'NEXT') => {
+    let newStartDate: string;
+    if (action === 'PREV') {
+      newStartDate = moment(startDate).subtract(1, 'weeks').format('YYYY-MM-DD');
+    } else {
+      newStartDate = moment(startDate).add(1, 'weeks').format('YYYY-MM-DD');
+    }
+    setStartDate(newStartDate);
+    calculateWeeklyScheduleList(allScheduleList, newStartDate);
   };
 
   useEffect(() => {
@@ -50,11 +62,11 @@ export default function Schedule() {
     <div className="w-[600px] box-border">
       {/* 스케쥴 툴바 */}
       <div className="schedule-toolbar h-[30px] mb-[10px] flex justify-between items-center">
-        <div>
+        <div onClick={() => changeWeekOnClick('PREV')}>
           <AiOutlineArrowLeft />
         </div>
         <h1 className="text-center">{moment(startDate).format('MM월')}</h1>
-        <div>
+        <div onClick={() => changeWeekOnClick('NEXT')}>
           <AiOutlineArrowRight />
         </div>
       </div>
@@ -80,120 +92,126 @@ export default function Schedule() {
         <div className="schedule-table-content flex ">
           <TableTimeColumn />
 
-          {weeklyScheduleList?.map((schedule, i) => {
-            return (
-              <div
-                key={schedule?.id}
-                className="schedule-table-student-list w-[104px] box-boder border-r border-t  border-black text-sm"
-              >
-                {/* 2시 수업 */}
-                <div className="h-[180px] border-black border-b">
-                  {schedule?.studentList
-                    .filter((studentItem) => {
-                      const { student } = studentItem;
-                      const classIndex = student?.day?.findIndex((day) => day === i + 1);
-                      return student?.time[classIndex] === 14;
-                    })
-                    .map((studentItem) => {
-                      const { student, isAttendance } = studentItem;
-                      // TODO: isAttendance input checkbox 형식으로 작업 필요
-                      return (
-                        <div
-                          key={student?.id}
-                          className="h-[30px]"
-                        >
-                          {student?.name}, {getAge(student?.birthDate)}세
-                        </div>
-                      );
-                    })}
-                </div>
+          {weeklyScheduleList.length === 0 ? (
+            <DefaultStudentList />
+          ) : (
+            <>
+              {weeklyScheduleList?.map((schedule, i) => {
+                return (
+                  <div
+                    key={schedule?.id}
+                    className="schedule-table-student-list w-[104px] box-boder border-r border-t  border-black text-sm"
+                  >
+                    {/* 2시 수업 */}
+                    <div className="h-[180px] border-black border-b">
+                      {schedule?.studentList
+                        .filter((studentItem) => {
+                          const { student } = studentItem;
+                          const classIndex = student?.day?.findIndex((day) => day === i + 1);
+                          return student?.time[classIndex] === 14;
+                        })
+                        .map((studentItem) => {
+                          const { student, isAttendance } = studentItem;
+                          // TODO: isAttendance input checkbox 형식으로 작업 필요
+                          return (
+                            <div
+                              key={student?.id}
+                              className="h-[30px]"
+                            >
+                              {student?.name}, {getAge(student?.birthDate)}세
+                            </div>
+                          );
+                        })}
+                    </div>
 
-                {/* 3시 수업 */}
-                <div className="h-[180px] border-black border-b bg-gray-100">
-                  {schedule?.studentList
-                    .filter((studentItem) => {
-                      const { student } = studentItem;
-                      const classIndex = student?.day?.findIndex((day) => day === i + 1);
-                      return student?.time[classIndex] === 15;
-                    })
-                    .map((studentItem) => {
-                      const { student } = studentItem;
-                      return (
-                        <div
-                          key={student?.id}
-                          className="h-[30px]"
-                        >
-                          {student?.name}, {getAge(student?.birthDate)}세
-                        </div>
-                      );
-                    })}
-                </div>
+                    {/* 3시 수업 */}
+                    <div className="h-[180px] border-black border-b bg-gray-100">
+                      {schedule?.studentList
+                        .filter((studentItem) => {
+                          const { student } = studentItem;
+                          const classIndex = student?.day?.findIndex((day) => day === i + 1);
+                          return student?.time[classIndex] === 15;
+                        })
+                        .map((studentItem) => {
+                          const { student } = studentItem;
+                          return (
+                            <div
+                              key={student?.id}
+                              className="h-[30px]"
+                            >
+                              {student?.name}, {getAge(student?.birthDate)}세
+                            </div>
+                          );
+                        })}
+                    </div>
 
-                {/* 4시 수업 */}
-                <div className="h-[180px] border-black border-b">
-                  {schedule?.studentList
-                    .filter((studentItem) => {
-                      const { student } = studentItem;
-                      const classIndex = student?.day?.findIndex((day) => day === i + 1);
-                      return student?.time[classIndex] === 16;
-                    })
-                    .map((studentItem) => {
-                      const { student } = studentItem;
-                      return (
-                        <div
-                          key={student?.id}
-                          className="h-[30px]"
-                        >
-                          {student?.name}, {getAge(student?.birthDate)}세
-                        </div>
-                      );
-                    })}
-                </div>
+                    {/* 4시 수업 */}
+                    <div className="h-[180px] border-black border-b">
+                      {schedule?.studentList
+                        .filter((studentItem) => {
+                          const { student } = studentItem;
+                          const classIndex = student?.day?.findIndex((day) => day === i + 1);
+                          return student?.time[classIndex] === 16;
+                        })
+                        .map((studentItem) => {
+                          const { student } = studentItem;
+                          return (
+                            <div
+                              key={student?.id}
+                              className="h-[30px]"
+                            >
+                              {student?.name}, {getAge(student?.birthDate)}세
+                            </div>
+                          );
+                        })}
+                    </div>
 
-                {/* 5시 수업 */}
-                <div className="h-[180px] border-black border-b bg-gray-100">
-                  {schedule?.studentList
-                    .filter((studentItem) => {
-                      const { student } = studentItem;
-                      const classIndex = student?.day?.findIndex((day) => day === i + 1);
-                      return student?.time[classIndex] === 17;
-                    })
-                    .map((studentItem) => {
-                      const { student } = studentItem;
-                      return (
-                        <div
-                          key={student?.id}
-                          className="h-[30px]"
-                        >
-                          {student?.name}, {getAge(student?.birthDate)}세
-                        </div>
-                      );
-                    })}
-                </div>
+                    {/* 5시 수업 */}
+                    <div className="h-[180px] border-black border-b bg-gray-100">
+                      {schedule?.studentList
+                        .filter((studentItem) => {
+                          const { student } = studentItem;
+                          const classIndex = student?.day?.findIndex((day) => day === i + 1);
+                          return student?.time[classIndex] === 17;
+                        })
+                        .map((studentItem) => {
+                          const { student } = studentItem;
+                          return (
+                            <div
+                              key={student?.id}
+                              className="h-[30px]"
+                            >
+                              {student?.name}, {getAge(student?.birthDate)}세
+                            </div>
+                          );
+                        })}
+                    </div>
 
-                {/* 6시 수업 */}
-                <div className="h-[180px] border-black border-b">
-                  {schedule?.studentList
-                    .filter((studentItem) => {
-                      const { student } = studentItem;
-                      const classIndex = student?.day?.findIndex((day) => day === i + 1);
-                      return student?.time[classIndex] === 18;
-                    })
-                    .map((studentItem) => {
-                      const { student } = studentItem;
-                      return (
-                        <div
-                          key={student?.id}
-                          className="h-[30px]"
-                        >
-                          {student?.name}, {getAge(student?.birthDate)}세
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
-            );
-          })}
+                    {/* 6시 수업 */}
+                    <div className="h-[180px] border-black border-b">
+                      {schedule?.studentList
+                        .filter((studentItem) => {
+                          const { student } = studentItem;
+                          const classIndex = student?.day?.findIndex((day) => day === i + 1);
+                          return student?.time[classIndex] === 18;
+                        })
+                        .map((studentItem) => {
+                          const { student } = studentItem;
+                          return (
+                            <div
+                              key={student?.id}
+                              className="h-[30px]"
+                            >
+                              {student?.name}, {getAge(student?.birthDate)}세
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          )}
         </div>
       </div>
     </div>
