@@ -5,7 +5,8 @@ import { ScheduleMemo } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 
 const TEXT_CLASS = `bg-gray-EEE p-2 outline-primary-color resize-none  h-[180px] w-[150px] block border-[1px] border-white`;
-const BUTTON_CLASS = 'font-bold rounded-2xl text-white hover:opacity-50 h-[30px] px-3 ';
+const BUTTON_CLASS =
+  'font-bold rounded-2xl text-white hover:opacity-50 h-[30px] px-3 flex justify-center items-center ';
 
 export default function ScheduleMemos(allMemos: ScheduleMemo) {
   const { register, handleSubmit } = useForm<ScheduleMemo>({

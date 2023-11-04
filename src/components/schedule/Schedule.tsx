@@ -81,7 +81,7 @@ export default function Schedule() {
             return (
               <div
                 key={i}
-                className="w-[104px]  border-black bg-primary-color border-r"
+                className="w-[104px]  border-black bg-primary-color border-r flex justify-center items-center"
               >
                 {moment(startDate)?.add(i, 'days').format(`${day} (D일)`)}
               </div>
@@ -117,7 +117,7 @@ export default function Schedule() {
                           return (
                             <div
                               key={student?.id}
-                              className="h-[30px]"
+                              className="h-[30px] pl-1"
                             >
                               {student?.name}, {getAge(student?.birthDate)}세
                             </div>
@@ -138,7 +138,7 @@ export default function Schedule() {
                           return (
                             <div
                               key={student?.id}
-                              className="h-[30px]"
+                              className="h-[30px] pl-1"
                             >
                               {student?.name}, {getAge(student?.birthDate)}세
                             </div>
@@ -159,7 +159,7 @@ export default function Schedule() {
                           return (
                             <div
                               key={student?.id}
-                              className="h-[30px]"
+                              className="h-[30px] pl-1"
                             >
                               {student?.name}, {getAge(student?.birthDate)}세
                             </div>
@@ -180,7 +180,7 @@ export default function Schedule() {
                           return (
                             <div
                               key={student?.id}
-                              className="h-[30px]"
+                              className="h-[30px] pl-1"
                             >
                               {student?.name}, {getAge(student?.birthDate)}세
                             </div>
@@ -201,7 +201,7 @@ export default function Schedule() {
                           return (
                             <div
                               key={student?.id}
-                              className="h-[30px]"
+                              className="h-[30px] pl-1"
                             >
                               {student?.name}, {getAge(student?.birthDate)}세
                             </div>
