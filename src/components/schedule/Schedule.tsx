@@ -66,7 +66,7 @@ export default function Schedule() {
         <div onClick={() => changeWeekOnClick('PREV')}>
           <AiOutlineArrowLeft />
         </div>
-        <h1 className="text-center">{moment(startDate).format('MM월')}</h1>
+        <h1 className="text-center text-xl font-bold">{moment(startDate).format('MM월')}</h1>
         <div onClick={() => changeWeekOnClick('NEXT')}>
           <AiOutlineArrowRight />
         </div>
