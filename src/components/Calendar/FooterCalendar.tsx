@@ -11,7 +11,7 @@ export default function FooterCalendar() {
   return (
     <Calendar
       localizer={localizer}
-      style={{ height: 200 }}
+      style={{ height: 200, width: 215 }}
       components={{ toolbar: FooterCalendarToolbar }}
     />
   );

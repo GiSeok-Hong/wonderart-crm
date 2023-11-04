@@ -1,6 +1,6 @@
-import FooterCalendar from '@/components/Calendar/FooterCalendar';
-import ScheduleTextarea from '@/components/ScheduleTextarea';
+import ScheduleMemos from '@/components/ScheduleMemos';
 import Schedule from '@/components/schedule/Schedule';
+import { getAllScheduleMemo } from '@/service/scheduleMemo';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,30 +9,12 @@ export const metadata: Metadata = {
 };
 
 export default async function SchedulePage() {
+  const allMemos = await getAllScheduleMemo();
 
   return (
-    <div>
-      <div className="flex justify-between gap-2 mb-5">
-        <Schedule />
-        <div className="mt-[40px] pt-[30px] box-border">
-          <ScheduleTextarea />
-          <ScheduleTextarea />
-          <ScheduleTextarea />
-          <ScheduleTextarea />
-          <ScheduleTextarea />
-        </div>
-      </div>
-      <div className="flex justify-between gap-2 box-border">
-        <FooterCalendar />
-        <textarea
-          name=""
-          id=""
-          cols={30}
-          rows={8}
-          className="bg-gray-EEE p-2 outline-primary-color resize-none w-2/3 h-[200px] mb-10 "
-          placeholder="노트"
-        />
-      </div>
+    <div className="flex justify-between mb-5 relative">
+      <Schedule />
+      <ScheduleMemos {...allMemos[0]} />
     </div>
   );
 }

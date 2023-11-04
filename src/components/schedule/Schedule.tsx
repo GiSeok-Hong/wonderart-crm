@@ -7,6 +7,7 @@ import { type Class, type Student } from '@prisma/client';
 import moment from 'moment';
 import { getAge } from '@/helper/age';
 import DefaultStudentList from './DefaultStudentList';
+import FooterCalendar from '../Calendar/FooterCalendar';
 
 type StudentItem = { student: Student } & { isAttendance: boolean };
 type ScheduleItem = Class & { studentList: StudentItem[] };
@@ -72,7 +73,7 @@ export default function Schedule() {
       </div>
 
       {/* 스케쥴 테이블 */}
-      <div className="schedule-table">
+      <div className="schedule-table mb-5">
         {/* 테이블 헤더 */}
         <div className="schedule-table-header  flex border-t border-black text-center h-[30px]">
           <div className="w-[80px]  border-black border-x"></div>
@@ -214,6 +215,8 @@ export default function Schedule() {
           )}
         </div>
       </div>
+
+      <FooterCalendar />
     </div>
   );
 }
