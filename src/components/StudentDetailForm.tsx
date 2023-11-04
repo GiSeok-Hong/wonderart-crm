@@ -240,8 +240,7 @@ export default function StudentDetailForm({
             <Label>학생 연락처</Label>
             <Input
               disabled={!editMode}
-              {...(register('phone'),
-              {
+              {...register('phone', {
                 minLength: 11,
                 maxLength: 11,
               })}
@@ -327,7 +326,7 @@ export default function StudentDetailForm({
           <Input
             disabled={!editMode}
             style={{ width: '100%', padding: '10px' }}
-            {...(register('experience'), { maxLength: 100 })}
+            {...register('experience', { maxLength: 100 })}
           />
         </div>
         <div>
