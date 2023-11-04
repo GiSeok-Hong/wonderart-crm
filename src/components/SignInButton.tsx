@@ -8,7 +8,7 @@ export default function SignInButton() {
   if (session && session.user) {
     return (
       <button
-        className="rounded-xl border bg-red-300 px-4"
+        className="rounded-xl bg-yellow-100 border-yellow-100 border px-4 hover:text-yellow-300 hover:bg-white "
         onClick={() => signOut()}
       >
         로그아웃
@@ -18,7 +18,7 @@ export default function SignInButton() {
 
   return (
     <button
-      className="rounded-xl  bg-primary-color px-4"
+      className="rounded-xl  bg-primary-color border-primary-color border px-4 hover:text-primary-color hover:bg-white "
       onClick={() => signIn()}
     >
       로그인
