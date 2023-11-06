@@ -39,7 +39,7 @@ export default function Header() {
         href="/"
         className="flex items-center gap-2"
       >
-        <div className="w-[26px] h-[26px] relative">
+        <div className="w-[50px] h-[50px] relative">
           <Image
             src={`/images/logo-img.png`}
             alt="logo image"
@@ -48,7 +48,7 @@ export default function Header() {
             priority
           />
         </div>
-        <div className="w-[109px] h-[26px] relative">
+        <div className="w-[170px] h-[45px] relative">
           <Image
             src={`/images/logo-text.png`}
             alt="logo text image"
@@ -60,7 +60,7 @@ export default function Header() {
       </Link>
       {session && session.user ? (
         <nav>
-          <ul className="flex gap-4 items-center text-xl min-w-max">
+          <ul className="flex gap-4 items-center text-lg min-w-max">
             {navList.map((item) => (
               <li
                 key={item.href}
@@ -83,7 +83,7 @@ export default function Header() {
         </nav>
       ) : (
         <nav>
-          <ul className="flex gap-4 items-center text-xl min-w-max">
+          <ul className="flex gap-4 items-center text-lg min-w-max">
             <li
               className={
                 'hover:text-primary-color' + (pathname === navList[0].href ? ' text-primary-color font-bold' : '')

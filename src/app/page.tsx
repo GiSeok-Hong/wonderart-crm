@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <HomeImgCarousel />
-      <div className="mt-12 text-gray-700 text-base">
+      <div className="mt-12 mb-5 text-gray-700 text-base">
         <p className="text-2xl font-bold">안녕하세요. 원더아트 스튜디오 원장 ‘전수진’ 입니다.</p>
         <br />
         <br />

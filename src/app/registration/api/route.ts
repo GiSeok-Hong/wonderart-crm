@@ -49,18 +49,6 @@ export async function POST(req: Request) {
         guardian: {
           create: { name: guardianName, phone: guardianPhone },
         },
-        // TODO: 학생 등록 할 때 알맞은 수업 생성 되도록
-        class: {
-          create: [
-            {
-              class: {
-                create: {
-                  classTime: new Date(),
-                },
-              },
-            },
-          ],
-        },
       },
     });
 

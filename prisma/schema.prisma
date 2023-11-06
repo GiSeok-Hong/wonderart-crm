@@ -54,18 +54,18 @@ model Teacher {
 
 model ScheduleMemo {
   id Int @id @default(autoincrement())
-  topMemo String? @db.VarChar(1000)
   memo1 String? @db.VarChar(1000)
   memo2 String? @db.VarChar(1000)
   memo3 String? @db.VarChar(1000)
   memo4 String? @db.VarChar(1000)
   memo5 String? @db.VarChar(1000)
+  memo6 String? @db.VarChar(1000)
 }
 
 model Class {
   id Int @id @default(autoincrement())
-  classTime DateTime @default(now()) @db.Time()
-  student StudentOnClass[]
+  classDate DateTime @db.Date
+  studentList StudentOnClass[]
 }
 
 model StudentOnClass {
@@ -73,7 +73,7 @@ model StudentOnClass {
   studentId Int
   class Class @relation(fields: [classId], references: [id])
   classId Int
-
+  isAttendance Boolean @default(false)
   @@id([studentId, classId])
 }
 
