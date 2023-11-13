@@ -1,6 +1,6 @@
 import { BsFillCaretLeftFill, BsFillCaretRightFill } from 'react-icons/bs';
 
-export default function HeaderCalendarToolbar(props: { onNavigate: Function; date: Date }) {
+export default function FooterCalendarToolbar(props: { onNavigate: Function; date: Date }) {
   const { date, onNavigate } = props;
 
   const navigate = (action: string) => {

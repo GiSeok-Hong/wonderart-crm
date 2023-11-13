@@ -12,10 +12,93 @@ datasource db {
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
-// 임시 모델
+model Student {
+  id Int @id @default(autoincrement())
+  entranceDate DateTime @default(now()) @db.Date
+  class StudentOnClass[]
+  day Int[]
+  time Int[]
+  name String @db.VarChar(5)
+  phone String? @db.Char(11)
+  birthDate DateTime @db.Date
+  sex Sex @default(MALE)
+  guardian Guardian @relation(fields: [guardianId], references: [id])
+  guardianId Int
+  address String @db.VarChar(100)
+  school String? @db.VarChar(20)
+  experience String? @db.VarChar(100)
+  reason ReasonForChoosing @default(RECOMMENDED)
+  importantActivity ArtActivity @default(DRAWING)
+  interestingActivity ArtActivity @default(DRAWING)
+  caution String? @db.VarChar(200)
+  isCopyrightAgree Boolean @default(true)
+  teacherMemo String? @db.VarChar(200)
+  isRegister Boolean @default(true)
+}
+
+model Guardian {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(5)
+  phone String @db.Char(11)
+  student Student[]
+}
+
 model Teacher {
   id Int @id @default(autoincrement())
-  name String
-  phone String
-  email String @unique
+  name String @db.VarChar(5)
+  phone String @db.Char(11)
+  email String @unique @db.VarChar(30)
+  password String @db.VarChar(20)
+  role Role @default(TEACHER)
+}
+
+model ScheduleMemo {
+  id Int @id @default(autoincrement())
+  memo1 String? @db.VarChar(1000)
+  memo2 String? @db.VarChar(1000)
+  memo3 String? @db.VarChar(1000)
+  memo4 String? @db.VarChar(1000)
+  memo5 String? @db.VarChar(1000)
+  memo6 String? @db.VarChar(1000)
+}
+
+model Class {
+  id Int @id @default(autoincrement())
+  classDate DateTime @db.Date
+  studentList StudentOnClass[]
+}
+
+model StudentOnClass {
+  student Student @relation(fields: [studentId], references: [id])
+  studentId Int
+  class Class @relation(fields: [classId], references: [id])
+  classId Int
+  isAttendance Boolean @default(false)
+  @@id([studentId, classId])
+}
+
+enum Sex {
+  MALE
+  FEMALE
+}
+
+enum ReasonForChoosing {
+  RECOMMENDED
+  LOCATION
+  GOSSIP
+  SEARCHED
+  ETC
+}
+
+enum ArtActivity {
+  DRAWING
+  MATERIALCLASS
+  MASTERPIECECLASS
+  TECHNIQUECLASS
+  ETC
+}
+
+enum Role {
+  MASTER
+  TEACHER
 }

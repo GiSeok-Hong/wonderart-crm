@@ -4,15 +4,15 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import './Calendar.css';
 import 'moment/locale/ko';
-import HeaderCalendarToolbar from './HeaderCalendarToolbar';
+import FooterCalendarToolbar from './FooterCalendarToolbar';
 
-export default function HeaderCalendar() {
+export default function FooterCalendar() {
   const localizer = momentLocalizer(moment);
   return (
     <Calendar
       localizer={localizer}
-      style={{ height: 200 }}
-      components={{ toolbar: HeaderCalendarToolbar }}
+      style={{ height: 200, width: 215 }}
+      components={{ toolbar: FooterCalendarToolbar }}
     />
   );
 }
