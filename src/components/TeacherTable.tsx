@@ -6,6 +6,7 @@ const PlusButton = dynamic(() => import('@/components/PlusButton'), { ssr: false
 import Modal from 'react-modal';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { phoneFormat } from '@/helper/phone';
 
 const TABLE_BORDER = 'border border-black';
 
@@ -132,7 +133,7 @@ export default function TeacherTable() {
               >
                 <Td>{teacher.name}</Td>
                 <Td>{teacher.email}</Td>
-                <Td>{teacher.phone}</Td>
+                <Td>{phoneFormat(teacher.phone)}</Td>
               </tr>
             );
           })}
