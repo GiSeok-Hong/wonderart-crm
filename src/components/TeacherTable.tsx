@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 const TABLE_BORDER = 'border border-black';
 
-const LABEL = ['이름', '이메일', '휴대폰번호'];
+const LABEL = ['이름', '이메일', '연락처'];
 
 const customStyles = {
   content: {
@@ -173,7 +173,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="password"
             >
-              password
+              비밀번호
             </label>
             <input
               className="border border-black flex-1"
@@ -187,7 +187,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="email"
             >
-              email
+              이메일
             </label>
             <input
               className="border border-black flex-1"
@@ -201,7 +201,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="phone"
             >
-              핸드폰번호
+              연락처
             </label>
             <input
               className="border border-black flex-1"
