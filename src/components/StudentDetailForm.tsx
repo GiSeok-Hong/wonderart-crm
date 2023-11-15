@@ -151,6 +151,7 @@ export default function StudentDetailForm({
             <Input
               disabled={!editMode}
               maxLength={10}
+              style={{ width: '150px' }}
               {...register('entranceDate', {
                 required: true,
                 minLength: 10,
@@ -233,6 +234,7 @@ export default function StudentDetailForm({
             <Label>학생명</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('name', { required: true, maxLength: 5 })}
             />
           </FlexRowItem>
@@ -240,6 +242,7 @@ export default function StudentDetailForm({
             <Label>학생 연락처</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('phone', {
                 minLength: 11,
                 maxLength: 11,
@@ -253,6 +256,7 @@ export default function StudentDetailForm({
             <Input
               disabled={!editMode}
               maxLength={10}
+              style={{ width: '150px' }}
               {...register('birthDate', {
                 required: true,
                 minLength: 10,
@@ -278,6 +282,7 @@ export default function StudentDetailForm({
             <Label>보호자명</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('guardianName', { maxLength: 5 })}
             />
           </FlexRowItem>
@@ -285,6 +290,7 @@ export default function StudentDetailForm({
             <Label>보호자 연락처</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('guardianPhone', {
                 minLength: 11,
                 maxLength: 11,
@@ -307,6 +313,7 @@ export default function StudentDetailForm({
             <Label>학교 / 유치원</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('school', { maxLength: 20 })}
             />
           </FlexRowItem>
@@ -444,7 +451,7 @@ interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
 const FlexRow = ({ children, ...props }: DivProps) => {
   return (
     <div
-      className="flex justify-between gap-4"
+      className="flex gap-4"
       {...props}
     >
       {children}
@@ -455,7 +462,7 @@ const FlexRow = ({ children, ...props }: DivProps) => {
 const FlexRowItem = ({ children, ...props }: DivProps) => {
   return (
     <div
-      className="flex gap-3 items-center w-full"
+      className="flex gap-2 items-center"
       {...props}
     >
       {children}
@@ -478,7 +485,7 @@ interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
 const Label = ({ children, ...props }: LabelProps) => {
   return (
     <label
-      className="w-28 text-black text-lg font-normal"
+      className="w-[120px] text-black text-lg font-normal"
       {...props}
     >
       {children}
