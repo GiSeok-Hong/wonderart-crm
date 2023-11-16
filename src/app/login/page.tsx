@@ -59,8 +59,7 @@ export default function LoginPage() {
                 이메일
               </label>
               <input
-                className="w-full h-8 pl-2 shadow-inner"
-                style={{ boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.25) inset' }}
+                className="w-full h-8 pl-2 border border-gray-300"
                 id="email"
                 type="email"
                 required
@@ -77,8 +76,7 @@ export default function LoginPage() {
                 비밀번호
               </label>
               <input
-                className="w-full h-8 pl-2 shadow-inner"
-                style={{ boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.25) inset' }}
+                className="w-full h-8 pl-2 border border-gray-300"
                 id="password"
                 type="password"
                 required
