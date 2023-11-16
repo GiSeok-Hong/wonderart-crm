@@ -6,10 +6,11 @@ const PlusButton = dynamic(() => import('@/components/PlusButton'), { ssr: false
 import Modal from 'react-modal';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { phoneFormat } from '@/helper/phone';
 
 const TABLE_BORDER = 'border border-black';
 
-const LABEL = ['이름', '이메일', '휴대폰번호'];
+const LABEL = ['이름', '이메일', '연락처'];
 
 const customStyles = {
   content: {
@@ -132,7 +133,7 @@ export default function TeacherTable() {
               >
                 <Td>{teacher.name}</Td>
                 <Td>{teacher.email}</Td>
-                <Td>{teacher.phone}</Td>
+                <Td>{phoneFormat(teacher.phone)}</Td>
               </tr>
             );
           })}
@@ -173,7 +174,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="password"
             >
-              password
+              비밀번호
             </label>
             <input
               className="border border-black flex-1"
@@ -187,7 +188,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="email"
             >
-              email
+              이메일
             </label>
             <input
               className="border border-black flex-1"
@@ -201,7 +202,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="phone"
             >
-              핸드폰번호
+              연락처
             </label>
             <input
               className="border border-black flex-1"
