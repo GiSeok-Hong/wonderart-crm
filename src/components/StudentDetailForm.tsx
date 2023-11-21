@@ -39,7 +39,7 @@ export default function StudentDetailForm({
   studentData: Student & { guardian: { name: string; phone: string } };
 }) {
   const router = useRouter();
-  const { register, handleSubmit, setValue, watch } = useForm<UpdateStudentForm>({
+  const { register, handleSubmit, setValue, watch, unregister } = useForm<UpdateStudentForm>({
     defaultValues: {
       address: studentData?.address,
       birthDate: moment(studentData?.birthDate).format('YYYY.MM.DD'),
@@ -62,6 +62,8 @@ export default function StudentDetailForm({
     },
   });
   const [editMode, setEditMode] = useState(false);
+
+  const [addMode, setAddMode] = useState(studentData.day[1] !== undefined && studentData.time[1] !== undefined);
 
   const age = getAge(studentData?.birthDate);
 
@@ -195,38 +197,60 @@ export default function StudentDetailForm({
                 })}
               </Select>
             </FlexColumnItem>
-            <FlexColumnItem>
-              <Select
-                disabled={!editMode}
-                {...register('day.1')}
+
+            {addMode ? (
+              <FlexColumnItem>
+                <Select
+                  disabled={!editMode}
+                  {...register('day.1')}
+                >
+                  {DAY_OPTION.map((day) => {
+                    return (
+                      <Option
+                        key={day.value}
+                        value={day.value}
+                      >
+                        {day.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+                <Select
+                  disabled={!editMode}
+                  {...register('time.1')}
+                >
+                  {TIME_OPTION.map((time) => {
+                    return (
+                      <Option
+                        key={time.value}
+                        value={time.value}
+                      >
+                        {time.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </FlexColumnItem>
+            ) : (
+              <></>
+            )}
+            {editMode ? (
+              <button
+                type="button"
+                className="border px-1"
+                onClick={() => {
+                  if (addMode) {
+                    unregister('time.1');
+                    unregister('day.1');
+                  }
+                  setAddMode(!addMode);
+                }}
               >
-                {DAY_OPTION.map((day) => {
-                  return (
-                    <Option
-                      key={day.value}
-                      value={day.value}
-                    >
-                      {day.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-              <Select
-                disabled={!editMode}
-                {...register('time.1')}
-              >
-                {TIME_OPTION.map((time) => {
-                  return (
-                    <Option
-                      key={time.value}
-                      value={time.value}
-                    >
-                      {time.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </FlexColumnItem>
+                {!addMode ? '추가' : '삭제'}
+              </button>
+            ) : (
+              <></>
+            )}
           </FlexRowItem>
         </FlexRow>
         <FlexRow>
