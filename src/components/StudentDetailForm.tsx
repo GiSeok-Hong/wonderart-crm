@@ -268,13 +268,26 @@ export default function StudentDetailForm({
           </FlexRowItem>
           <FlexRowItem>
             <Label>성별</Label>
-            <Select
-              disabled={!editMode}
-              {...register('sex', { required: true })}
-            >
-              <Option value={Sex.MALE}>남</Option>
-              <Option value={Sex.FEMALE}>여</Option>
-            </Select>
+            <label className="mr-5">
+              <input
+                type="radio"
+                disabled={!editMode}
+                className="mr-2"
+                value={Sex.MALE}
+                {...register('sex', { required: true })}
+              />
+              남
+            </label>
+            <label className="mr-5">
+              <input
+                type="radio"
+                disabled={!editMode}
+                className="mr-2"
+                value={Sex.FEMALE}
+                {...register('sex', { required: true })}
+              />
+              여
+            </label>
           </FlexRowItem>
         </FlexRow>
         <FlexRow>
@@ -319,13 +332,26 @@ export default function StudentDetailForm({
           </FlexRowItem>
           <FlexRowItem>
             <Label>등록 여부</Label>
-            <Select
-              disabled={!editMode}
-              {...register('isRegister', { required: true })}
-            >
-              <Option value={'YES'}>등록</Option>
-              <Option value={'NO'}>퇴원</Option>
-            </Select>
+            <label className="mr-5">
+              <input
+                type="radio"
+                disabled={!editMode}
+                className="mr-2"
+                value={'YES'}
+                {...register('isRegister', { required: true })}
+              />
+              등록
+            </label>
+            <label className="mr-5">
+              <input
+                type="radio"
+                disabled={!editMode}
+                className="mr-2"
+                value={'NO'}
+                {...register('isRegister', { required: true })}
+              />
+              퇴원
+            </label>
           </FlexRowItem>
         </FlexRow>
         <div>
@@ -338,57 +364,63 @@ export default function StudentDetailForm({
         </div>
         <div>
           <p className="text-lg font-normal">원더아트 스튜디오를 선택한 이유</p>
-          <Select
-            disabled={!editMode}
-            {...register('reason', { required: true })}
-          >
-            {Object.entries(REASON_OPTION).map(([key, value]) => {
-              return (
-                <Option
-                  key={key}
+          {Object.entries(REASON_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
+              >
+                <input
+                  type="radio"
+                  disabled={!editMode}
+                  className="mr-2"
                   value={key}
-                >
-                  {value}
-                </Option>
-              );
-            })}
-          </Select>
+                  {...register('reason', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
         </div>
         <div>
           <p className="text-lg font-normal">학부모님이 가장 중요하다고 생각하는 미술활동</p>
-          <Select
-            disabled={!editMode}
-            {...register('importantActivity')}
-          >
-            {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
-              return (
-                <Option
-                  key={key}
+          {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
+              >
+                <input
+                  type="radio"
+                  disabled={!editMode}
+                  className="mr-2"
                   value={key}
-                >
-                  {value}
-                </Option>
-              );
-            })}
-          </Select>
+                  {...register('importantActivity', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
         </div>
         <div>
           <p className="text-lg font-normal">학생이 가장 흥미있어 하는 미술활동</p>
-          <Select
-            disabled={!editMode}
-            {...register('interestingActivity')}
-          >
-            {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
-              return (
-                <Option
-                  key={key}
+          {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
+              >
+                <input
+                  type="radio"
+                  disabled={!editMode}
+                  className="mr-2"
                   value={key}
-                >
-                  {value}
-                </Option>
-              );
-            })}
-          </Select>
+                  {...register('interestingActivity', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
         </div>
         <div>
           <p className="text-lg font-normal">학생에 대해 특별히 알아야 하거나, 주의해야 할 점</p>
