@@ -213,17 +213,17 @@ export default function TeacherTable() {
           </div>
           <div className="flex flex-1 justify-center items-end gap-4">
             <button
+              type="submit"
+              className="border rounded-[10px] bg-primary-color text-white w-32 h-[40px]"
+            >
+              저장
+            </button>
+            <button
               type="button"
               className="border rounded-[10px] bg-white text-primary-color w-32 h-[40px]"
               onClick={closeModal}
             >
               취소
-            </button>
-            <button
-              type="submit"
-              className="border rounded-[10px] bg-primary-color text-white w-32 h-[40px]"
-            >
-              저장
             </button>
           </div>
         </form>
