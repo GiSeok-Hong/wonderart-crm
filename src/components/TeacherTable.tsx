@@ -73,7 +73,7 @@ export default function TeacherTable() {
     const toastId = `${data.email}`;
     toast.loading('선생님 등록 중', { id: toastId });
     try {
-      const { ok } = await fetch('/api/teacher', {
+      const res = await fetch('/api/teacher', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,12 +81,14 @@ export default function TeacherTable() {
         body: JSON.stringify(data),
       });
 
+      const { ok } = res;
       if (ok) {
         await fetchTeacherList();
         closeModal();
         toast.success('선생님 등록에 성공했습니다.');
       } else {
-        toast.error('선생님 등록에 실패했습니다');
+        const { message } = await res.json();
+        toast.error(`${message}`);
       }
     } catch (error) {
       // toast.error('선생님 등록에 실패했습니다');

@@ -1,5 +1,4 @@
 import TeacherTable from '@/components/TeacherTable';
-import { createPortal } from 'react-dom';
 
 export default function TeacherList() {
   return (
