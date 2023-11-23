@@ -3,6 +3,9 @@
 import { useForm } from 'react-hook-form';
 import { ArtActivity, ReasonForChoosing, Sex } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { DAY_OPTION } from '@/consts/day-option';
+import { TIME_OPTION } from '@/consts/time-option';
 
 const DIV_CLASS = 'mb-5 ';
 const LABEL_CLASS = 'text-xl font-bold inline-block min-w-label ';
@@ -10,68 +13,13 @@ const INPUT_CLASS = 'bg-gray-200 text-center text-xl ml-1 mr-6';
 const TEXTAREA_CLASS = 'bg-gray-200 text-xl w-full resize-none';
 const UNDERLINE_CLASS = ' block w-full mb-1';
 const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
-const SELECT_DIV_CLASS = 'text-center text-xl inline-block  border-black border-[1px]';
+const SELECT_DIV_CLASS = 'text-center text-xl inline-block mr-2 ';
 const SELECT_CLASS = 'bg-gray-200 px-1 py-1 ';
-const DAY_OPTION = [
-  {
-    value: 0,
-    name: '없음',
-  },
-  {
-    value: 1,
-    name: '월',
-  },
-  {
-    value: 2,
-    name: '화',
-  },
-  {
-    value: 3,
-    name: '수',
-  },
-  {
-    value: 4,
-    name: '목',
-  },
-  {
-    value: 5,
-    name: '금',
-  },
-];
-
-const TIME_OPTION = [
-  {
-    value: 0,
-    name: '없음',
-  },
-  {
-    value: 14,
-    name: '2시',
-  },
-  {
-    value: 15,
-    name: '3시',
-  },
-  {
-    value: 16,
-    name: '4시',
-  },
-  {
-    value: 17,
-    name: '5시',
-  },
-  {
-    value: 18,
-    name: '6시',
-  },
-];
 
 type InputStudent = {
   entranceDate: Date;
-  day1: number;
-  time1: number;
-  day2: number;
-  time2: number;
+  day: number[];
+  time: number[];
   name: string;
   phone?: string;
   birthDate: Date;
@@ -91,19 +39,19 @@ type InputStudent = {
 export default function Form() {
   const router = useRouter();
   const phoneReg = /^01([0|1|6|7|8|9])([0-9]{7,8})$/;
+  const [addMode, setAddMode] = useState(false);
 
   const {
     register,
     handleSubmit,
+    unregister,
     formState: { errors },
   } = useForm<InputStudent>({
     mode: 'onSubmit',
     defaultValues: {
       entranceDate: new Date(),
-      day1: 1,
-      time1: 14,
-      day2: 0,
-      time2: 0,
+      day: [1],
+      time: [14],
       name: '',
       phone: '',
       birthDate: new Date(),
@@ -122,17 +70,12 @@ export default function Form() {
   });
 
   const onSubmit = async (data: InputStudent) => {
-    const day = [Number(data.day1)];
-    if (data.day2 !== 0) day.push(Number(data.day2));
-    const time = [Number(data.time1)];
-    if (data.time2 !== 0) time.push(Number(data.time2));
-
-    const isCopyrightAgree = data.isCopyrightAgree === 'YES' ? true : false;
+    const isCopyrightAgree = data.isCopyrightAgree === 'YES';
 
     const body = {
       entranceDate: data.entranceDate,
-      day,
-      time,
+      day: data.day.map(Number).filter(Boolean),
+      time: data.time.map(Number).filter(Boolean),
       name: data.name,
       phone: data.phone,
       birthDate: data.birthDate,
@@ -199,64 +142,77 @@ export default function Form() {
         </label>
         <div className={SELECT_DIV_CLASS}>
           <select
-            id="day1"
             className={SELECT_CLASS}
-            {...register('day1')}
+            {...register('day.0', { required: true })}
           >
-            {DAY_OPTION.map((option) => (
+            {DAY_OPTION.map((day) => (
               <option
-                key={option.name}
-                value={option.value}
+                key={day.value}
+                value={day.value}
               >
-                {option.name}
+                {day.name}
               </option>
             ))}
           </select>
           <select
-            id="time1"
             className={SELECT_CLASS}
-            {...register('time1')}
+            {...register('time.0', { required: true })}
           >
-            {TIME_OPTION.map((option) => (
+            {TIME_OPTION.map((time) => (
               <option
-                key={option.name}
-                value={option.value}
+                key={time.value}
+                value={time.value}
               >
-                {option.name}
+                {time.name}
               </option>
             ))}
           </select>
         </div>
-        <div className={SELECT_DIV_CLASS + ' ml-2'}>
-          <select
-            id="day2"
-            className={SELECT_CLASS}
-            {...register('day2')}
-          >
-            {DAY_OPTION.map((option) => (
-              <option
-                key={option.name}
-                value={option.value}
-              >
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <select
-            id="time2"
-            className={SELECT_CLASS}
-            {...register('time2')}
-          >
-            {TIME_OPTION.map((option) => (
-              <option
-                key={option.name}
-                value={option.value}
-              >
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {addMode ? (
+          <div className={SELECT_DIV_CLASS}>
+            <select
+              className={SELECT_CLASS}
+              {...register('day.1')}
+            >
+              {DAY_OPTION.map((day) => (
+                <option
+                  key={day.value}
+                  value={day.value}
+                >
+                  {day.name}
+                </option>
+              ))}
+            </select>
+            <select
+              className={SELECT_CLASS}
+              {...register('time.1')}
+            >
+              {TIME_OPTION.map((time) => (
+                <option
+                  key={time.name}
+                  value={time.value}
+                >
+                  {time.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <></>
+        )}
+        <button
+          type="button"
+          className="border px-1"
+          onClick={() => {
+            if (addMode) {
+              unregister('time.1');
+              unregister('day.1');
+            }
+            setAddMode(!addMode);
+          }}
+        >
+          {!addMode ? '추가' : '삭제'}
+        </button>
       </div>
       <div className={DIV_CLASS}>
         <label
