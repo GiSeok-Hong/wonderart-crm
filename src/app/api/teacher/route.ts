@@ -1,5 +1,5 @@
-import { createTeacher, getTeacherList } from "@/service/teacher";
-import { NextResponse } from "next/server";
+import { createTeacher, getTeacherList } from '@/service/teacher';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   const teacherList = await getTeacherList();
@@ -7,7 +7,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const newTeacher = await createTeacher(await request.json())
-  return NextResponse.json(newTeacher, { status: 201 })
-
-};
+  try {
+    const newTeacher = await createTeacher(await request.json());
+    return NextResponse.json(newTeacher, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: `${error}` }, { status: 500 });
+  }
+}
