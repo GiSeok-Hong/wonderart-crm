@@ -64,7 +64,11 @@ export default function Header() {
             {navList.map((item) => (
               <li
                 key={item.href}
-                className={'hover:text-primary-color' + (pathname === item.href ? ' text-primary-color font-bold' : '')}
+                className={
+                  'hover:text-primary-color' +
+                  (pathname === item.href ? ' text-primary-color font-bold' : '') +
+                  (item.href === '/students' && pathname.includes('/students/') ? ' text-primary-color font-bold' : '')
+                }
               >
                 <Link href={item.href}>{item.text}</Link>
               </li>
@@ -75,7 +79,7 @@ export default function Header() {
                   'hover:text-primary-color' + (pathname.includes('teachers') ? ' text-primary-color font-bold' : '')
                 }
               >
-                <Link href="/teachers">선생님목록</Link>
+                <Link href="/teachers">선생님</Link>
               </li>
             )}
             <SignInButton />
