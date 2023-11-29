@@ -1,77 +1,22 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { SubmitErrorHandler, useForm } from 'react-hook-form';
 import { ArtActivity, ReasonForChoosing, Sex } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { DAY_OPTION } from '@/consts/day-option';
+import { TIME_OPTION } from '@/consts/time-option';
+import { REASON_OPTION } from '@/consts/reason-option';
+import { GUARDIANS_INTERESTING_OPTION } from '@/consts/guardians-interesting-option';
+import { FlexColumnItem, FlexRow, FlexRowItem, Input, InputRadio, Label, Select, Option } from './FormCustomTag';
 
-const DIV_CLASS = 'mb-5 ';
-const LABEL_CLASS = 'text-xl font-bold inline-block min-w-label ';
-const INPUT_CLASS = 'bg-gray-200 text-center text-xl ml-1 mr-6';
-const TEXTAREA_CLASS = 'bg-gray-200 text-xl w-full resize-none';
-const UNDERLINE_CLASS = ' block w-full mb-1';
 const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
-const SELECT_DIV_CLASS = 'text-center text-xl inline-block  border-black border-[1px]';
-const SELECT_CLASS = 'bg-gray-200 px-1 py-1 ';
-const DAY_OPTION = [
-  {
-    value: 0,
-    name: '없음',
-  },
-  {
-    value: 1,
-    name: '월',
-  },
-  {
-    value: 2,
-    name: '화',
-  },
-  {
-    value: 3,
-    name: '수',
-  },
-  {
-    value: 4,
-    name: '목',
-  },
-  {
-    value: 5,
-    name: '금',
-  },
-];
+const LABEL_CLASS = 'text-lg font-normal block ';
 
-const TIME_OPTION = [
-  {
-    value: 0,
-    name: '없음',
-  },
-  {
-    value: 14,
-    name: '2시',
-  },
-  {
-    value: 15,
-    name: '3시',
-  },
-  {
-    value: 16,
-    name: '4시',
-  },
-  {
-    value: 17,
-    name: '5시',
-  },
-  {
-    value: 18,
-    name: '6시',
-  },
-];
-
-type InputStudent = {
+type StudentForm = {
   entranceDate: Date;
-  day1: number;
-  time1: number;
-  day2: number;
-  time2: number;
+  day: number[];
+  time: number[];
   name: string;
   phone?: string;
   birthDate: Date;
@@ -91,19 +36,19 @@ type InputStudent = {
 export default function Form() {
   const router = useRouter();
   const phoneReg = /^01([0|1|6|7|8|9])([0-9]{7,8})$/;
+  const [addMode, setAddMode] = useState(false);
 
   const {
     register,
     handleSubmit,
+    unregister,
     formState: { errors },
-  } = useForm<InputStudent>({
+  } = useForm<StudentForm>({
     mode: 'onSubmit',
     defaultValues: {
       entranceDate: new Date(),
-      day1: 1,
-      time1: 14,
-      day2: 0,
-      time2: 0,
+      day: [1],
+      time: [14],
       name: '',
       phone: '',
       birthDate: new Date(),
@@ -121,18 +66,17 @@ export default function Form() {
     },
   });
 
-  const onSubmit = async (data: InputStudent) => {
-    const day = [Number(data.day1)];
-    if (data.day2 !== 0) day.push(Number(data.day2));
-    const time = [Number(data.time1)];
-    if (data.time2 !== 0) time.push(Number(data.time2));
+  const onSubmit = async (data: StudentForm) => {
+    const isCopyrightAgree = data.isCopyrightAgree === 'YES';
 
-    const isCopyrightAgree = data.isCopyrightAgree === 'YES' ? true : false;
+    if (!isCopyrightAgree) {
+      return alert(`저작권 동의를 해주세요`);
+    }
 
     const body = {
       entranceDate: data.entranceDate,
-      day,
-      time,
+      day: data.day.map(Number).filter(Boolean),
+      time: data.time.map(Number).filter(Boolean),
       name: data.name,
       phone: data.phone,
       birthDate: data.birthDate,
@@ -170,455 +114,376 @@ export default function Form() {
     }
   };
 
+  const onError: SubmitErrorHandler<StudentForm> = (errors) => {
+    if (errors.entranceDate) {
+      alert('입학일자를 정확히 입력해주세요.');
+    }
+    if (errors.name) {
+      alert('학생명을 입력해주세요.');
+    }
+    if (errors.phone?.type === 'maxLength' || errors.phone?.type === 'minLength') {
+      alert('학생 연락처를 정확히 입력해주세요.');
+    }
+    if (errors.birthDate) {
+      alert('생년월일을 정확히 입력해주세요.');
+    }
+    if (errors.sex) {
+      alert('성별을 정확히 입력해주세요.');
+    }
+    if (errors.guardianName) {
+      alert('보호자명을 정확히 입력해주세요.');
+    }
+    if (errors.guardianPhone) {
+      alert('보호자 연락처를 정확히 입력해주세요.');
+    }
+    if (errors.address) {
+      alert('주소를 입력해주세요.');
+    }
+    if (errors.reason) {
+      alert('원더아트 스튜디오를 선택한 이유를 선택해주세요.');
+    }
+    if (errors.importantActivity) {
+      alert('학부모님께서 가장 중요하다고 생각하는 미술활동을 선택해주세요.');
+    }
+    if (errors.interestingActivity) {
+      alert('학생이 가장 흥미있어 하는 미술활동을 선택해주세요.');
+    }
+  };
+
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onError)}
       className="w-full  border-4 p-5 overflow-hidden"
     >
       <h1 className="text-4xl text-center mb-5">입학원서</h1>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="entranceDate"
-          className={LABEL_CLASS}
-        >
-          입학일자
-        </label>
-        <input
-          type="date"
-          id="entranceDate"
-          {...register('entranceDate', {
-            required: true,
-          })}
-          className={INPUT_CLASS}
-        />
-        <label
-          htmlFor="numberOfClass"
-          className={LABEL_CLASS}
-        >
-          수업 시간
-        </label>
-        <div className={SELECT_DIV_CLASS}>
-          <select
-            id="day1"
-            className={SELECT_CLASS}
-            {...register('day1')}
+      <div className="flex flex-col w-full gap-2 mb-7">
+        <FlexRow>
+          <FlexRowItem>
+            <Label htmlFor="entranceDate">입학일자</Label>
+            <Input
+              type="date"
+              id="entranceDate"
+              {...register('entranceDate', {
+                required: true,
+              })}
+              style={{ width: '150px' }}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label htmlFor="numberOfClass">수업 시간</Label>
+            <FlexColumnItem>
+              <Select {...register('day.0', { required: true })}>
+                {DAY_OPTION.map((day) => (
+                  <Option
+                    key={day.value}
+                    value={day.value}
+                  >
+                    {day.name}
+                  </Option>
+                ))}
+              </Select>
+              <Select {...register('time.0', { required: true })}>
+                {TIME_OPTION.map((time) => (
+                  <Option
+                    key={time.value}
+                    value={time.value}
+                  >
+                    {time.name}
+                  </Option>
+                ))}
+              </Select>
+            </FlexColumnItem>
+            {addMode ? (
+              <FlexColumnItem>
+                <Select {...register('day.1')}>
+                  {DAY_OPTION.map((day) => (
+                    <Option
+                      key={day.value}
+                      value={day.value}
+                    >
+                      {day.name}
+                    </Option>
+                  ))}
+                </Select>
+                <Select {...register('time.1')}>
+                  {TIME_OPTION.map((time) => (
+                    <Option
+                      key={time.name}
+                      value={time.value}
+                    >
+                      {time.name}
+                    </Option>
+                  ))}
+                </Select>
+              </FlexColumnItem>
+            ) : (
+              <></>
+            )}
+            <button
+              type="button"
+              className="border px-1"
+              onClick={() => {
+                if (addMode) {
+                  unregister('time.1');
+                  unregister('day.1');
+                }
+                setAddMode(!addMode);
+              }}
+            >
+              {!addMode ? '추가' : '삭제'}
+            </button>
+          </FlexRowItem>
+        </FlexRow>
+
+        <FlexRow>
+          <FlexRowItem>
+            <Label htmlFor="name">학생명</Label>
+            <Input
+              type="text"
+              id="name"
+              {...register('name', { required: true, maxLength: 5 })}
+              placeholder="홍길동"
+              style={{ width: '150px' }}
+              maxLength={5}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label htmlFor="phone">학생 연락처</Label>
+            <Input
+              type="text"
+              id="phone"
+              {...register('phone', {
+                minLength: 11,
+                maxLength: 11,
+                pattern: {
+                  value: phoneReg,
+                  message: '학생 핸드폰 형식에 맞지 않습니다.',
+                },
+              })}
+              maxLength={11}
+              placeholder="01012345678"
+              style={{ width: '150px' }}
+            />
+          </FlexRowItem>
+        </FlexRow>
+
+        <FlexRow>
+          <FlexRowItem>
+            <Label htmlFor="birthDate">생년월일</Label>
+            <Input
+              type="date"
+              id="birthDate"
+              {...register('birthDate', { required: true })}
+              style={{ width: '150px' }}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label htmlFor="sex">성별</Label>
+            <label className="mr-5">
+              <InputRadio
+                value={Sex.MALE}
+                {...register('sex', { required: true })}
+              />
+              남
+            </label>
+            <label className="mr-5">
+              <InputRadio
+                value={Sex.FEMALE}
+                {...register('sex', { required: true })}
+              />
+              여
+            </label>
+          </FlexRowItem>
+        </FlexRow>
+
+        <FlexRow>
+          <FlexRowItem>
+            <Label htmlFor="guardianName">보호자명</Label>
+            <Input
+              type="text"
+              id="guardianName"
+              {...register('guardianName', { required: true, maxLength: 5 })}
+              placeholder="홍길동"
+              style={{ width: '150px' }}
+              maxLength={5}
+            />
+          </FlexRowItem>
+          <FlexRowItem>
+            <Label htmlFor="guardianPhone">보호자 연락처</Label>
+            <Input
+              type="text"
+              id="guardianPhone"
+              {...register('guardianPhone', {
+                required: true,
+                minLength: 11,
+                maxLength: 11,
+                pattern: {
+                  value: phoneReg,
+                  message: '보호자 핸드폰 형식에 맞지 않습니다.',
+                },
+              })}
+              placeholder="01012345678"
+              maxLength={11}
+              style={{ width: '150px' }}
+            />
+          </FlexRowItem>
+        </FlexRow>
+
+        <FlexRow>
+          <FlexRowItem style={{ flex: 1 }}>
+            <Label htmlFor="address">주소</Label>
+            <Input
+              type="text"
+              id="address"
+              {...register('address', {
+                required: true,
+                maxLength: 100,
+              })}
+              style={{ flex: 1 }}
+              maxLength={100}
+              placeholder="경기도 가나시 나나1로 12 동글아파트 111동 1234호"
+            />
+          </FlexRowItem>
+        </FlexRow>
+
+        <FlexRow>
+          <FlexRowItem>
+            <Label htmlFor="school">학교 / 유치원</Label>
+            <Input
+              type="text"
+              id="school"
+              {...register('school', { maxLength: 20 })}
+              style={{ width: '150px' }}
+              maxLength={20}
+              placeholder="동글초등학교"
+            />
+          </FlexRowItem>
+        </FlexRow>
+
+        <div>
+          <label
+            htmlFor="experience"
+            className={LABEL_CLASS}
           >
-            {DAY_OPTION.map((option) => (
-              <option
-                key={option.name}
-                value={option.value}
-              >
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <select
-            id="time1"
-            className={SELECT_CLASS}
-            {...register('time1')}
-          >
-            {TIME_OPTION.map((option) => (
-              <option
-                key={option.name}
-                value={option.value}
-              >
-                {option.name}
-              </option>
-            ))}
-          </select>
+            원더아트 스튜디오에 등록하기 전 미술활동 경험이 있나요?
+          </label>
+          <Input
+            id="experience"
+            style={{ width: '100%', padding: '10px' }}
+            {...register('experience', { maxLength: 100 })}
+            maxLength={100}
+          />
         </div>
-        <div className={SELECT_DIV_CLASS + ' ml-2'}>
-          <select
-            id="day2"
-            className={SELECT_CLASS}
-            {...register('day2')}
+
+        <div>
+          <label
+            htmlFor="reason"
+            className={LABEL_CLASS}
           >
-            {DAY_OPTION.map((option) => (
-              <option
-                key={option.name}
-                value={option.value}
+            원더아트 스튜디오를 선택하신 이유는 무엇인가요?
+          </label>
+          {Object.entries(REASON_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
               >
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <select
-            id="time2"
-            className={SELECT_CLASS}
-            {...register('time2')}
+                <InputRadio
+                  value={key}
+                  {...register('reason', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
+        </div>
+
+        <div>
+          <label
+            htmlFor="importantActivity"
+            className={LABEL_CLASS}
           >
-            {TIME_OPTION.map((option) => (
-              <option
-                key={option.name}
-                value={option.value}
+            평소에 학부모님께서 가장 중요하다고 생각하신 미술활동은 무엇인가요?
+          </label>
+          {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
               >
-                {option.name}
-              </option>
-            ))}
-          </select>
+                <InputRadio
+                  value={key}
+                  {...register('importantActivity', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
+        </div>
+
+        <div>
+          <label
+            htmlFor="interestingActivity"
+            className={LABEL_CLASS}
+          >
+            평소에 학생이 가장 흥미있어 하는 미술활동은 무엇인가요?
+          </label>
+          {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
+              >
+                <InputRadio
+                  value={key}
+                  {...register('interestingActivity', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
+        </div>
+
+        <div>
+          <label
+            htmlFor="caution"
+            className={LABEL_CLASS}
+          >
+            교사가 학생에 대해 특별히 알아야 하거나, 주의해야 할 점을 적어주세요
+          </label>
+          <Input
+            id="caution"
+            {...register('caution', { maxLength: 200 })}
+            style={{ width: '100%', padding: '10px' }}
+            maxLength={200}
+          />
+        </div>
+
+        <div className="mb-5">
+          <label
+            htmlFor="isCopyrightAgree"
+            className={LABEL_CLASS}
+          >
+            원더아트 스튜디오에서 작업한 모든 작품과 사진의 저작권은 <br />
+            원더아트 스튜디오에 있음에 동의하십니까?
+          </label>
+          <label className="mr-5">
+            <InputRadio
+              value="YES"
+              {...register('isCopyrightAgree', { required: true })}
+            />
+            예
+          </label>
+          <label className="mr-5">
+            <InputRadio
+              value="NO"
+              {...register('isCopyrightAgree', { required: true })}
+            />
+            아니오
+          </label>
         </div>
       </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="name"
-          className={LABEL_CLASS}
-        >
-          학생명
-        </label>
-        <input
-          type="text"
-          id="name"
-          {...register('name', { required: true, maxLength: 5 })}
-          className={INPUT_CLASS}
-          placeholder="홍길동"
-          size={10}
-          maxLength={5}
-        />
-        <label
-          htmlFor="phone"
-          className={LABEL_CLASS}
-        >
-          학생 연락처
-        </label>
-        <input
-          type="text"
-          id="phone"
-          {...register('phone', {
-            maxLength: 11,
-            pattern: {
-              value: phoneReg,
-              message: '학생 핸드폰 형식에 맞지 않습니다.',
-            },
-          })}
-          className={INPUT_CLASS}
-          placeholder="01012345678"
-          maxLength={11}
-          size={15}
-        />
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="birthDate"
-          className={LABEL_CLASS}
-        >
-          생년월일
-        </label>
-        <input
-          type="date"
-          id="birthDate"
-          {...register('birthDate', { required: true })}
-          className={INPUT_CLASS}
-          size={10}
-        />
-        <label
-          htmlFor="sex"
-          className={LABEL_CLASS}
-        >
-          성별
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={Sex.MALE}
-            {...register('sex')}
-          />
-          남
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={Sex.FEMALE}
-            {...register('sex')}
-          />
-          여
-        </label>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="guardianName"
-          className={LABEL_CLASS}
-        >
-          보호자명
-        </label>
-        <input
-          type="text"
-          id="guardianName"
-          {...register('guardianName', { required: true, maxLength: 5 })}
-          className={INPUT_CLASS}
-          placeholder="홍길동"
-          size={10}
-          maxLength={5}
-        />
-        <label
-          htmlFor="guardianPhone"
-          className={LABEL_CLASS}
-        >
-          보호자 연락처
-        </label>
-        <input
-          type="text"
-          id="guardianPhone"
-          {...register('guardianPhone', {
-            required: true,
-            maxLength: 11,
-            pattern: {
-              value: phoneReg,
-              message: '보호자 핸드폰 형식에 맞지 않습니다.',
-            },
-          })}
-          className={INPUT_CLASS}
-          placeholder="01012345678"
-          maxLength={11}
-          size={15}
-        />
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="address"
-          className={LABEL_CLASS}
-        >
-          주소
-        </label>
-        <input
-          type="text"
-          id="address"
-          {...register('address', {
-            required: true,
-            maxLength: 100,
-          })}
-          className={INPUT_CLASS + ' w-3/4'}
-          placeholder="경기도 가나시 나나1로 12 동글아파트 111동 1234호"
-        />
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="school"
-          className={LABEL_CLASS}
-        >
-          학교 / 유치원
-        </label>
-        <input
-          type="text"
-          id="school"
-          {...register('school', { maxLength: 20 })}
-          className={INPUT_CLASS}
-          placeholder="동글초등학교"
-        />
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="experience"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          원더아트 스튜디오에 등록하기 전 미술활동 경험이 있나요?
-        </label>
-        <textarea
-          id="experience"
-          {...register('experience', { maxLength: 100 })}
-          className={TEXTAREA_CLASS}
-        ></textarea>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="reason"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          원더아트 스튜디오를 선택하신 이유는 무엇인가요?
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ReasonForChoosing.RECOMMENDED}
-            {...register('reason')}
-          />
-          지인추천
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ReasonForChoosing.LOCATION}
-            {...register('reason')}
-          />
-          위치
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ReasonForChoosing.GOSSIP}
-            {...register('reason')}
-          />
-          주변소문
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ReasonForChoosing.SEARCHED}
-            {...register('reason')}
-          />
-          검색
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ReasonForChoosing.ETC}
-            {...register('reason')}
-          />
-          기타
-        </label>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="importantActivity"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          평소에 학부모님께서 가장 중요하다고 생각하신 미술활동은 무엇인가요?
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.DRAWING}
-            {...register('importantActivity')}
-          />
-          그리기
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.MATERIALCLASS}
-            {...register('importantActivity')}
-          />
-          다양한 재료 수업
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.MASTERPIECECLASS}
-            {...register('importantActivity')}
-          />
-          명화 수업
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.TECHNIQUECLASS}
-            {...register('importantActivity')}
-          />
-          기법 수업
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.ETC}
-            {...register('importantActivity')}
-          />
-          기타
-        </label>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="interestingActivity"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          평소에 학생이 가장 흥미있어 하는 미술활동은 무엇인가요?
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.DRAWING}
-            {...register('interestingActivity')}
-          />
-          그리기
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.MATERIALCLASS}
-            {...register('interestingActivity')}
-          />
-          다양한 재료 수업
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.MASTERPIECECLASS}
-            {...register('interestingActivity')}
-          />
-          명화 수업
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.TECHNIQUECLASS}
-            {...register('interestingActivity')}
-          />
-          기법 수업
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value={ArtActivity.ETC}
-            {...register('interestingActivity')}
-          />
-          기타
-        </label>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="caution"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          교사가 학생에 대해 특별히 알아야 하거나, 주의해야 할 점을 적어주세요
-        </label>
-        <textarea
-          id="caution"
-          {...register('caution', { maxLength: 200 })}
-          className={TEXTAREA_CLASS}
-        ></textarea>
-      </div>
-      <div className={DIV_CLASS}>
-        <label
-          htmlFor="isCopyrightAgree"
-          className={LABEL_CLASS + UNDERLINE_CLASS}
-        >
-          원더아트 스튜디오에서 작업한 모든 작품과 사진의 저작권은 <br />
-          원더아트 스튜디오에 있음에 동의하십니까?
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value="YES"
-            {...register('isCopyrightAgree')}
-          />
-          예
-        </label>
-        <label className="text-xl ml-1 mr-5">
-          <input
-            type="radio"
-            className="mr-2"
-            value="NO"
-            {...register('isCopyrightAgree')}
-          />
-          아니오
-        </label>
-      </div>
+
       <div className="flex gap-20 justify-center">
         <button className={BUTTON_CLASS + ' border-primary-color bg-primary-color'}>등록</button>
         <button

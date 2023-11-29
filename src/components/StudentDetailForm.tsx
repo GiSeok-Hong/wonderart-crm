@@ -10,6 +10,7 @@ import { REASON_OPTION } from '@/consts/reason-option';
 import { GUARDIANS_INTERESTING_OPTION } from '@/consts/guardians-interesting-option';
 import { TIME_OPTION } from '@/consts/time-option';
 import { useRouter } from 'next/navigation';
+import { FlexColumnItem, FlexRow, FlexRowItem, Input, InputRadio, Label, Select, Option } from './FormCustomTag';
 
 const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
 
@@ -293,20 +294,16 @@ export default function StudentDetailForm({
           <FlexRowItem>
             <Label>성별</Label>
             <label className="mr-5">
-              <input
-                type="radio"
+              <InputRadio
                 disabled={!editMode}
-                className="mr-2"
                 value={Sex.MALE}
                 {...register('sex', { required: true })}
               />
               남
             </label>
             <label className="mr-5">
-              <input
-                type="radio"
+              <InputRadio
                 disabled={!editMode}
-                className="mr-2"
                 value={Sex.FEMALE}
                 {...register('sex', { required: true })}
               />
@@ -357,20 +354,16 @@ export default function StudentDetailForm({
           <FlexRowItem>
             <Label>등록 여부</Label>
             <label className="mr-5">
-              <input
-                type="radio"
+              <InputRadio
                 disabled={!editMode}
-                className="mr-2"
                 value={'YES'}
                 {...register('isRegister', { required: true })}
               />
               등록
             </label>
             <label className="mr-5">
-              <input
-                type="radio"
+              <InputRadio
                 disabled={!editMode}
-                className="mr-2"
                 value={'NO'}
                 {...register('isRegister', { required: true })}
               />
@@ -394,10 +387,8 @@ export default function StudentDetailForm({
                 className="mr-5"
                 key={key}
               >
-                <input
-                  type="radio"
+                <InputRadio
                   disabled={!editMode}
-                  className="mr-2"
                   value={key}
                   {...register('reason', { required: true })}
                 />
@@ -414,10 +405,8 @@ export default function StudentDetailForm({
                 className="mr-5"
                 key={key}
               >
-                <input
-                  type="radio"
+                <InputRadio
                   disabled={!editMode}
-                  className="mr-2"
                   value={key}
                   {...register('importantActivity', { required: true })}
                 />
@@ -434,10 +423,8 @@ export default function StudentDetailForm({
                 className="mr-5"
                 key={key}
               >
-                <input
-                  type="radio"
+                <InputRadio
                   disabled={!editMode}
-                  className="mr-2"
                   value={key}
                   {...register('interestingActivity', { required: true })}
                 />
@@ -501,80 +488,4 @@ const SubmitButton = () => {
       수정완료
     </button>
   );
-};
-
-interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
-const FlexRow = ({ children, ...props }: DivProps) => {
-  return (
-    <div
-      className="flex gap-4"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-};
-
-const FlexRowItem = ({ children, ...props }: DivProps) => {
-  return (
-    <div
-      className="flex gap-2 items-center"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-};
-
-const FlexColumnItem = ({ children, ...props }: DivProps) => {
-  return (
-    <div
-      className="flex items-center gap-2"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-};
-
-interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
-const Label = ({ children, ...props }: LabelProps) => {
-  return (
-    <label
-      className="w-[120px] text-black text-lg font-normal"
-      {...props}
-    >
-      {children}
-    </label>
-  );
-};
-
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) => {
-  return (
-    <input
-      ref={ref}
-      className="flex h-11 bg-[#eee] py-2 flex-1 p-2"
-      {...props}
-    />
-  );
-});
-Input.displayName = 'Input';
-
-const Select = forwardRef<HTMLSelectElement, React.SelectHTMLAttributes<HTMLSelectElement>>(
-  ({ children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>, ref) => {
-    return (
-      <select
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </select>
-    );
-  },
-);
-Select.displayName = 'Select';
-
-const Option = ({ children, ...props }: React.OptionHTMLAttributes<HTMLOptionElement>) => {
-  return <option {...props}>{children}</option>;
 };
