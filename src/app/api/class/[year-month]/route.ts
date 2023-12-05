@@ -1,4 +1,4 @@
-import { createClassList } from "@/service/class";
+import { createClassList, deleteAllClassList } from "@/service/class";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request, context: { params: { 'year-month': string } }) {
@@ -9,4 +9,9 @@ export async function POST(request: Request, context: { params: { 'year-month': 
   } catch (error) {
     return NextResponse.json({ message: `${error}` }, { status: 500 });
   }
+}
+
+export async function DELETE(request: Request, context: { params: { 'year-month': string } }) {
+  await deleteAllClassList(context.params['year-month']);
+  return NextResponse.json({ message: 'helloworld' }, { status: 200 });
 }

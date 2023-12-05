@@ -31,9 +31,11 @@ export async function createClassList(yearMonth: string) {
         }
       }
 
+      const classDate = moment(dateObj).add(timeHour, 'hour').toDate();
+      console.log('day', classDate);
       result.push(await prisma.class.create({
         data: {
-          classDate: moment(dateObj).set('hour', timeHour).toDate(),
+          classDate,
           studentList: {
             createMany: {
               data: createdStudentList.map(student => ({
@@ -47,4 +49,27 @@ export async function createClassList(yearMonth: string) {
     }
   }
   return result;
+}
+
+export async function deleteAllClassList(yearMonth: string) {
+  if (!yearMonth) {
+    throw new Error('yearMonth is required')
+  }
+  const classDelete = prisma.class.deleteMany({
+    where: {
+      classDate: {
+
+        gte: new Date(2023, 11, 1)
+      }
+
+    }
+  });
+  const studentOnClassDelete = prisma.studentOnClass.deleteMany({
+    where: {
+      classId: {
+        gte: 11
+      }
+    }
+  });
+  return await prisma.$transaction([classDelete, studentOnClassDelete]);
 }
