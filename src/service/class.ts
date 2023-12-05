@@ -4,7 +4,7 @@ import { prisma } from "../../lib/prisma";
 const START_TIME_HOUR = 14;
 const END_TIME_HOUR = 19;
 
-export async function createClassList(yearMonth: string) {
+export async function createMonthlyClassList(yearMonth: string) {
   if (!yearMonth) {
     throw new Error('yearMonth is required')
   }
@@ -15,6 +15,8 @@ export async function createClassList(yearMonth: string) {
   const endDate = moment(yearMonth, 'YYYYMM').endOf('month');
 
   const studentList = await prisma.student.findMany();
+
+
 
   for (let date = startDate; date.isBefore(endDate); date.add(1, 'day')) {
     const dateObj = date.toDate();
