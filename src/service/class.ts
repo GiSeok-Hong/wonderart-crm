@@ -16,8 +16,6 @@ export async function createClassList(yearMonth: string) {
 
   const studentList = await prisma.student.findMany();
 
-  console.log(startDate, endDate, yearMonth)
-
   for (let date = startDate; date.isBefore(endDate); date.add(1, 'day')) {
     const dateObj = date.toDate();
     const dayOfWeek = date.day();
@@ -32,11 +30,9 @@ export async function createClassList(yearMonth: string) {
         }
       }
 
-      const classDate = moment(dateObj).add(timeHour, 'hour').toDate();
-
       result.push(await prisma.class.create({
         data: {
-          classDate,
+          classDate: moment(dateObj).add(timeHour, 'hour').toDate(),
           studentList: {
             createMany: {
               data: createdStudentList.map(student => ({
