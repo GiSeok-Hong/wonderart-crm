@@ -1,6 +1,9 @@
 import moment from "moment";
 import { prisma } from "../../lib/prisma";
 
+const START_TIME_HOUR = 14;
+const END_TIME_HOUR = 19;
+
 export async function createClassList(yearMonth: string) {
   if (!yearMonth) {
     throw new Error('yearMonth is required')
@@ -8,8 +11,8 @@ export async function createClassList(yearMonth: string) {
 
   const result = [];
 
-  const startDate = moment(yearMonth, 'YYYY-MM').startOf('month');
-  const endDate = moment(yearMonth, 'YYYY-MM').endOf('month');
+  const startDate = moment(yearMonth, 'YYYYMM').startOf('month');
+  const endDate = moment(yearMonth, 'YYYYMM').endOf('month');
 
   const studentList = await prisma.student.findMany();
 
@@ -19,9 +22,7 @@ export async function createClassList(yearMonth: string) {
     const dateObj = date.toDate();
     const dayOfWeek = date.day();
 
-    console.log('day', date);
-
-    for (let timeHour = 14; timeHour < 20; timeHour++) {
+    for (let timeHour = START_TIME_HOUR; timeHour < END_TIME_HOUR; timeHour++) {
       const createdStudentList = [];
       for (const student of studentList) {
         const { time, day } = student;
@@ -32,7 +33,7 @@ export async function createClassList(yearMonth: string) {
       }
 
       const classDate = moment(dateObj).add(timeHour, 'hour').toDate();
-      console.log('day', classDate);
+
       result.push(await prisma.class.create({
         data: {
           classDate,
@@ -49,27 +50,4 @@ export async function createClassList(yearMonth: string) {
     }
   }
   return result;
-}
-
-export async function deleteAllClassList(yearMonth: string) {
-  if (!yearMonth) {
-    throw new Error('yearMonth is required')
-  }
-  const classDelete = prisma.class.deleteMany({
-    where: {
-      classDate: {
-
-        gte: new Date(2023, 11, 1)
-      }
-
-    }
-  });
-  const studentOnClassDelete = prisma.studentOnClass.deleteMany({
-    where: {
-      classId: {
-        gte: 11
-      }
-    }
-  });
-  return await prisma.$transaction([classDelete, studentOnClassDelete]);
 }
