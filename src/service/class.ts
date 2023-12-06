@@ -30,10 +30,13 @@ export async function createMonthlyClassList(yearMonth: string) {
       const createdStudentList = [];
       for (const student of studentList) {
         const { time, day } = student;
-        if (day.includes(dayOfWeek) && time.includes(timeHour)) {
-          createdStudentList.push(student);
+        const [day0, day1] = day;
+        const [time0, time1] = time;
 
+        if (day0 === dayOfWeek && time0 === timeHour || day1 === dayOfWeek && time1 === timeHour) {
+          createdStudentList.push(student);
         }
+
       }
 
       result.push(await prisma.class.create({
