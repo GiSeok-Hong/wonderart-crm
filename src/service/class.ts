@@ -4,6 +4,9 @@ import { prisma } from "../../lib/prisma";
 const START_TIME_HOUR = 14;
 const END_TIME_HOUR = 19;
 
+const SUNDAY = 0;
+const SATURDAY = 6;
+
 export async function createMonthlyClassList(yearMonth: string) {
   if (!yearMonth) {
     throw new Error('yearMonth is required')
@@ -16,9 +19,10 @@ export async function createMonthlyClassList(yearMonth: string) {
 
   const studentList = await prisma.student.findMany();
 
-
-
   for (let date = startDate; date.isBefore(endDate); date.add(1, 'day')) {
+    if (date.day() === SUNDAY || date.day() === SATURDAY) {
+      continue;
+    }
     const dateObj = date.toDate();
     const dayOfWeek = date.day();
 
