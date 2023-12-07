@@ -8,11 +8,10 @@ import moment from 'moment';
 import { getAge } from '@/helper/age';
 import DefaultStudentList from './DefaultStudentList';
 import FooterCalendar from '../Calendar/FooterCalendar';
+import { DAY_OPTION } from '@/consts/day-option';
 
 type StudentItem = { student: Student } & { isAttendance: boolean };
 type ScheduleItem = Class & { studentList: StudentItem[] };
-
-const dayList = ['월', '화', '수', '목', '금'];
 
 export default function Schedule() {
   const [allScheduleList, setAllScheduleList] = useState<ScheduleItem[]>([]);
@@ -77,13 +76,13 @@ export default function Schedule() {
         {/* 테이블 헤더 */}
         <div className="schedule-table-header  flex border-t border-black text-center h-[30px]">
           <div className="w-[80px]  border-black border-x"></div>
-          {dayList.map((day, i) => {
+          {DAY_OPTION.map((day, i) => {
             return (
               <div
-                key={i}
+                key={day.value}
                 className="w-[104px]  border-black bg-primary-color border-r flex justify-center items-center"
               >
-                {moment(startDate)?.add(i, 'days').format(`${day} (D일)`)}
+                {moment(startDate)?.add(i, 'days').format(`${day.name} (D일)`)}
               </div>
             );
           })}
