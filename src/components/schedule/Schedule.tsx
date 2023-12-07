@@ -97,13 +97,13 @@ export default function Schedule() {
             <DefaultStudentList />
           ) : (
             <>
-              {DAY_OPTION?.map((day) => {
+              {DAY_OPTION.map((day) => {
                 return (
                   <div
-                    key={day?.value}
+                    key={day.value}
                     className="schedule-table-student-list w-[104px] box-boder border-r border-t  border-black text-sm"
                   >
-                    {TIME_OPTION?.map((time, i) => {
+                    {TIME_OPTION.map((time, i) => {
                       return (
                         <div
                           key={time.value}
