@@ -63,3 +63,81 @@ export async function createMonthlyClassList(yearMonth: string) {
   }
   return result;
 }
+
+export async function createClassFrom(startDate, studentId, day, time) {
+  if (!startDate || !studentId || !day || !time) {
+    throw new Error('startDate, studentId, day, time are required');
+  }
+
+  const student = await prisma.student.findUnique({
+    where: {
+      id: studentId,
+      isRegister: true
+    },
+  });
+
+  if (!student) {
+    throw new Error('student not found');
+  }
+
+  const startDateObj = new Date(startDate);
+  const endDateObj = moment(startDateObj).endOf('month').toDate();
+
+  const classList = await prisma.class.findMany({
+    select: {
+      id: true,
+      classDate: true,
+    },
+    where: {
+      classDate: {
+        gte: startDateObj,
+        lte: endDateObj,
+      }
+    }
+  });
+
+  console.log('항목', classList, student)
+
+  // TODO: classList가 없을 때에 대한 처리 필요
+
+  const [day0, day1] = day;
+  const [time0, time1] = time;
+
+  // const result = [];
+
+  classList.forEach((classObj) => {
+    const classDate = moment(classObj.classDate);
+    const dayOfWeek = classDate.day();
+
+    if ((day0 === dayOfWeek && time0 === classDate.hour()) || (day1 === dayOfWeek && time1 === classDate.hour())) {
+      prisma.class.update({
+        where: {
+          id: classObj.id
+        },
+        data: {
+          studentList: {
+            update: {
+              data: {
+                isAttendance: false,
+                studentId: student.id,
+              },
+              where: {
+                studentId_classId: {
+                  classId: classObj.id,
+                  studentId: student.id,
+                }
+              }
+
+            }
+          }
+        },
+
+      })
+    }
+  }
+  );
+
+  // await prisma.$transaction(result);
+
+  // return result;
+}
