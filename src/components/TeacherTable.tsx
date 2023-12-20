@@ -73,7 +73,7 @@ export default function TeacherTable() {
     const toastId = `${data.email}`;
     toast.loading('선생님 등록 중', { id: toastId });
     try {
-      const { ok } = await fetch('/api/teacher', {
+      const res = await fetch('/api/teacher', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,12 +81,14 @@ export default function TeacherTable() {
         body: JSON.stringify(data),
       });
 
+      const { ok } = res;
       if (ok) {
         await fetchTeacherList();
         closeModal();
         toast.success('선생님 등록에 성공했습니다.');
       } else {
-        toast.error('선생님 등록에 실패했습니다');
+        const { message } = await res.json();
+        toast.error(`${message}`);
       }
     } catch (error) {
       // toast.error('선생님 등록에 실패했습니다');
@@ -213,17 +215,17 @@ export default function TeacherTable() {
           </div>
           <div className="flex flex-1 justify-center items-end gap-4">
             <button
+              type="submit"
+              className="border rounded-[10px] bg-primary-color text-white w-32 h-[40px]"
+            >
+              저장
+            </button>
+            <button
               type="button"
               className="border rounded-[10px] bg-white text-primary-color w-32 h-[40px]"
               onClick={closeModal}
             >
               취소
-            </button>
-            <button
-              type="submit"
-              className="border rounded-[10px] bg-primary-color text-white w-32 h-[40px]"
-            >
-              저장
             </button>
           </div>
         </form>
