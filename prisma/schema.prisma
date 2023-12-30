@@ -46,7 +46,7 @@ model Guardian {
 model Teacher {
   id Int @id @default(autoincrement())
   name String @db.VarChar(5)
-  phone String @db.Char(11)
+  phone String @unique @db.Char(11)
   email String @unique @db.VarChar(30)
   password String @db.VarChar(20)
   role Role @default(TEACHER)
