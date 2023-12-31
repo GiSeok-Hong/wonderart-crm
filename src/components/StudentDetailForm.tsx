@@ -10,6 +10,7 @@ import { REASON_OPTION } from '@/consts/reason-option';
 import { GUARDIANS_INTERESTING_OPTION } from '@/consts/guardians-interesting-option';
 import { TIME_OPTION } from '@/consts/time-option';
 import { useRouter } from 'next/navigation';
+import { FlexColumnItem, FlexRow, FlexRowItem, Input, InputRadio, Label, Select, Option } from './FormCustomTag';
 
 const BUTTON_CLASS = 'px-10 py-5 border-2 text-xl font-bold rounded-2xl text-white hover:opacity-50 mb-5 ';
 
@@ -39,7 +40,7 @@ export default function StudentDetailForm({
   studentData: Student & { guardian: { name: string; phone: string } };
 }) {
   const router = useRouter();
-  const { register, handleSubmit, setValue, watch } = useForm<UpdateStudentForm>({
+  const { register, handleSubmit, setValue, watch, unregister } = useForm<UpdateStudentForm>({
     defaultValues: {
       address: studentData?.address,
       birthDate: moment(studentData?.birthDate).format('YYYY.MM.DD'),
@@ -62,6 +63,8 @@ export default function StudentDetailForm({
     },
   });
   const [editMode, setEditMode] = useState(false);
+
+  const [addMode, setAddMode] = useState(studentData.day[1] !== undefined && studentData.time[1] !== undefined);
 
   const age = getAge(studentData?.birthDate);
 
@@ -151,6 +154,7 @@ export default function StudentDetailForm({
             <Input
               disabled={!editMode}
               maxLength={10}
+              style={{ width: '150px' }}
               {...register('entranceDate', {
                 required: true,
                 minLength: 10,
@@ -194,38 +198,60 @@ export default function StudentDetailForm({
                 })}
               </Select>
             </FlexColumnItem>
-            <FlexColumnItem>
-              <Select
-                disabled={!editMode}
-                {...register('day.1')}
+
+            {addMode ? (
+              <FlexColumnItem>
+                <Select
+                  disabled={!editMode}
+                  {...register('day.1')}
+                >
+                  {DAY_OPTION.map((day) => {
+                    return (
+                      <Option
+                        key={day.value}
+                        value={day.value}
+                      >
+                        {day.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+                <Select
+                  disabled={!editMode}
+                  {...register('time.1')}
+                >
+                  {TIME_OPTION.map((time) => {
+                    return (
+                      <Option
+                        key={time.value}
+                        value={time.value}
+                      >
+                        {time.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </FlexColumnItem>
+            ) : (
+              <></>
+            )}
+            {editMode ? (
+              <button
+                type="button"
+                className="border px-1"
+                onClick={() => {
+                  if (addMode) {
+                    unregister('time.1');
+                    unregister('day.1');
+                  }
+                  setAddMode(!addMode);
+                }}
               >
-                {DAY_OPTION.map((day) => {
-                  return (
-                    <Option
-                      key={day.value}
-                      value={day.value}
-                    >
-                      {day.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-              <Select
-                disabled={!editMode}
-                {...register('time.1')}
-              >
-                {TIME_OPTION.map((time) => {
-                  return (
-                    <Option
-                      key={time.value}
-                      value={time.value}
-                    >
-                      {time.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </FlexColumnItem>
+                {!addMode ? '추가' : '삭제'}
+              </button>
+            ) : (
+              <></>
+            )}
           </FlexRowItem>
         </FlexRow>
         <FlexRow>
@@ -233,6 +259,7 @@ export default function StudentDetailForm({
             <Label>학생명</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('name', { required: true, maxLength: 5 })}
             />
           </FlexRowItem>
@@ -240,6 +267,7 @@ export default function StudentDetailForm({
             <Label>학생 연락처</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('phone', {
                 minLength: 11,
                 maxLength: 11,
@@ -253,6 +281,7 @@ export default function StudentDetailForm({
             <Input
               disabled={!editMode}
               maxLength={10}
+              style={{ width: '150px' }}
               {...register('birthDate', {
                 required: true,
                 minLength: 10,
@@ -264,13 +293,22 @@ export default function StudentDetailForm({
           </FlexRowItem>
           <FlexRowItem>
             <Label>성별</Label>
-            <Select
-              disabled={!editMode}
-              {...register('sex', { required: true })}
-            >
-              <Option value={Sex.MALE}>남</Option>
-              <Option value={Sex.FEMALE}>여</Option>
-            </Select>
+            <label className="mr-5">
+              <InputRadio
+                disabled={!editMode}
+                value={Sex.MALE}
+                {...register('sex', { required: true })}
+              />
+              남
+            </label>
+            <label className="mr-5">
+              <InputRadio
+                disabled={!editMode}
+                value={Sex.FEMALE}
+                {...register('sex', { required: true })}
+              />
+              여
+            </label>
           </FlexRowItem>
         </FlexRow>
         <FlexRow>
@@ -278,6 +316,7 @@ export default function StudentDetailForm({
             <Label>보호자명</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('guardianName', { maxLength: 5 })}
             />
           </FlexRowItem>
@@ -285,6 +324,7 @@ export default function StudentDetailForm({
             <Label>보호자 연락처</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('guardianPhone', {
                 minLength: 11,
                 maxLength: 11,
@@ -307,18 +347,28 @@ export default function StudentDetailForm({
             <Label>학교 / 유치원</Label>
             <Input
               disabled={!editMode}
+              style={{ width: '150px' }}
               {...register('school', { maxLength: 20 })}
             />
           </FlexRowItem>
           <FlexRowItem>
             <Label>등록 여부</Label>
-            <Select
-              disabled={!editMode}
-              {...register('isRegister', { required: true })}
-            >
-              <Option value={'YES'}>등록</Option>
-              <Option value={'NO'}>퇴원</Option>
-            </Select>
+            <label className="mr-5">
+              <InputRadio
+                disabled={!editMode}
+                value={'YES'}
+                {...register('isRegister', { required: true })}
+              />
+              등록
+            </label>
+            <label className="mr-5">
+              <InputRadio
+                disabled={!editMode}
+                value={'NO'}
+                {...register('isRegister', { required: true })}
+              />
+              퇴원
+            </label>
           </FlexRowItem>
         </FlexRow>
         <div>
@@ -331,57 +381,57 @@ export default function StudentDetailForm({
         </div>
         <div>
           <p className="text-lg font-normal">원더아트 스튜디오를 선택한 이유</p>
-          <Select
-            disabled={!editMode}
-            {...register('reason', { required: true })}
-          >
-            {Object.entries(REASON_OPTION).map(([key, value]) => {
-              return (
-                <Option
-                  key={key}
+          {Object.entries(REASON_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
+              >
+                <InputRadio
+                  disabled={!editMode}
                   value={key}
-                >
-                  {value}
-                </Option>
-              );
-            })}
-          </Select>
+                  {...register('reason', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
         </div>
         <div>
           <p className="text-lg font-normal">학부모님이 가장 중요하다고 생각하는 미술활동</p>
-          <Select
-            disabled={!editMode}
-            {...register('importantActivity')}
-          >
-            {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
-              return (
-                <Option
-                  key={key}
+          {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
+              >
+                <InputRadio
+                  disabled={!editMode}
                   value={key}
-                >
-                  {value}
-                </Option>
-              );
-            })}
-          </Select>
+                  {...register('importantActivity', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
         </div>
         <div>
           <p className="text-lg font-normal">학생이 가장 흥미있어 하는 미술활동</p>
-          <Select
-            disabled={!editMode}
-            {...register('interestingActivity')}
-          >
-            {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
-              return (
-                <Option
-                  key={key}
+          {Object.entries(GUARDIANS_INTERESTING_OPTION).map(([key, value]) => {
+            return (
+              <label
+                className="mr-5"
+                key={key}
+              >
+                <InputRadio
+                  disabled={!editMode}
                   value={key}
-                >
-                  {value}
-                </Option>
-              );
-            })}
-          </Select>
+                  {...register('interestingActivity', { required: true })}
+                />
+                {value}
+              </label>
+            );
+          })}
         </div>
         <div>
           <p className="text-lg font-normal">학생에 대해 특별히 알아야 하거나, 주의해야 할 점</p>
@@ -438,80 +488,4 @@ const SubmitButton = () => {
       수정완료
     </button>
   );
-};
-
-interface DivProps extends React.HTMLAttributes<HTMLDivElement> {}
-const FlexRow = ({ children, ...props }: DivProps) => {
-  return (
-    <div
-      className="flex justify-between gap-4"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-};
-
-const FlexRowItem = ({ children, ...props }: DivProps) => {
-  return (
-    <div
-      className="flex gap-3 items-center w-full"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-};
-
-const FlexColumnItem = ({ children, ...props }: DivProps) => {
-  return (
-    <div
-      className="flex items-center gap-2"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-};
-
-interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
-const Label = ({ children, ...props }: LabelProps) => {
-  return (
-    <label
-      className="w-28 text-black text-lg font-normal"
-      {...props}
-    >
-      {children}
-    </label>
-  );
-};
-
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-const Input = forwardRef<HTMLInputElement, InputProps>((props: InputProps, ref) => {
-  return (
-    <input
-      ref={ref}
-      className="flex h-11 bg-[#eee] py-2 flex-1 p-2"
-      {...props}
-    />
-  );
-});
-Input.displayName = 'Input';
-
-const Select = forwardRef<HTMLSelectElement, React.SelectHTMLAttributes<HTMLSelectElement>>(
-  ({ children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>, ref) => {
-    return (
-      <select
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </select>
-    );
-  },
-);
-Select.displayName = 'Select';
-
-const Option = ({ children, ...props }: React.OptionHTMLAttributes<HTMLOptionElement>) => {
-  return <option {...props}>{children}</option>;
 };

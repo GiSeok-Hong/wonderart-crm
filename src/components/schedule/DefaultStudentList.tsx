@@ -1,21 +1,21 @@
-const DIV_CLASS = `h-[180px] border-black border-b `;
+import { DAY_OPTION } from '@/consts/day-option';
+import { TIME_OPTION } from '@/consts/time-option';
 
-const CLASS_DAY = ['월', '화', '수', '목', '금'];
-const CLASS_TIME = ['오후 2시', '오후 3시', '오후 4시', '오후 5시', '오후 6시'];
+const DIV_CLASS = `h-[180px] border-black border-b `;
 
 export default function DefaultStudentList() {
   return (
     <>
-      {CLASS_DAY.map((day, i) => {
+      {DAY_OPTION.map((day) => {
         return (
           <div
-            key={i}
+            key={day.value}
             className="w-[104px] box-boder border-r border-t  border-black"
           >
-            {CLASS_TIME.map((v, i) => {
+            {TIME_OPTION.map((time, i) => {
               return (
                 <div
-                  key={i}
+                  key={time.value}
                   className={DIV_CLASS + `${i % 2 === 0 ? '' : ` bg-gray-100`}`}
                 ></div>
               );

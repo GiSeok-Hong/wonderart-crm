@@ -6,6 +6,7 @@ import StudentSearchInput from './StudentSearchInput';
 import { useRouter } from 'next/navigation';
 import { type Student } from '@prisma/client';
 import { translateWord } from '@/helper/sex';
+import { phoneFormat } from '@/helper/phone';
 
 const TABLE_BORDER = 'border border-black';
 
@@ -65,7 +66,7 @@ export default function StudentTable() {
                 <Td>{student.name}</Td>
                 <Td>만 {getAge(student.birthDate)}세</Td>
                 <Td>{translateWord(student.sex)}</Td>
-                <Td>{student.guardian.phone}</Td>
+                <Td>{phoneFormat(student.guardian.phone)}</Td>
                 <Td>{student.school}</Td>
               </tr>
             );

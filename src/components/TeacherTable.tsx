@@ -6,10 +6,11 @@ const PlusButton = dynamic(() => import('@/components/PlusButton'), { ssr: false
 import Modal from 'react-modal';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { phoneFormat } from '@/helper/phone';
 
 const TABLE_BORDER = 'border border-black';
 
-const LABEL = ['이름', '이메일', '휴대폰번호'];
+const LABEL = ['이름', '이메일', '연락처'];
 
 const customStyles = {
   content: {
@@ -72,7 +73,7 @@ export default function TeacherTable() {
     const toastId = `${data.email}`;
     toast.loading('선생님 등록 중', { id: toastId });
     try {
-      const { ok } = await fetch('/api/teacher', {
+      const res = await fetch('/api/teacher', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -80,12 +81,14 @@ export default function TeacherTable() {
         body: JSON.stringify(data),
       });
 
+      const { ok } = res;
       if (ok) {
         await fetchTeacherList();
         closeModal();
         toast.success('선생님 등록에 성공했습니다.');
       } else {
-        toast.error('선생님 등록에 실패했습니다');
+        const { message } = await res.json();
+        toast.error(`${message}`);
       }
     } catch (error) {
       // toast.error('선생님 등록에 실패했습니다');
@@ -132,7 +135,7 @@ export default function TeacherTable() {
               >
                 <Td>{teacher.name}</Td>
                 <Td>{teacher.email}</Td>
-                <Td>{teacher.phone}</Td>
+                <Td>{phoneFormat(teacher.phone)}</Td>
               </tr>
             );
           })}
@@ -173,7 +176,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="password"
             >
-              password
+              비밀번호
             </label>
             <input
               className="border border-black flex-1"
@@ -187,7 +190,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="email"
             >
-              email
+              이메일
             </label>
             <input
               className="border border-black flex-1"
@@ -201,7 +204,7 @@ export default function TeacherTable() {
               className="w-24"
               htmlFor="phone"
             >
-              핸드폰번호
+              연락처
             </label>
             <input
               className="border border-black flex-1"
@@ -212,17 +215,17 @@ export default function TeacherTable() {
           </div>
           <div className="flex flex-1 justify-center items-end gap-4">
             <button
+              type="submit"
+              className="border rounded-[10px] bg-primary-color text-white w-32 h-[40px]"
+            >
+              저장
+            </button>
+            <button
               type="button"
               className="border rounded-[10px] bg-white text-primary-color w-32 h-[40px]"
               onClick={closeModal}
             >
               취소
-            </button>
-            <button
-              type="submit"
-              className="border rounded-[10px] bg-primary-color text-white w-32 h-[40px]"
-            >
-              저장
             </button>
           </div>
         </form>
