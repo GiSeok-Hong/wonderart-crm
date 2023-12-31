@@ -1,8 +1,8 @@
 ---
-name: "✅FEATURE"
-about: Feature 작업 사항을 입력해 주세요.
-title: "[Feature]"
-labels: enhancement
+name: "\U0001F527REFACTOR"
+about: 리팩토링할 작업 사항을 입력해 주세요.
+title: "[Refactor]"
+labels: refactor
 assignees: ''
 
 ---
