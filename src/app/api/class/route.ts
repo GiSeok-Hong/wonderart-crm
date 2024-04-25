@@ -14,6 +14,7 @@ export async function POST(request: Request) {
   // const { yearMonth } = await request.json();
 
   const yearMonth = moment().format('YYYYMM');
+  console.log('cronjob 테스트 : ', yearMonth);
 
   try {
     const classList = await createMonthlyClassList(yearMonth);
